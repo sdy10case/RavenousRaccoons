@@ -1,15 +1,14 @@
-<asl version="550">
-
-  <include ref="English.aslx"/>
-  <include ref="Core.aslx"/>
+<!--Saved by Quest 5.8.6836.13983-->
+<asl version="580">
+  <include ref="English.aslx" />
+  <include ref="Core.aslx" />
   <game name="prototype">
     <gameid>16087e81-508d-4efd-89b1-ca254cd139bc</gameid>
     <version>1.0</version>
     <firstpublished>2023</firstpublished>
     <author>A Trizbort User</author>
-    <description></description>
+    <description />
   </game>
-
   <object name="RaccoonBase">
     <inherit name="editor_room" />
     <alias>Raccoon Base</alias>
@@ -17,8 +16,8 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
-    <exit alias="north" to="GuardDogOutpost">
+    <implementation_notes />
+    <exit alias="north" to="Sludge Lake South Shore">
       <inherit name="northdirection" />
     </exit>
     <exit alias="south" to="Dumpster">
@@ -51,7 +50,6 @@
       <alias>Kitchen</alias>
     </object>
   </object>
-
   <object name="BrokenPlane">
     <inherit name="editor_room" />
     <alias>Broken Plane</alias>
@@ -59,7 +57,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="north" to="CarGraveyard">
       <inherit name="northdirection" />
     </exit>
@@ -81,7 +79,6 @@
       <alias>pilot seat</alias>
     </object>
   </object>
-
   <object name="Bunker">
     <inherit name="editor_room" />
     <alias>Bunker</alias>
@@ -89,7 +86,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="north" to="GuardDogBase">
       <inherit name="northdirection" />
     </exit>
@@ -105,7 +102,6 @@
       <alias>Rose</alias>
     </object>
   </object>
-
   <object name="GuardDogCamp">
     <inherit name="editor_room" />
     <alias>Guard Dog Camp</alias>
@@ -113,7 +109,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="north" to="BrokenPlane">
       <inherit name="northdirection" />
     </exit>
@@ -124,7 +120,6 @@
       <inherit name="westdirection" />
     </exit>
   </object>
-
   <object name="Dumpster">
     <inherit name="editor_room" />
     <alias>Dumpster</alias>
@@ -132,7 +127,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="north" to="RaccoonBase">
       <inherit name="northdirection" />
     </exit>
@@ -140,23 +135,25 @@
       <inherit name="eastdirection" />
     </exit>
   </object>
-
-  <object name="GuardDogOutpost">
+  <object name="Sludge Lake South Shore">
     <inherit name="editor_room" />
-    <alias>Guard Dog Outpost</alias>
+    <alias>Sludge Lake South Shore</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
+    <description>You are waist deep in a lake of sludge, rot, and bone. You certainly dislike this. It smells like wet cat food.</description>
     <exit alias="south" to="RaccoonBase">
       <inherit name="southdirection" />
     </exit>
     <exit alias="east" to="CarGraveyard">
       <inherit name="eastdirection" />
     </exit>
+    <exit to="Sludge Lake North Shore">
+      <prefix>to the </prefix>
+    </exit>
   </object>
-
   <object name="Road">
     <inherit name="editor_room" />
     <alias>Road</alias>
@@ -164,7 +161,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="in" to="StoreEntrance">
       <inherit name="indirection" />
     </exit>
@@ -172,7 +169,6 @@
       <inherit name="outdirection" />
     </exit>
   </object>
-
   <object name="RecyclingPlant">
     <inherit name="editor_room" />
     <alias>Recycling Plant</alias>
@@ -180,7 +176,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="south" to="GuardDogBase">
       <inherit name="southdirection" />
     </exit>
@@ -208,7 +204,6 @@
       <alias>incinerator</alias>
     </object>
   </object>
-
   <object name="CarGraveyard">
     <inherit name="editor_room" />
     <alias>Car Graveyard</alias>
@@ -216,14 +211,14 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="south" to="BrokenPlane">
       <inherit name="southdirection" />
     </exit>
     <exit alias="east" to="RecyclingPlant">
       <inherit name="eastdirection" />
     </exit>
-    <exit alias="west" to="GuardDogOutpost">
+    <exit alias="west" to="Sludge Lake South Shore">
       <inherit name="westdirection" />
     </exit>
     <object name="Jerrycan">
@@ -251,15 +246,16 @@
       <alias>car wheel stack</alias>
     </object>
   </object>
-
   <object name="GuardDogBase">
     <inherit name="editor_room" />
-    <alias>Guard Dog Base</alias>
+    <alias>GuardDogBase</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
+    <description type="string"></description>
+    <isroom type="boolean">false</isroom>
     <exit alias="north" to="RecyclingPlant">
       <inherit name="northdirection" />
     </exit>
@@ -270,7 +266,6 @@
       <inherit name="westdirection" />
     </exit>
   </object>
-
   <object name="StoreEntrance">
     <inherit name="editor_room" />
     <alias>Store Entrance</alias>
@@ -278,7 +273,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="in" to="RorysIceCteamShop">
       <inherit name="indirection" />
     </exit>
@@ -286,7 +281,6 @@
       <inherit name="outdirection" />
     </exit>
   </object>
-
   <object name="RorysIceCteamShop">
     <inherit name="editor_room" />
     <alias>Rory's Ice Cteam Shop</alias>
@@ -294,7 +288,7 @@
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
-    <attr name="implementation_notes"></attr>
+    <implementation_notes />
     <exit alias="in" to="RaccoonBase">
       <inherit name="indirection" />
     </exit>
@@ -302,7 +296,41 @@
       <inherit name="outdirection" />
     </exit>
   </object>
-
-
+  <object name="Sludge Lake North Shore">
+    <inherit name="editor_room" />
+    <alias>Sludge Lake North Shore</alias>
+    <descprefix>You are in </descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix>the</prefix>
+    <description>You slip and slither about. Yuck. The pungent aroma of wet fur and slime assaults your nostrils. Filled with regret, you squirm and writhe until your head pokes up out of the thick, rotting ick. You slide onto the shore and see a trash island with a sign that reads ‘dawgz only’. Unfortunately, you do not know what it says.</description>
+    <exit to="Sludge Lake South Shore">
+      <scenery type="boolean">false</scenery>
+      <locked type="boolean">false</locked>
+      <prefix>to the </prefix>
+    </exit>
+    <exit alias="Trash Island" to="TrashIsland">
+      <prefix>onto </prefix>
+    </exit>
+  </object>
+  <object name="TrashIsland">
+    <inherit name="editor_room" />
+    <description>You scurry into a gravel clearing that smells awfully like Sludge Lake. Pieces of wood and rusted metal are scattered around you. In the distance you see a sign, a tower, and a clump of bushes. The sign is too far away to read.</description>
+    <alias>Trash Island</alias>
+    <descprefix>You are on</descprefix>
+    <exit to="Sludge Lake North Shore">
+      <prefix>to the</prefix>
+    </exit>
+    <object name="Sign">
+      <inherit name="editor_object" />
+      <useindividualverblist type="boolean">false</useindividualverblist>
+      <look>You approach the sign. Its wooden corners have been gnawed to stubs. The sign text has been indecipherably scratched, but some bones are nailed to the top. You assume it is dangerous.</look>
+    </object>
+    <exit alias="tower" to="DogTower">
+      <prefix>the </prefix>
+    </exit>
+  </object>
+  <object name="DogTower">
+    <inherit name="editor_room" />
+    <alias>tower</alias>
+  </object>
 </asl>
-
