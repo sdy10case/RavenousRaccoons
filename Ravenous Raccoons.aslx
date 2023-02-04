@@ -201,6 +201,55 @@
     <exit alias="west" to="Dumpster">
       <inherit name="westdirection" />
     </exit>
+    <exit to="DogCamp">
+      <prefix>to</prefix>
+    </exit>
+    <object name="DogCamp">
+      <inherit name="editor_room" />
+      <exit to="GuardDogCamp">
+        <prefix>to</prefix>
+      </exit>
+      <object name="SheetMetal">
+        <inherit name="editor_object" />
+      </object>
+      <exit alias="in" to="Tent2">
+        <inherit name="indirection" />
+      </exit>
+      <object name="Tent1">
+        <inherit name="editor_room" />
+        <exit alias="out" to="DogCamp">
+          <inherit name="outdirection" />
+        </exit>
+        <exit alias="in" to="Basement">
+          <inherit name="indirection" />
+        </exit>
+        <object name="Basement">
+          <inherit name="editor_room" />
+          <exit alias="out" to="Tent1">
+            <inherit name="outdirection" />
+          </exit>
+          <object name="Door1">
+            <inherit name="editor_object" />
+            <alias>Door</alias>
+          </object>
+        </object>
+      </object>
+      <object name="Tent2">
+        <inherit name="editor_room" />
+        <exit alias="out" to="DogCamp">
+          <inherit name="outdirection" />
+        </exit>
+        <object name="Lock Pick">
+          <inherit name="editor_object" />
+        </object>
+        <object name="Fruit">
+          <inherit name="editor_object" />
+        </object>
+      </object>
+      <exit to="Tent1">
+        <prefix>in</prefix>
+      </exit>
+    </object>
   </object>
   <object name="Dumpster">
     <inherit name="editor_room" />
@@ -231,6 +280,70 @@
     <exit alias="east" to="CarGraveyard">
       <inherit name="eastdirection" />
     </exit>
+    <exit to="DogShore">
+      <prefix>into</prefix>
+    </exit>
+    <object name="DogShore">
+      <inherit name="editor_room" />
+      <exit to="GuardDogOutpost">
+        <prefix>onto</prefix>
+      </exit>
+      <exit to="DogIsland">
+        <prefix>onto</prefix>
+      </exit>
+      <object name="DogIsland">
+        <inherit name="editor_room" />
+        <object name="DogSign">
+          <inherit name="editor_object" />
+        </object>
+        <exit to="DogShore">
+          <prefix>into</prefix>
+        </exit>
+        <exit to="DogTower">
+          <prefix>to</prefix>
+        </exit>
+        <exit to="DogBushes">
+          <prefix>to</prefix>
+        </exit>
+        <object name="DogBushes">
+          <inherit name="editor_room" />
+          <exit to="DogIsland">
+            <prefix>to</prefix>
+          </exit>
+          <object name="Bush1">
+            <inherit name="editor_object" />
+          </object>
+          <object name="Bush3">
+            <inherit name="editor_object" />
+          </object>
+          <exit to="Bush2" />
+          <object name="Bush2">
+            <inherit name="editor_room" />
+            <exit to="DogBushes">
+              <prefix>to</prefix>
+            </exit>
+            <object name="Apple">
+              <inherit name="editor_object" />
+            </object>
+          </object>
+        </object>
+        <object name="DogTower">
+          <inherit name="editor_room" />
+          <exit to="DogIsland">
+            <prefix>to</prefix>
+          </exit>
+          <object name="Door">
+            <inherit name="editor_object" />
+          </object>
+          <object name="Ice Cream Wrapper">
+            <inherit name="editor_object" />
+          </object>
+          <object name="Trash">
+            <inherit name="editor_object" />
+          </object>
+        </object>
+      </object>
+    </object>
   </object>
   <object name="Road">
     <inherit name="editor_room" />
@@ -341,6 +454,77 @@
     <exit alias="west" to="BrokenPlane">
       <inherit name="westdirection" />
     </exit>
+    <object name="DogBase">
+      <inherit name="editor_room" />
+      <exit alias="out" to="GuardDogBase">
+        <inherit name="outdirection" />
+      </exit>
+      <object name="Smoke Stack">
+        <inherit name="editor_object" />
+      </object>
+      <object name="DogHouse">
+        <inherit name="editor_room" />
+        <exit alias="out" to="DogBase">
+          <inherit name="outdirection" />
+        </exit>
+        <object name="SteamRoom">
+          <inherit name="editor_room" />
+          <exit alias="out" to="DogHouse">
+            <inherit name="outdirection" />
+          </exit>
+          <object name="Dog">
+            <inherit name="editor_object" />
+          </object>
+          <object name="Cellphone">
+            <inherit name="editor_object" />
+          </object>
+        </object>
+        <exit alias="in" to="SteamRoom">
+          <inherit name="indirection" />
+        </exit>
+        <object name="Table">
+          <inherit name="editor_room" />
+          <exit to="DogHouse">
+            <prefix>to</prefix>
+            <scenery />
+          </exit>
+          <object name="Green Key">
+            <inherit name="editor_object" />
+          </object>
+          <object name="Bottle">
+            <inherit name="editor_object" />
+          </object>
+        </object>
+        <exit to="Table">
+          <prefix>jump onto</prefix>
+        </exit>
+        <object name="Cupboard">
+          <inherit name="editor_room" />
+          <exit alias="out" to="DogHouse">
+            <inherit name="outdirection" />
+          </exit>
+          <object name="Apple1">
+            <inherit name="editor_object" />
+            <alias>Apple</alias>
+          </object>
+          <object name="Blue Key">
+            <inherit name="editor_object" />
+          </object>
+        </object>
+        <exit to="Cupboard">
+          <prefix>in</prefix>
+        </exit>
+      </object>
+      <exit alias="in" to="DogHouse">
+        <inherit name="indirection" />
+      </exit>
+    </object>
+    <exit alias="in" to="DogBase">
+      <inherit name="indirection" />
+    </exit>
+    <object name="Plate">
+      <inherit name="editor_object" />
+    </object>
   </object>
   <object name="StoreEntrance">
     <inherit name="editor_room" />
