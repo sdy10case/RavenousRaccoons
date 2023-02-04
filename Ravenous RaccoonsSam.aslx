@@ -1,0 +1,395 @@
+<!--Saved by Quest 5.8.6836.13983-->
+<asl version="580">
+  <include ref="English.aslx" />
+  <include ref="Core.aslx" />
+  <game name="prototype">
+    <gameid>16087e81-508d-4efd-89b1-ca254cd139bc</gameid>
+    <version>1.0</version>
+    <firstpublished>2023</firstpublished>
+    <author>A Trizbort User</author>
+    <description />
+  </game>
+  <object name="RaccoonBase">
+    <inherit name="editor_room" />
+    <alias>Raccoon Base</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <descprefix>You are in a cleared area of the junkyard, the scent of other raccoons hangs in the air.</descprefix>
+    <objectslistprefix>You can see a refrigerator, a broken ice cream truck, and another raccoon</objectslistprefix>
+    <exit alias="north" to="GuardDogOutpost">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="south" to="Dumpster">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="east" to="BrokenPlane">
+      <inherit name="eastdirection" />
+    </exit>
+    <exit alias="in" to="Road">
+      <inherit name="indirection" />
+    </exit>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+    </object>
+    <object name="Casey">
+      <inherit name="editor_object" />
+      <inherit name="namedmale" />
+      <alias>Casey</alias>
+    </object>
+    <object name="Refrigerator">
+      <inherit name="editor_object" />
+      <alias>Refrigerator</alias>
+      <replenish type="string"></replenish>
+      <eat type="string"></eat>
+    </object>
+    <object name="IceCreamTruck">
+      <inherit name="editor_object" />
+      <alias>Ice Cream Truck</alias>
+      <look>A broken ice cream truck, it has a Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine it inside still works if you can get the ice cream truck to run!</look>
+    </object>
+    <object name="Kitchen">
+      <inherit name="editor_object" />
+      <alias>Kitchen</alias>
+    </object>
+  </object>
+  <object name="BrokenPlane">
+    <inherit name="editor_room" />
+    <alias>Broken Plane</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <descprefix>You are in in a field of garbage, in front of you is a decomissioned commercial airplane. The possibilities of loot excite you!</descprefix>
+    <objectslistprefix>At the front of the plane is the cockpit, the centre of the plane is the customer cabin, and at the back is the tail of the airplane - the smell of fuel stings the nostrils.</objectslistprefix>
+    <exit alias="north" to="CarGraveyard">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="south" to="GuardDogCamp">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="east" to="GuardDogBase">
+      <inherit name="eastdirection" />
+    </exit>
+    <exit alias="west" to="RaccoonBase">
+      <inherit name="westdirection" />
+    </exit>
+    <object name="AirplaneTail">
+      <inherit name="editor_object" />
+      <alias>Tail</alias>
+      <feature_container />
+      <isopen />
+      <look type="script">
+        msg ("The airplane tail is large, the colors have faded to the point where it is generic. You examine it and notice that there is a fuel nozzle hanging out of the fuel tank.")
+        if (Got(Jerrycan)) {
+        }
+      </look>
+      <fillcan type="script">
+        if (Got(Jerrycan)) {
+          AddToInventory (FilledCan)
+        }
+        else {
+          msg ("You may need to find something to contain the fuel to bring it with you!")
+        }
+      </fillcan>
+    </object>
+    <object name="pilotseat">
+      <inherit name="editor_object" />
+      <alias>pilot seat</alias>
+      <attr name="feature_container" type="boolean">false</attr>
+    </object>
+    <object name="Cabin">
+      <inherit name="editor_object" />
+    </object>
+    <object name="FilledCan">
+      <inherit name="editor_object" />
+      <take />
+      <takemsg>You filled the gasoline can with gas.</takemsg>
+    </object>
+    <object name="FoodDrinkTrolley">
+      <inherit name="editor_object" />
+      <inherit name="container_closed" />
+      <feature_container />
+      <onopen type="script">
+        AddToInventory (ChocolatePackets)
+        AddToInventory (AlmondPackets)
+      </onopen>
+    </object>
+    <object name="ChocolatePackets">
+      <inherit name="editor_object" />
+      <look>An airline branded packet of chocolates.</look>
+      <take />
+      <takemsg>You took the chocolates.</takemsg>
+    </object>
+    <object name="AlmondPackets">
+      <inherit name="editor_object" />
+      <look>An airline branded packet of almonds.</look>
+      <take />
+      <takemsg>You took the almonds.</takemsg>
+    </object>
+    <object name="ProteinBar">
+      <inherit name="editor_object" />
+      <inherit name="edible" />
+      <look>It's a protein bar.</look>
+      <take />
+      <takemsg>You took the protein bar.</takemsg>
+      <feature_edible />
+      <eatmsg>You ate the protein bar, it tasted like peanut butter!</eatmsg>
+    </object>
+  </object>
+  <object name="Bunker">
+    <inherit name="editor_room" />
+    <alias>Bunker</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="north" to="GuardDogBase">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="west" to="GuardDogCamp">
+      <inherit name="westdirection" />
+    </exit>
+    <object name="bunkerstairs">
+      <inherit name="editor_object" />
+      <alias>bunker stairs</alias>
+      <descprefix>You are in </descprefix>
+      <feature_container />
+      <openmsg>You enter down the stairs leading to a large bunker area, decked out with everything anyone could need to survive years of isolation. On the shelves of canned foods, you see cans of condensed milk.</openmsg>
+      <attr name="feature_usegive" type="boolean">false</attr>
+      <enterbunker type="script"><![CDATA[
+        msg ("You are in an apocalypse bunker containing anything you could ever imagine to survive years in isolation. Strrange posters paint the walls and canned foods line the shelves, a musty smell permeates the dank enclosure.<br/><br/>It's clear nobody has been here in awhile.<br/><br/>On the shelves, you see cans of condensed milk.")
+      ]]></enterbunker>
+    </object>
+    <object name="Rose">
+      <inherit name="editor_object" />
+      <alias>Rose</alias>
+      <look><![CDATA[You see a bright, red rose growing from a split brick of concrete. You take a second and look at it.<br/><br/>It makes you think.]]></look>
+    </object>
+    <object name="CondensedMilk">
+      <inherit name="editor_object" />
+      <look>It's a can of condensed milk, it weighs as much as a brick!</look>
+      <alt type="stringlist">
+        <value>milk</value>
+        <value>can of milk</value>
+      </alt>
+      <takecondensedmilk type="script">
+        msg ("You pick up a can of condensed milk, it's very heavy, but you suspect tasty treats could be made with its contents.")
+        AddToInventory (CondensedMilk)
+      </takecondensedmilk>
+    </object>
+  </object>
+  <object name="GuardDogCamp">
+    <inherit name="editor_room" />
+    <alias>Guard Dog Camp</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="north" to="BrokenPlane">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="east" to="Bunker">
+      <inherit name="eastdirection" />
+    </exit>
+    <exit alias="west" to="Dumpster">
+      <inherit name="westdirection" />
+    </exit>
+  </object>
+  <object name="Dumpster">
+    <inherit name="editor_room" />
+    <alias>Dumpster</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="north" to="RaccoonBase">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="east" to="GuardDogCamp">
+      <inherit name="eastdirection" />
+    </exit>
+  </object>
+  <object name="GuardDogOutpost">
+    <inherit name="editor_room" />
+    <alias>Guard Dog Outpost</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="south" to="RaccoonBase">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="east" to="CarGraveyard">
+      <inherit name="eastdirection" />
+    </exit>
+  </object>
+  <object name="Road">
+    <inherit name="editor_room" />
+    <alias>Road</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="in" to="StoreEntrance">
+      <inherit name="indirection" />
+    </exit>
+    <exit alias="out" to="RaccoonBase">
+      <inherit name="outdirection" />
+    </exit>
+  </object>
+  <object name="RecyclingPlant">
+    <inherit name="editor_room" />
+    <alias>Recycling Plant</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="south" to="GuardDogBase">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="west" to="CarGraveyard">
+      <inherit name="westdirection" />
+    </exit>
+    <object name="metalscrap">
+      <inherit name="editor_object" />
+      <alias>metal scrap</alias>
+    </object>
+    <object name="ceiling">
+      <inherit name="editor_object" />
+      <alias>ceiling</alias>
+    </object>
+    <object name="radioactivewaste">
+      <inherit name="editor_object" />
+      <alias>radioactive waste</alias>
+    </object>
+    <object name="trashcompactor">
+      <inherit name="editor_object" />
+      <alias>trash compactor</alias>
+    </object>
+    <object name="incinerator">
+      <inherit name="editor_object" />
+      <alias>incinerator</alias>
+    </object>
+  </object>
+  <object name="CarGraveyard">
+    <inherit name="editor_room" />
+    <alias>Car Graveyard</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="south" to="BrokenPlane">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="east" to="RecyclingPlant">
+      <inherit name="eastdirection" />
+    </exit>
+    <exit alias="west" to="GuardDogOutpost">
+      <inherit name="westdirection" />
+    </exit>
+    <object name="Jerrycan">
+      <inherit name="editor_object" />
+      <alias>Jerrycan</alias>
+    </object>
+    <object name="OldRedCar">
+      <inherit name="editor_object" />
+      <alias>Old Red Car</alias>
+    </object>
+    <object name="metalscrap2">
+      <inherit name="editor_object" />
+      <alias>metal scrap</alias>
+    </object>
+    <object name="foodtrailer">
+      <inherit name="editor_object" />
+      <alias>food trailer</alias>
+    </object>
+    <object name="pickuptruck">
+      <inherit name="editor_object" />
+      <alias>pickup truck</alias>
+    </object>
+    <object name="carwheelstack">
+      <inherit name="editor_object" />
+      <alias>car wheel stack</alias>
+    </object>
+  </object>
+  <object name="GuardDogBase">
+    <inherit name="editor_room" />
+    <alias>Guard Dog Base</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="north" to="RecyclingPlant">
+      <inherit name="northdirection" />
+    </exit>
+    <exit alias="south" to="Bunker">
+      <inherit name="southdirection" />
+    </exit>
+    <exit alias="west" to="BrokenPlane">
+      <inherit name="westdirection" />
+    </exit>
+  </object>
+  <object name="StoreEntrance">
+    <inherit name="editor_room" />
+    <alias>Store Entrance</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="in" to="RorysIceCteamShop">
+      <inherit name="indirection" />
+    </exit>
+    <exit alias="out" to="Road">
+      <inherit name="outdirection" />
+    </exit>
+  </object>
+  <object name="RorysIceCteamShop">
+    <inherit name="editor_room" />
+    <alias>Rory's Ice Cteam Shop</alias>
+    <attr name="grid_width" type="int">3</attr>
+    <attr name="grid_length" type="int">3</attr>
+    <attr name="grid_fill">Transparent</attr>
+    <attr name="grid_border">Transparent</attr>
+    <implementation_notes />
+    <exit alias="in" to="RaccoonBase">
+      <inherit name="indirection" />
+    </exit>
+    <exit alias="out" to="StoreEntrance">
+      <inherit name="outdirection" />
+    </exit>
+  </object>
+  <verb>
+    <property>enterbunker</property>
+    <pattern>enter bunker</pattern>
+    <defaultexpression>"You can't enter bunker " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>replenish</property>
+    <pattern>replenish</pattern>
+    <defaultexpression>"You can't replenish " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>fillcan</property>
+    <pattern>fill can</pattern>
+    <defaultexpression>"You can't fill can " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>takecondensedmilk</property>
+    <pattern>take condensed milk</pattern>
+    <defaultexpression>"You can't take condensed milk " + object.article + "."</defaultexpression>
+  </verb>
+</asl>
