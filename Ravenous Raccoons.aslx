@@ -9,8 +9,6 @@
     <author>A Trizbort User</author>
     <description />
     <cover>Raccoon with ice cream.png</cover>
-    <start type="script">
-    </start>
     <povstatusattributes type="stringdictionary">
       <item>
         <key>turns</key>
@@ -22,6 +20,8 @@
       </item>
     </povstatusattributes>
     <showhealth />
+    <start type="script">
+    </start>
     <onhealthzero type="script">
       msg ("Uh Oh! Rocco is too hungry to continue. He blacks out. When he awakes, he finds himself back at the Base. If his body didn't hurt so much, he would think it was a miracle. He could also clearly see the marks where Casey dragged him through the dirt and trash! ")
       MoveObject (player, RaccoonBase)
@@ -30,6 +30,10 @@
       player.day = player.turns / 30
       IncreaseHealth (20)
     </onhealthzero>
+    <showpanes />
+    <showcommandbar />
+    <turnoffcompass />
+    <bordercolour>Cornsilk</bordercolour>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -70,6 +74,9 @@
       <alias>Refrigerator</alias>
       <replenish type="string"></replenish>
       <eat type="string"></eat>
+      <alt type="stringlist">
+        <value>fridge</value>
+      </alt>
     </object>
     <object name="IceCreamTruck">
       <inherit name="editor_object" />
@@ -488,19 +495,19 @@
       <takemsg>the creature twitches as you pluck the flower</takemsg>
       <look>pretty!</look>
       <feature_usegive />
+      <drop type="boolean">false</drop>
+      <givetoanything type="script">
+        msg ("Rocco likes this flower too much to give it away.")
+      </givetoanything>
+      <givesingle type="script">
+        msg ("who is Rocco giving this to?")
+      </givesingle>
       <giveto type="scriptdictionary">
         <item key="creature">
           MoveObject (flower, creature)
           msg ("The possum grips the flower gently, a smile creeps on its lips.")
         </item>
       </giveto>
-      <givetoanything type="script">
-        msg ("Rocco likes this flower too much to give it away.")
-      </givetoanything>
-      <drop type="boolean">false</drop>
-      <givesingle type="script">
-        msg ("who is Rocco giving this to?")
-      </givesingle>
     </object>
     <exit alias="west" to="StoreEntrance">
       <inherit name="westdirection" />
@@ -780,10 +787,10 @@
   </turnscript>
   <command name="Help">
     <unresolved>just type help for quick. Trying to help somebody specifically? Try simple verbs and context clues from room descriptions</unresolved>
+    <pattern>help</pattern>
     <script><![CDATA[
       msg ("Welcome to Ravenous Raccoon. Rocco is a Raccoon desperate for some ice cream, and he needs it before he dies from withdra- I mean lack of happiness! Heh... Anyway<br/><br/>Rocco has 30 days to get that ice cream. Each day consists of 30 turns and you have thirty days. That's 900 turns total. A turn is any action, whether you type it in or click on a hyperlink, so act carefully!<br/><br/>Additionally, we have the health bar: AKA Rocco is a very hungry critter. Every turn Rocco's hunger will drop by 1. It can be replenished by items found across the junkyard, or by sleeping at the raccoon base. Sleeping will fully recover health, but it will also end the day, so choose when you sleep carefully.<br/><br/>If hunger reaches zero, Rocco is carefully transported back to the Raccoon Base, hunger is restored to 20%, and a new day begins.<br/><br/>Rocco's goals lie at the far reaches of the junkyard. You can help him by just exploring or getting a helping hand from Casey. Go talk  to him now for the first questline. This game is meant to be comical and silly; don't take things too seriously and have fun!")
     ]]></script>
-    <pattern>help</pattern>
   </command>
   <verb>
     <property>sleepon</property>
