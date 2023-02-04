@@ -2,12 +2,13 @@
 <asl version="580">
   <include ref="English.aslx" />
   <include ref="Core.aslx" />
-  <game name="prototype">
+  <game name="Ravenous Raccoon">
     <gameid>16087e81-508d-4efd-89b1-ca254cd139bc</gameid>
     <version>1.0</version>
     <firstpublished>2023</firstpublished>
     <author>A Trizbort User</author>
     <description />
+    <cover>Raccoon with ice cream.png</cover>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -17,8 +18,14 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <descprefix>You are in a cleared area of the junkyard, the scent of other raccoons hangs in the air.</descprefix>
-    <objectslistprefix>You can see a refrigerator, a broken ice cream truck, and another raccoon</objectslistprefix>
+    <descprefix type="string"></descprefix>
+    <objectslistprefix type="string"></objectslistprefix>
+    <description>You are in a cleared area of the junkyard, the scent of other raccoons hangs in the air.</description>
+    <beforefirstenter type="script"><![CDATA[
+      msg ("<br/>Rocco flew, the giant’s power clearing both the road and the junkyard fence. The giant’s aim was spectacular however, as Rocco landed squarely on his favorite (something soft). Rocco blinked the stars out of his eyes and gathered himself. He needed to get that ice cream, or he would die.")
+      msg ("Actually die.")
+      msg ("in 30 days")
+    ]]></beforefirstenter>
     <exit alias="north" to="GuardDogOutpost">
       <inherit name="northdirection" />
     </exit>
@@ -28,13 +35,6 @@
     <exit alias="east" to="BrokenPlane">
       <inherit name="eastdirection" />
     </exit>
-    <exit alias="in" to="Road">
-      <inherit name="indirection" />
-    </exit>
-    <object name="player">
-      <inherit name="editor_object" />
-      <inherit name="editor_player" />
-    </object>
     <object name="Casey">
       <inherit name="editor_object" />
       <inherit name="namedmale" />
@@ -55,6 +55,11 @@
       <inherit name="editor_object" />
       <alias>Kitchen</alias>
     </object>
+    <exit name="broken road" alias="west" to="Road">
+      <inherit name="westdirection" />
+      <locked />
+      <lockmessage>Rocco wishes to get ice cream, but is afraid of the man who looks like Mario with a british accent. (yes, the accent is a visible trait).</lockmessage>
+    </exit>
   </object>
   <object name="BrokenPlane">
     <inherit name="editor_room" />
@@ -261,6 +266,7 @@
     <implementation_notes />
     <descprefix>You have entered the </descprefix>
     <objectslistprefix>Around you, you notice </objectslistprefix>
+    <description><![CDATA[A heap of trash bags<br/>A pile of smelly compost<br/>hunks of metal scrap<br/>A large dumpster bin<br/><br/>interactions:<br/>-  searching the trash bags yields some useful items, add anything that pertains to the entire narrative, but rocco finds some old articles of clothing, half eaten protein bar, water bottle...)<br/>- Smelly compost yields him food that replenishes some hunger bars<br/>- Metal scrap allows rocco to discover some useful tools, such as a bent ladder, sheet metal. still proves useful somewhere...<br/>- Dumpster bin looks too big to enter, rocco needs some tools to enter. Searching it yields a mysterious key(card), or a map for progression to the next level]]></description>
     <enter type="script">
       msg ("Rocco revisits the Dump.")
       Ask ("Does he want to look around") {
@@ -280,7 +286,6 @@
       DisplayList (CompostPile, false)
       DisplayList (TrashBags, false)
     </firstenter>
-    <description><![CDATA[A heap of trash bags<br/>A pile of smelly compost<br/>hunks of metal scrap<br/>A large dumpster bin<br/><br/>interactions:<br/>-  searching the trash bags yields some useful items, add anything that pertains to the entire narrative, but rocco finds some old articles of clothing, half eaten protein bar, water bottle...)<br/>- Smelly compost yields him food that replenishes some hunger bars<br/>- Metal scrap allows rocco to discover some useful tools, such as a bent ladder, sheet metal. still proves useful somewhere...<br/>- Dumpster bin looks too big to enter, rocco needs some tools to enter. Searching it yields a mysterious key(card), or a map for progression to the next level]]></description>
     <exit alias="north" to="RaccoonBase">
       <inherit name="northdirection" />
     </exit>
@@ -382,17 +387,81 @@
   </object>
   <object name="Road">
     <inherit name="editor_room" />
-    <alias>Road</alias>
+    <descprefix type="string"></descprefix>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <exit alias="in" to="StoreEntrance">
-      <inherit name="indirection" />
+    <description>Next to the yellow line lies a creature that looks like you without the black stripes. It is also different because it is dead. Or at least...looks like it is dead? Something seems strange, but that doesn't matter because there is a 99% chance that the creature is not ice cream. Across the road is the ice cream shop.</description>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix>The </prefix>
+    <exit name="tutorial back" alias="east" to="RaccoonBase">
+      <inherit name="eastdirection" />
+      <visible />
+      <locked />
+      <lockmessage>Unfortunately, Rocco can only walk in the direction towards ice cream, such was his fate.</lockmessage>
     </exit>
-    <exit alias="out" to="RaccoonBase">
-      <inherit name="outdirection" />
+    <object name="creature">
+      <inherit name="editor_object" />
+      <inherit name="namedmale" />
+      <scenery type="boolean">false</scenery>
+      <look>The creature appears to be a possum! Rocco has encountered a few possums, but none live in the junkyard. This one is lying on its back with its tongue hanging out. gross.</look>
+      <alt type="stringlist">
+        <value>possum</value>
+        <value>Posh</value>
+      </alt>
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <alias>creature</alias>
+      <prefix>a</prefix>
+      <speak type="script">
+        if (Got(flower)) {
+          msg ("The possum opens an eye. He gestures briefly to the flower in your hand")
+        }
+        else if (Contains (creature,flower)) {
+          if (Contains (creature,soup can)) {
+            msg ("the possum speaks with a course, unused voice. \"You have made my disguise complete. Thank you stranger. Take my worldly possession, I need it no longer.\" The possum reveals he was holding a soup can. ")
+            msg ("How? Where did it come from? Rocco is confused and suspicious that this will not be the last time something like this happens.")
+            AddToInventory (soup can)
+            msg ("Rocco takes the soup can. (Rocco was raised to be polite). Without any need for the can, he places it upon his head. Strangely, this pleases Rocco.")
+            picture ("Raccoon with can.png")
+          }
+          else {
+            msg ("The possum pretends to be dead, holding the flower against its chest. What a drama queen.")
+          }
+        }
+        else {
+          msg ("The possum ignores you.")
+        }
+      </speak>
+      <object name="soup can">
+        <inherit name="editor_object" />
+        <scenery />
+        <visible type="boolean">false</visible>
+      </object>
+    </object>
+    <object name="flower">
+      <inherit name="editor_object" />
+      <take />
+      <takemsg>the creature twitches as you pluck the flower</takemsg>
+      <look>pretty!</look>
+      <feature_usegive />
+      <giveto type="scriptdictionary">
+        <item key="creature">
+          MoveObject (flower, creature)
+          msg ("The possum grips the flower gently, a smile creeps on its lips.")
+        </item>
+      </giveto>
+      <givetoanything type="script">
+        msg ("Rocco likes this flower too much to give it away.")
+      </givetoanything>
+      <drop type="boolean">false</drop>
+      <givesingle type="script">
+        msg ("who is Rocco giving this to?")
+      </givesingle>
+    </object>
+    <exit alias="west" to="StoreEntrance">
+      <inherit name="westdirection" />
     </exit>
   </object>
   <object name="RecyclingPlant">
@@ -571,12 +640,25 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <descprefix>You are by</descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix>the</prefix>
+    <description><![CDATA[Crossing the road, Rocco stands before the towering ice cream shop. The sweet scent of dairy wafts from the open door. A window reveals buckets of swirling colors that call to him; his tummy growls. A large being guards the door, but Rocco is determined.<br/>]]></description>
     <exit alias="in" to="RorysIceCteamShop">
       <inherit name="indirection" />
     </exit>
-    <exit alias="out" to="Road">
-      <inherit name="outdirection" />
+    <exit name="backroad" alias="east" to="Road">
+      <inherit name="eastdirection" />
+      <locked />
+      <lockmessage>not now. Ice cream is so close!</lockmessage>
     </exit>
+    <object name="mascot">
+      <inherit name="editor_object" />
+      <scenery />
+      <visible />
+      <look>A behemoth stands before you, idling by the entrance. The fiend.</look>
+      <attack>Rocco swings his mitts at the menace before him. His fists are met with the dull thuds of rubber and plastic. Soon he grows tired and gives up.</attack>
+    </object>
   </object>
   <object name="RorysIceCteamShop">
     <inherit name="editor_room" />
@@ -586,12 +668,18 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <exit alias="in" to="RaccoonBase">
-      <inherit name="indirection" />
-    </exit>
-    <exit alias="out" to="StoreEntrance">
-      <inherit name="outdirection" />
-    </exit>
+    <firstenter type="script">
+      msg ("Rocco stands in the parlor. The odd texture of linoleum marks this holy place, so alien to his own home. The ice cream he saw from the window is within his reach.")
+      get input {
+        picture ("Rory.png")
+        msg ("Before Rocco can react, a meaty hand grabs him by the scruff of the neck and lifts him into the air. He freezes, paws outstretched, eyes wide. As his body dangles freely, the giant raises Rocco to his face. He is balding and greasy, Rocco dislikes the feeling of it on his fur, but before he can complain the beast growls. ")
+        msg ("“Sneaking into Rory’s Ice cream Parlour. Eh? Think you can take Rory’s delicious creams from under his nose, eh EH?” ")
+        msg ("Rocco waves his hands in meager protest, his eyes drifting back to the buckets of sweet cream.")
+        msg ("“Oy! Where you lookin’ at? Ignorin’ Rory in his own shop? Still lookin’ to steal when I have your life in my hands you weasely rat?”")
+        msg ("Rocco was confused as he was neither weasel nor rat, but as he raised a finger, he found himself flying through the air and out the door. Behind him the giant yelled, “And stay out!”")
+        MoveObject (player, RaccoonBase)
+      }
+    </firstenter>
   </object>
   <verb>
     <property>enterbunker</property>
@@ -612,5 +700,29 @@
     <property>takecondensedmilk</property>
     <pattern>take condensed milk</pattern>
     <defaultexpression>"You can't take condensed milk " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="Start">
+    <inherit name="editor_room" />
+    <descprefix type="string"></descprefix>
+    <objectslistprefix type="string"></objectslistprefix>
+    <exitslistprefix type="string"></exitslistprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <beforefirstenter type="script">
+      msg ("Rocco stretches his paws and blinks at the sun. His fur bristles with its warmth, which he mats down across his round, little torso. Rocco is hungry. Hungry for Ice Cream.")
+      Ask ("Are you hungry for ice cream?") {
+        msg ("Doesn't matter! Rocco is!")
+        msg ("Rocco jumps down from his perch, agile hands weave past rotting food and broken bottles. Careful not to slip on banana peels, Rocco leaves his junkyard home. Crossing the threshold of raccoon territory, Rocco stands at the edge of the road.")
+        MoveObject (player, Road)
+      }
+    </beforefirstenter>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+    </object>
+  </object>
+  <verb>
+    <property>attack</property>
+    <pattern>attack</pattern>
+    <defaultexpression>"You can't attack " + object.article + "."</defaultexpression>
   </verb>
 </asl>
