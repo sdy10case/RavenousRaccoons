@@ -8,6 +8,8 @@
     <firstpublished>2023</firstpublished>
     <author>A Trizbort User</author>
     <description />
+    <start type="script">
+    </start>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -210,12 +212,47 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <descprefix>You have entered the </descprefix>
+    <objectslistprefix>Around you, you notice </objectslistprefix>
+    <enter type="script">
+      msg ("Rocco revisits the Dump.")
+      Ask ("Does he want to look around") {
+        get input {
+        }
+      }
+    </enter>
+    <onexit type="script">
+      msg ("Rocco has left the Dump.")
+    </onexit>
+    <beforefirstenter type="script">
+    </beforefirstenter>
+    <firstenter type="script">
+      msg ("Rocco looks around the Dump, and a couple things lying around.")
+      DisplayList (DumpsterBin, false)
+      DisplayList (MetalScrap, false)
+      DisplayList (CompostPile, false)
+      DisplayList (TrashBags, false)
+    </firstenter>
+    <description><![CDATA[A heap of trash bags<br/>A pile of smelly compost<br/>hunks of metal scrap<br/>A large dumpster bin<br/><br/>interactions:<br/>-  searching the trash bags yields some useful items, add anything that pertains to the entire narrative, but rocco finds some old articles of clothing, half eaten protein bar, water bottle...)<br/>- Smelly compost yields him food that replenishes some hunger bars<br/>- Metal scrap allows rocco to discover some useful tools, such as a bent ladder, sheet metal. still proves useful somewhere...<br/>- Dumpster bin looks too big to enter, rocco needs some tools to enter. Searching it yields a mysterious key(card), or a map for progression to the next level]]></description>
     <exit alias="north" to="RaccoonBase">
       <inherit name="northdirection" />
     </exit>
     <exit alias="east" to="GuardDogCamp">
       <inherit name="eastdirection" />
     </exit>
+    <object name="DumpsterBin">
+      <inherit name="editor_object" />
+    </object>
+    <object name="MetalScrap">
+      <inherit name="editor_object" />
+    </object>
+    <object name="CompostPile">
+      <inherit name="editor_object" />
+    </object>
+    <object name="TrashBags">
+      <inherit name="editor_object" />
+    </object>
+    <turnscript />
   </object>
   <object name="GuardDogOutpost">
     <inherit name="editor_room" />
@@ -255,6 +292,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <description><![CDATA[littered metal scrap scattered around you<br/>Rows of barrels with unknown content (radioactive waste)<br/>A dilapilated trash compactor, with compacted trash inside.<br/>A conveyor belt leading to a broken down incinerator, with junk laying around<br/><br/>interactions:<br/>interacting with the trash compactor can open up the ceiling due to the massive apparatus jamming up.<br/>Rows of barrels is the ending where Rocco gets the mutation powers to get the ice cream<br/>the key unlocks the barrels or something<br/>Puzzle in the safe found falling out of the ceiling presents a puzzle where Rocco needs to find 3 distinct items within the three rooms (junkyard, car stack, and recycling plant)<br/>some ideas ^ (engraved skull in the metal scrap found in the junkyard, radiation symbol on the barrel, and the star found on the pickup truck.)<br/>]]></description>
     <exit alias="south" to="GuardDogBase">
       <inherit name="southdirection" />
     </exit>
@@ -290,6 +328,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <description><![CDATA[Gasoline Jerrycan<br/>some more miscellaneous metal scrap<br/>an old food trailer<br/>dilapilated pickup truck<br/>stack of car tires<br/>an Old Red Car<br/><br/>interactions:<br/>Gasoline Jerrycan can be interacted with and used<br/>Metal scrap gives access to some useful tools<br/>old food trailer gives access to food-related utensils<br/>The old red car seemed to be locked, by breaking the window from the metal scraps allows rocco to access the car. Contents includes an ID card, trampoline (used to jump into factory).<br/>]]></description>
     <exit alias="south" to="BrokenPlane">
       <inherit name="southdirection" />
     </exit>
