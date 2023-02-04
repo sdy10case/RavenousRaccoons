@@ -34,6 +34,7 @@
     <showcommandbar />
     <turnoffcompass />
     <bordercolour>Cornsilk</bordercolour>
+    <feature_asktell />
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -68,24 +69,116 @@
       <inherit name="editor_object" />
       <inherit name="namedmale" />
       <alias>Casey</alias>
+      <look>It's Casey, your old pal. He's a more curious raccoon. Always tinkering with something from the scrap heap, and today is no different. {once:but what is this, a machine...with ice cream?}</look>
+      <attr name="feature_usegive" type="boolean">false</attr>
+      <ask type="scriptdictionary">
+        <item key="ice cream icecream truck "><![CDATA[
+          msg ("{once: Oh this hunk of scrap. *Bangs the hood, igniting a small fire on the driver's seat, somehow. <br/>It's only good for parts. I'll make something really special from it. Rocco falls to his knees and clasps his hands in silent pleading. Casey blinks hard. \" What, you want me to fix this turd on wheels?\" Rocco nods his head vigorously until he sees stars. \"Here I'll get a list, ask me when you're ready to go searching.\"}")
+          msg ("{notfirst:Still missing parts. Ask me about the list if you need a recap.}")
+        ]]></item>
+        <item key="list fix repair">
+          if (not Contains (IceCreamTruck,tyre)) {
+            msg ("First things first. This puppy is missing a tyre. Casey crawls from the roof of the truck to the ground, deftly passing through the passanger window. He points at the spot that is missing a tyre. Grab one from the graveyard. {once: Rocco shudders. Not the real one you dope. The car graveyard. Rocco sighs in relief")
+            }
+            else if (not Contains (IceCreamTruck,FilledCan)) {
+              msg ("Second part on our docet is fuel. Casey taps the empty tank, a hollow thud reveberates through the truck. That crashed plane should have some, its human tech. Probably will work for us too. Just don't go drinking any! Rocco places a paw to his chest, deeply offended. Casey scoffs. Yeah yeah, \"You would never\"")
+            }
+            else if (not Contains (IceCreamTruck,CondensedMilk)) {
+              msg ("Last thing we need is the stuff you're craving, that delectible dairy. Except, it ain't just dairy. We have to make this ice cream ourselves. Luckily for you, the doomsday prepper who owns this junkyard has a bunker full of goodies. Let's hope they can be our goodies too. See if you can grab some condensed milk down there. The rest we'll figure out later.")
+            }
+            else {
+              msg ("Our final obstacle, at long last. Rocco tilts his head in surprise at Casey's enthusiam. 'What', he responds. We've been at this for " + player.day + " days. I'm hungry now too. Last thing we need is flavors, I'm talking about sweet stuff, nuts too. I don't know where you'd find it in this junk heap but you've done well so far. Retrace some places you've already visited, might have missed something. {once:And here, take this key. Don't know where it goes, but} nothing ventured, nothing makes this ice cream taste better than dry milk.")
+              firsttime {
+                AddToInventory (key)
+              }
+            }
+        </item>
+        <item key="dogs guard bones north"><![CDATA[
+          msg ("Yeah those guard dogs are a piece of work. Think they're better than us just cause they got sharper teeth and the big man says they're supposed to be here. <br/>(Just a quick reminder that this is a game about ice cream and definitely nothing else)<br/>You seen Boxhead? He's been scouting the dog outpost up north, apparantly he thinks they've got a stash of real food hidden somewhere, ice cream included. <i>Rocco's ears twitch.</i>  Hiding in the bushes like a real weirdo. Seems like your kinda guy. Go find him, maybe he can help you.")
+        ]]></item>
+        <item key="treasure secret junk">
+          msg ("You think you'll find ice cream lying around somewhere? Might as well go dumpster-diving then... You think I'm joking? We're raccoons, that's literally what we do. There's a dumpster to the south, go try your luck there.")
+        </item>
+        <item key="hungry hunger food fridge refrigerator">
+          msg ("Hungry for a quick bite? There's some bread in the fridge. I restock it every minute or so, but don't just stand there waiting for me to bring more. It's weird.")
+        </item>
+      </ask>
+      <askdefault type="script">
+        msg ("Casey stares at Rocco, as raccoons often do, when they have no idea what is going on or why.")
+      </askdefault>
+      <speak type="script">
+        msg ("What you want, Rocco. I don't do chit chat.")
+        DisplayList (Casey.asklist, false)
+      </speak>
+      <asklist type="stringlist">
+        <value>ask Casey about </value>
+        <value>food</value>
+        <value>truck</value>
+        <value>treasure</value>
+        <value>dogs</value>
+        <value>list</value>
+      </asklist>
+      <object name="key">
+        <inherit name="editor_object" />
+        <look>A small key. Too short for a door, maybe a cabinet of some kind?</look>
+        <scenery />
+        <visible type="boolean">false</visible>
+        <feature_usegive />
+      </object>
     </object>
     <object name="Refrigerator">
       <inherit name="editor_object" />
+      <inherit name="container_closed" />
       <alias>Refrigerator</alias>
       <replenish type="string"></replenish>
       <eat type="string"></eat>
       <alt type="stringlist">
         <value>fridge</value>
       </alt>
+      <look>A working fridge in the middle of a junkyard! What's even more impressive is that it's run on a single AA battery. Roccp better keep his grubby mitts off of it. (Rocco retracts his paw from the battery hastily)</look>
+      <feature_container />
+      <hidechildren />
+      <listchildren />
+      <openmsg>time for snacks!</openmsg>
+      <closemsg>thank you fridge!</closemsg>
+      <onclose type="script">
+        if (not Contains (Refrigerator,moldy bread)) {
+          CloneObjectAndMove (moldy bread, Refrigerator)
+        }
+      </onclose>
+      <object name="moldy bread">
+        <inherit name="editor_object" />
+        <inherit name="edible" />
+        <take type="script">
+          if (not Got(moldy bread)) {
+            AddToInventory (moldy bread)
+          }
+          else {
+            msg ("Fun fact: The mold growing on the bread is territorial. Grabbing another would surely get Rocco caught up in a fight he can't win.")
+          }
+        </take>
+        <takemsg>you got bread, slightly moldy</takemsg>
+        <alt type="stringlist">
+          <value>bread</value>
+        </alt>
+        <drop type="boolean">false</drop>
+        <dropmsg>the mold has taken a liking to your fur. It can only be removed through consumption. (eat it)</dropmsg>
+        <attr name="feature_usegive" type="boolean">false</attr>
+        <use type="script">
+        </use>
+        <feature_edible />
+        <not_all />
+        <eatmsg>tastes like chicken, that can't be good.</eatmsg>
+        <eathealth type="int">5</eathealth>
+      </object>
     </object>
     <object name="IceCreamTruck">
       <inherit name="editor_object" />
+      <inherit name="container_closed" />
       <alias>Ice Cream Truck</alias>
-      <look>A broken ice cream truck, it has a Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine it inside still works if you can get the ice cream truck to run!</look>
-    </object>
-    <object name="Kitchen">
-      <inherit name="editor_object" />
-      <alias>Kitchen</alias>
+      <look>A broken ice cream truck, it has a Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine it inside still works if you can get the ice cream truck to run! </look>
+      <feature_container />
+      <hidechildren />
     </object>
     <exit name="broken road" alias="west" to="Road">
       <inherit name="westdirection" />
@@ -591,6 +684,9 @@
       <inherit name="editor_object" />
       <alias>car wheel stack</alias>
     </object>
+    <object name="tyre">
+      <inherit name="editor_object" />
+    </object>
   </object>
   <object name="GuardDogBase">
     <inherit name="editor_room" />
@@ -736,11 +832,6 @@
     <defaultexpression>"You can't enter bunker " + object.article + "."</defaultexpression>
   </verb>
   <verb>
-    <property>replenish</property>
-    <pattern>replenish</pattern>
-    <defaultexpression>"You can't replenish " + object.article + "."</defaultexpression>
-  </verb>
-  <verb>
     <property>fillcan</property>
     <pattern>fill can</pattern>
     <defaultexpression>"You can't fill can " + object.article + "."</defaultexpression>
@@ -797,4 +888,12 @@
     <pattern>sleep on</pattern>
     <defaultexpression>"You can't sleep on " + object.article + "."</defaultexpression>
   </verb>
+  <timer name="frdge refill">
+    <interval>60</interval>
+    <script>
+      if (not Contains (Refrigerator,moldy bread)) {
+        CloneObjectAndMove (moldy bread, Refrigerator)
+      }
+    </script>
+  </timer>
 </asl>
