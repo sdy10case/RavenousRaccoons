@@ -131,8 +131,9 @@
         <inherit name="editor_object" />
         <look>A small key. Too short for a door, maybe a cabinet of some kind?</look>
         <scenery />
-        <visible type="boolean">false</visible>
+        <visible />
         <feature_usegive />
+        <take type="boolean">false</take>
       </object>
     </object>
     <object name="Refrigerator">
@@ -258,43 +259,54 @@
         }
       </fillcan>
     </object>
-    <object name="pilotseat">
+    <object name="cockpit">
       <inherit name="editor_object" />
       <alias>cockpit</alias>
       <attr name="feature_container" type="boolean">false</attr>
+      <look>The cockpit sits away from the rest of the plane, torn from what appears to have been a nasty crash. Rocco gasps in horror at the captain's seat. A skeleton wearing the captain's hat sits upon the torn leather. Going against his greater judgement, he pokes the skeleton. It's a plastic toy. Rocco sighs in relief and patters away. Somebody in this place has a cruel sense of humor. </look>
     </object>
     <object name="Cabin">
       <inherit name="editor_object" />
-    </object>
-    <object name="FoodDrinkTrolley">
-      <inherit name="editor_object" />
-      <inherit name="container_closed" />
+      <inherit name="container_open" />
+      <look>Accessing the plan would normally be difficult with their strange doors. Luckily for Rocco, and unluckily for the passangers during the flight, the plane's body had been ripped in half. This rupture provides easy access for Rocco. Inside he finds a few busted suitcases, and a locked trolley cart. Wait, was this plane decommissioned, or did it crash into the junkyard!? </look>
       <feature_container />
-      <onopen type="script">
-        AddToInventory (ChocolatePackets)
-        AddToInventory (AlmondPackets)
-      </onopen>
-    </object>
-    <object name="ChocolatePackets">
-      <inherit name="editor_object" />
-      <look>An airline branded packet of chocolates.</look>
-      <take />
-      <takemsg>You took the chocolates.</takemsg>
-    </object>
-    <object name="AlmondPackets">
-      <inherit name="editor_object" />
-      <look>An airline branded packet of almonds.</look>
-      <take />
-      <takemsg>You took the almonds.</takemsg>
+      <object name="FoodDrinkTrolley">
+        <inherit name="editor_object" />
+        <inherit name="container_closed" />
+        <inherit name="container_lockable" />
+        <feature_container />
+        <keycount type="int">1</keycount>
+        <unlockmessage>Rocco opens the trolley and finds the ice cream condiments he needs! Sweet chocolate and savory almonds. Get back to Casey!</unlockmessage>
+        <key type="object">key</key>
+        <onopen type="script">
+          AddToInventory (ChocolatePackets)
+          AddToInventory (AlmondPackets)
+        </onopen>
+        <object name="ChocolatePackets">
+          <inherit name="editor_object" />
+          <look>An airline branded packet of chocolates.</look>
+          <take />
+          <takemsg>You took the chocolates.</takemsg>
+        </object>
+        <object name="AlmondPackets">
+          <inherit name="editor_object" />
+          <look>An airline branded packet of almonds.</look>
+          <take />
+          <takemsg>You took the almonds.</takemsg>
+        </object>
+      </object>
     </object>
     <object name="ProteinBar">
       <inherit name="editor_object" />
       <inherit name="edible" />
-      <look>It's a protein bar.</look>
+      <inherit name="container_open" />
+      <look>It's a protein bar thrown from one of the suitcases. Rocco hopes it will help him get sick gains.</look>
       <take />
       <takemsg>You took the protein bar.</takemsg>
       <feature_edible />
       <eatmsg>You ate the protein bar, it tasted like peanut butter!</eatmsg>
+      <eathealth type="int">50</eathealth>
+      <feature_container />
     </object>
   </object>
   <object name="Bunker">
@@ -890,6 +902,10 @@
       <feature_container />
       <attr name="feature_usegive" type="boolean">false</attr>
       <totaled type="boolean">false</totaled>
+      <isopen />
+      <keycount type="int">1</keycount>
+      <unlockmessage>Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. </unlockmessage>
+      <key type="object">Car key</key>
       <use type="script">
         if (OldRedCar.totaled = false) {
         }
@@ -909,10 +925,6 @@
           msg ("Rocco would love to, but he can't get in.")
         }
       </rewire>
-      <isopen />
-      <keycount type="int">1</keycount>
-      <key type="object">Car key</key>
-      <unlockmessage>Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. </unlockmessage>
       <onunlock type="script">
         RemoveObject (Car key)
       </onunlock>
@@ -971,6 +983,11 @@
       <inherit name="editor_object" />
       <inherit name="container_closed" />
       <alias>pickup truck</alias>
+      <feature_container />
+      <hidechildren />
+      <listchildren />
+      <openmsg>The trunk opens with a crash, the back door falling off in the process. The truck bed is empty except for a small card in the back corner.</openmsg>
+      <close type="boolean">false</close>
       <look type="script">
         if (OldRedCar.totaled = false) {
           msg ("The pickup truck is at the bottom of a car stack. Its paint is chipped and the hood is completely smashed in.  It's wedged between two other car stacks against a backdrop of the familiar sea of trash. Peering through the window, Rocco swears he can see an opening behing the truck. Too bad he can't get through it.")
@@ -979,11 +996,6 @@
           msg ("The pickup truck has been freed from its stack, a pathway carved through the trash lies beyond it.")
         }
       </look>
-      <feature_container />
-      <hidechildren />
-      <listchildren />
-      <openmsg>The trunk opens with a crash, the back door falling off in the process. The truck bed is empty except for a small card in the back corner.</openmsg>
-      <close type="boolean">false</close>
       <object name="ID Card">
         <inherit name="editor_object" />
         <look>An ID card with a human face, for the... RP facility? How strange, Rocco hadn't seen any humans here in years. Maybe it was left when the truck was scrapped.</look>
@@ -1131,7 +1143,7 @@
     </exit>
     <object name="mascot">
       <inherit name="editor_object" />
-      <scenery />
+      <scenery type="boolean">false</scenery>
       <visible />
       <look>A behemoth stands before you, idling by the entrance. The fiend.</look>
       <attack>Rocco swings his mitts at the menace before him. His fists are met with the dull thuds of rubber and plastic. Soon he grows tired and gives up.</attack>
@@ -1146,8 +1158,8 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <usedefaultprefix type="boolean">false</usedefaultprefix>
-    <firstenter type="script">
-      msg ("Rocco stands in the parlor. The odd texture of linoleum marks this holy place, so alien to his own home. The ice cream he saw from the window is within his reach.")
+    <firstenter type="script"><![CDATA[
+      msg ("Rocco stands in the parlor. The odd texture of linoleum marks this holy place, so alien to his own home. The ice cream he saw from the window is within his reach.<br/>What does Rocco do?")
       get input {
         picture ("Rory.png")
         msg ("Before Rocco can react, a meaty hand grabs him by the scruff of the neck and lifts him into the air. He freezes, paws outstretched, eyes wide. As his body dangles freely, the giant raises Rocco to his face. He is balding and greasy, Rocco dislikes the feeling of it on his fur, but before he can complain the beast growls. ")
@@ -1157,7 +1169,8 @@
         msg ("Rocco was confused as he was neither weasel nor rat, but as he raised a finger, he found himself flying through the air and out the door. Behind him the giant yelled, “And stay out!”")
         MoveObject (player, RaccoonBase)
       }
-    </firstenter>
+    ]]></firstenter>
+    <description type="string"></description>
   </object>
   <verb>
     <property>enterbunker</property>
