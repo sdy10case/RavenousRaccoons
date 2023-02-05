@@ -48,7 +48,7 @@
     <objectslistprefix type="string"></objectslistprefix>
     <description>You are in a cleared area of the junkyard, the scent of other raccoons hangs in the air.</description>
     <beforefirstenter type="script"><![CDATA[
-      msg ("<br/>Rocco flew, the giant’s power clearing both the road and the junkyard fence. The giant’s aim was spectacular however, as Rocco landed squarely on his favorite (something soft). Rocco blinked the stars out of his eyes and gathered himself. He needed to get that ice cream, or he would die.")
+      msg ("<br/>Rocco flew, the giant’s power clearing both the road and the junkyard fence. The giant’s aim was spectacular however, as Rocco landed squarely on his favorite bean bag. Rocco blinked the stars out of his eyes and gathered himself. He needed to get that ice cream, or he would die.")
       msg ("Actually die.")
       msg ("in 30 days")
     ]]></beforefirstenter>
@@ -59,7 +59,7 @@
     <exit alias="north" to="GuardDogOutpost">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="south" to="Dumpster">
+    <exit alias="south" to="Dumpsite">
       <inherit name="southdirection" />
     </exit>
     <exit alias="east" to="BrokenPlane">
@@ -349,7 +349,7 @@
     <exit alias="east" to="Bunker">
       <inherit name="eastdirection" />
     </exit>
-    <exit alias="west" to="Dumpster">
+    <exit alias="west" to="Dumpsite">
       <inherit name="westdirection" />
     </exit>
     <exit to="DogCamp">
@@ -402,9 +402,9 @@
       </exit>
     </object>
   </object>
-  <object name="Dumpster">
+  <object name="Dumpsite">
     <inherit name="editor_room" />
-    <alias>Dumpster</alias>
+    <alias>Dumpsite</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
@@ -412,13 +412,15 @@
     <implementation_notes />
     <descprefix>You have entered the </descprefix>
     <objectslistprefix>Around you, you notice </objectslistprefix>
-    <description><![CDATA[A heap of trash bags<br/>A pile of smelly compost<br/>hunks of metal scrap<br/>A large dumpster bin<br/><br/>interactions:<br/>-  searching the trash bags yields some useful items, add anything that pertains to the entire narrative, but rocco finds some old articles of clothing, half eaten protein bar, water bottle...)<br/>- Smelly compost yields him food that replenishes some hunger bars<br/>- Metal scrap allows rocco to discover some useful tools, such as a bent ladder, sheet metal. still proves useful somewhere...<br/>- Dumpster bin looks too big to enter, rocco needs some tools to enter. Searching it yields a mysterious key(card), or a map for progression to the next level]]></description>
-    <enter type="script">
-      msg ("Rocco revisits the Dump.")
-      Ask ("Does he want to look around") {
-        get input {
-        }
+    <description type="script">
+      if (Contains (DumpsterBin,Car key)) {
+        msg ("Rocco finds himself among a row of dumpsters in a corner of the junkyard. Large piles of trash blot out the sky, likes dunes of sand in the desert. A nearby compost pile smells of rot and dirt; it might have some goodies. Outside the dumpsters is a pile of trash bags. Something shines from one of dumpsterbins.")
       }
+      else {
+        msg ("Rocco finds himself among a row of dumpsters in a corner of the junkyard. Large piles of trash blot out the sky, likes dunes of sand in the desert. A nearby compost pile smells of rot and dirt; it might have some goodies. Outside the dumpsters is a pile of trash bags.")
+      }
+    </description>
+    <enter type="script">
     </enter>
     <onexit type="script">
       msg ("Rocco has left the Dump.")
@@ -426,11 +428,6 @@
     <beforefirstenter type="script">
     </beforefirstenter>
     <firstenter type="script">
-      msg ("Rocco looks around the Dump, and a couple things lying around.")
-      DisplayList (DumpsterBin, false)
-      DisplayList (MetalScrap, false)
-      DisplayList (CompostPile, false)
-      DisplayList (TrashBags, false)
     </firstenter>
     <exit alias="north" to="RaccoonBase">
       <inherit name="northdirection" />
@@ -439,17 +436,109 @@
       <inherit name="eastdirection" />
     </exit>
     <object name="DumpsterBin">
-      <inherit name="editor_object" />
+      <feature_container />
+      <look>A tall dumpster bin covered in muck and grime. It might be difficult to escape if Rocco slips inside.</look>
+      <punctured type="boolean">false</punctured>
+      <beforefirstenter type="script">
+        msg ("Having successfully made a ramp, Rocco smugly scampers into the dumspter bin. He soon remembers the bin's height, and the tendency for trash to be sharp and rough. As he smacked against the bottom of the bin, Rocco counted his lucky stars that he was unharmed. Unfortunately, now he was stuck.")
+        msg ("But what was this? His efforts were not in vain! A giant ice cream cone was stuck to the wall of the bin. Rocco hungrily licked at the cone. He stopped mid-lick, realizing this ice cream tasted like trash and metal. In his glee, Rocco failed to realize it was just a poster of ice cream. This was worse than finding nothing! Rocco was now getting hungrier by the second; he needed to find a way out fast or risk passing out. ")
+        EnableTimer (dump dive timer)
+      </beforefirstenter>
+      <beforeenter type="script"><![CDATA[
+        if (DumpsterBin.punctured = false) {
+          msg ("Rocco falls into the bin once more. He needed a way out, perhaps the car key was sharp enough to <b> stab</b> something")
+          EnableTimer (dump dive timer)
+        }
+      ]]></beforeenter>
+      <object name="Car key">
+        <inherit name="editor_object" />
+        <feature_usegive />
+        <look>An electric starter and key. The key itself is rather sharp.</look>
+        <take />
+        <drop />
+        <selfuseanything type="script">
+          msg ("This key does not work here.")
+        </selfuseanything>
+        <stab type="script"><![CDATA[
+          if (game.pov.parent = DumpsterBin) {
+            if (DumpsterBin.punctured = false) {
+              msg ("The key is strong enough to pierce the walls of the bin, creating tiny footholes that Rocco can use to <b>exit</b>.")
+              DumpsterBin.punctured = true
+              UnlockExit (dumpster exit)
+            }
+          }
+        ]]></stab>
+        <selfuseon type="scriptdictionary">
+          <item key="pickuptruck">
+            HelperOpenObject (pickuptruck)
+            msg ("Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. ")
+            RemoveObject (Car key)
+          </item>
+        </selfuseon>
+        <takemsg>Rocco realizes this key is operational. It may belong to a working car in the Graveyard! This adventure got him close (in a way) to ice cream. Why not try another?</takemsg>
+      </object>
+      <exit name="dumpster exit" alias="out to Dumpsite" to="Dumpsite">
+        <inherit name="outdirection" />
+        <locked />
+        <lockmessage>Rocco is trapped, look for items to help</lockmessage>
+        <runscript />
+        <script type="script">
+          if (DumpsterBin.punctured = true) {
+            msg ("Rocco climbs out of the dumpsterbin")
+            UnlockExit (dumpster exit)
+            MoveObject (player, Dumpsite)
+            DisableTimer (dump dive timer)
+          }
+          else {
+            msg ("Rocco has no purchase to climb out of the bin")
+          }
+        </script>
+      </exit>
     </object>
     <object name="MetalScrap">
       <inherit name="editor_object" />
+      <look>Long pieces of metal scrap rest in a pile by themselves. Mishappen and jagged, Rocco thinks they might be helpful if he can avoid cutting himself. </look>
+      <take />
+      <feature_usegive />
+      <use type="boolean">false</use>
+      <selfuseon type="scriptdictionary">
+        <item key="DumpsterBin">
+          UnlockExit (closeddumpster)
+          msg ("Rocco carefully leans the metal scraps against the dumpster bin, creating a makeshift ramp.")
+        </item>
+      </selfuseon>
     </object>
     <object name="CompostPile">
       <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <feature_container />
+      <close type="boolean">false</close>
+      <look>A pile of compost. One may think it would be dehumanizing to wade through a compost pile for scraps. Luckily, Rocco is not a human.</look>
+      <object name="open can of beans">
+        <inherit name="editor_object" />
+        <inherit name="edible" />
+        <look><![CDATA[A ca of beans, 20 beans to be exact. Rocco counted. He's very smart. <i>Rocco puffs his chest out</i>]]></look>
+        <take />
+        <feature_edible />
+        <eathealth type="int">15</eathealth>
+        <eatmsg>the 20 beans replenished 15 hunger. </eatmsg>
+      </object>
     </object>
     <object name="TrashBags">
       <inherit name="editor_object" />
+      <look type="script">
+        msg ("Years worth of trash turned this small patch of land into a maze of odds and ends: half broken, half rotting, all forgotten. Rocco gets sad thinking about these things. Now he wants ice cream more than ever.")
+        DecreaseHealth (5)
+        msg ("hunger decreases by 5")
+      </look>
     </object>
+    <exit name="closeddumpster" alias="into Dumpster Bin" to="DumpsterBin">
+      <inherit name="indirection" />
+      <locked />
+      <lockmessage>Rocco can't reach the bin. It's too tall.</lockmessage>
+      <message type="string"></message>
+      <scenery type="boolean">false</scenery>
+    </exit>
   </object>
   <object name="GuardDogOutpost">
     <inherit name="editor_room" />
@@ -472,6 +561,7 @@
     <object name="DogShore">
       <inherit name="editor_room" />
       <description><![CDATA[Rocco stands on the outer shore of the island, an island built in a massive pool. Rocco wonders why a junkyard would have an olympic-sized swimming pool. Before he can give this much thought, the stench of the water fills his nostrils. A moat of green sludge <i>oozes</i> in the stagnant pool; bones and other debris surface and recess under the murk like souls of the damned in the River Styx. <br/><br/>Rocco doesn't know what that is, but the scary voice in his head definitely isn't warming him up to the idea!]]></description>
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
       <beforeenter type="script">
       </beforeenter>
       <onexit type="script">
@@ -485,7 +575,6 @@
           }
         }
       </onexit>
-      <usedefaultprefix type="boolean">false</usedefaultprefix>
       <exit to="GuardDogOutpost">
         <prefix>back to</prefix>
         <runscript type="boolean">false</runscript>
@@ -500,6 +589,7 @@
         <inherit name="editor_room" />
         <descprefix>You are on</descprefix>
         <description><![CDATA[Despite the name, Rocco sees no signs of any dogs, guard or other variety. Despite the general vibe of death, Rocco notices the island is made of rather high quality sand, leaving perfect little hand/paw prints in his wake.  <br/><br/>The main structure of the island is a massive tower constructed of rebar and scrap metal. The faint scent of meat, both fresh and spoiled, permeates the cavernous entrance. A few bushes line the main entrance. One rustles unnaturally.]]></description>
+        <usedefaultprefix type="boolean">false</usedefaultprefix>
         <beforeenter type="script">
         </beforeenter>
         <onexit type="script">
@@ -513,7 +603,6 @@
             }
           }
         </onexit>
-        <usedefaultprefix type="boolean">false</usedefaultprefix>
         <object name="DogSign">
           <inherit name="editor_object" />
           <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u>]]></look>
@@ -549,14 +638,14 @@
             <feature_container />
             <isopen type="boolean">false</isopen>
             <openmsg><![CDATA[After openning the bag, it is clear there is nothing of value inside. {once:Oh well. <i> something flutters to the ground from the open bag</i>}]]></openmsg>
+            <transparent type="boolean">false</transparent>
+            <alias>trash bag</alias>
             <onopen type="script">
               firsttime {
                 MoveObject (Ice Cream Wrapper, DogTower)
                 MakeObjectVisible (Ice Cream Wrapper)
               }
             </onopen>
-            <transparent type="boolean">false</transparent>
-            <alias>trash bag</alias>
             <object name="Ice Cream Wrapper">
               <inherit name="editor_object" />
               <visible type="boolean">false</visible>
@@ -619,6 +708,7 @@
       </object>
       <object name="raft">
         <inherit name="editor_object" />
+        <take />
         <look type="script">
           if (Got(raft)) {
             msg ("A collection of stick combined with twine. Light enough to carry and if you buy one now it comes with a free oar! Rocco reads this from an informational pamphlet stuck to the raft's oar. ")
@@ -627,7 +717,6 @@
             msg ("A collection of stick combined with twine. Light enough to carry and if you buy one now it comes with a free oar! Rocco reads this from an informational pamphlet stuck to the raft's oar. He swivals his head, but sees no salesman. His raccoon instincts inform him that he should just steal it.")
           }
         </look>
-        <take />
       </object>
     </object>
   </object>
@@ -917,6 +1006,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <firstenter type="script">
       msg ("Rocco stands in the parlor. The odd texture of linoleum marks this holy place, so alien to his own home. The ice cream he saw from the window is within his reach.")
       get input {
@@ -929,7 +1019,6 @@
         MoveObject (player, RaccoonBase)
       }
     </firstenter>
-    <usedefaultprefix type="boolean">false</usedefaultprefix>
   </object>
   <verb>
     <property>enterbunker</property>
@@ -993,12 +1082,23 @@
     <pattern>sleep on</pattern>
     <defaultexpression>"You can't sleep on " + object.article + "."</defaultexpression>
   </verb>
+  <verb>
+    <property>stab</property>
+    <pattern>stab #object#, puncture #object#, cut #object#</pattern>
+    <defaultexpression>"You can't stab " + object.article + "."</defaultexpression>
+  </verb>
   <timer name="frdge refill">
     <interval>60</interval>
     <script>
       if (not Contains (Refrigerator,moldy bread)) {
         CloneObjectAndMove (moldy bread, Refrigerator)
       }
+    </script>
+  </timer>
+  <timer name="dump dive timer">
+    <interval>1</interval>
+    <script>
+      DecreaseHealth (1)
     </script>
   </timer>
 </asl>
