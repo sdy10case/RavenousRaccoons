@@ -28,6 +28,10 @@
     <start type="script">
     </start>
     <onhealthzero type="script">
+      if (Got(Jerrycan)) {
+        MoveObjectHere (Jerrycan)
+        msg ("Rocco drops the Jerrycan from exhaustion.")
+      }
       msg ("Uh Oh! Rocco is too hungry to continue. He blacks out. When he awakes, he finds himself back at the Base. If his body didn't hurt so much, he would think it was a miracle. He could also clearly see the marks where Casey dragged him through the dirt and trash! ")
       MoveObject (player, RaccoonBase)
       msg ("The sun shines brightly, a new day has begun.")
