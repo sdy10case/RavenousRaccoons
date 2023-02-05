@@ -20,6 +20,11 @@
       </item>
     </povstatusattributes>
     <showhealth />
+    <showpanes />
+    <showcommandbar />
+    <turnoffcompass />
+    <bordercolour>Cornsilk</bordercolour>
+    <feature_asktell />
     <start type="script">
     </start>
     <onhealthzero type="script">
@@ -30,11 +35,6 @@
       player.day = player.turns / 30
       IncreaseHealth (20)
     </onhealthzero>
-    <showpanes />
-    <showcommandbar />
-    <turnoffcompass />
-    <bordercolour>Cornsilk</bordercolour>
-    <feature_asktell />
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -71,6 +71,21 @@
       <alias>Casey</alias>
       <look>It's Casey, your old pal. He's a more curious raccoon. Always tinkering with something from the scrap heap, and today is no different. {once:but what is this, a machine...with ice cream?}</look>
       <attr name="feature_usegive" type="boolean">false</attr>
+      <asklist type="stringlist">
+        <value>ask Casey about </value>
+        <value>food</value>
+        <value>truck</value>
+        <value>treasure</value>
+        <value>dogs</value>
+        <value>list</value>
+      </asklist>
+      <askdefault type="script">
+        msg ("Casey stares at Rocco, as raccoons often do, when they have no idea what is going on or why.")
+      </askdefault>
+      <speak type="script">
+        msg ("What you want, Rocco. I don't do chit chat.")
+        DisplayList (Casey.asklist, false)
+      </speak>
       <ask type="scriptdictionary">
         <item key="ice cream icecream truck "><![CDATA[
           msg ("{once: Oh this hunk of scrap. *Bangs the hood, igniting a small fire on the driver's seat, somehow. <br/>It's only good for parts. I'll make something really special from it. Rocco falls to his knees and clasps his hands in silent pleading. Casey blinks hard. \" What, you want me to fix this turd on wheels?\" Rocco nods his head vigorously until he sees stars. \"Here I'll get a list, ask me when you're ready to go searching.\"}")
@@ -103,21 +118,6 @@
           msg ("Hungry for a quick bite? There's some bread in the fridge. I restock it every minute or so, but don't just stand there waiting for me to bring more. It's weird.")
         </item>
       </ask>
-      <askdefault type="script">
-        msg ("Casey stares at Rocco, as raccoons often do, when they have no idea what is going on or why.")
-      </askdefault>
-      <speak type="script">
-        msg ("What you want, Rocco. I don't do chit chat.")
-        DisplayList (Casey.asklist, false)
-      </speak>
-      <asklist type="stringlist">
-        <value>ask Casey about </value>
-        <value>food</value>
-        <value>truck</value>
-        <value>treasure</value>
-        <value>dogs</value>
-        <value>list</value>
-      </asklist>
       <object name="key">
         <inherit name="editor_object" />
         <look>A small key. Too short for a door, maybe a cabinet of some kind?</look>
@@ -149,6 +149,17 @@
       <object name="moldy bread">
         <inherit name="editor_object" />
         <inherit name="edible" />
+        <takemsg>you got bread, slightly moldy</takemsg>
+        <alt type="stringlist">
+          <value>bread</value>
+        </alt>
+        <drop type="boolean">false</drop>
+        <dropmsg>the mold has taken a liking to your fur. It can only be removed through consumption. (eat it)</dropmsg>
+        <attr name="feature_usegive" type="boolean">false</attr>
+        <feature_edible />
+        <not_all />
+        <eatmsg>tastes like chicken, that can't be good.</eatmsg>
+        <eathealth type="int">5</eathealth>
         <take type="script">
           if (not Got(moldy bread)) {
             AddToInventory (moldy bread)
@@ -157,19 +168,8 @@
             msg ("Fun fact: The mold growing on the bread is territorial. Grabbing another would surely get Rocco caught up in a fight he can't win.")
           }
         </take>
-        <takemsg>you got bread, slightly moldy</takemsg>
-        <alt type="stringlist">
-          <value>bread</value>
-        </alt>
-        <drop type="boolean">false</drop>
-        <dropmsg>the mold has taken a liking to your fur. It can only be removed through consumption. (eat it)</dropmsg>
-        <attr name="feature_usegive" type="boolean">false</attr>
         <use type="script">
         </use>
-        <feature_edible />
-        <not_all />
-        <eatmsg>tastes like chicken, that can't be good.</eatmsg>
-        <eathealth type="int">5</eathealth>
       </object>
     </object>
     <object name="IceCreamTruck">
@@ -179,6 +179,9 @@
       <look>A broken ice cream truck, it has a Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine it inside still works if you can get the ice cream truck to run! </look>
       <feature_container />
       <hidechildren />
+      <alt type="stringlist">
+        <value>truck</value>
+      </alt>
     </object>
     <exit name="broken road" alias="west" to="Road">
       <inherit name="westdirection" />
@@ -456,6 +459,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <description>Before Rocco stands a medivial castle, if by castle, one means tower of trash and gunk. It would be impressive if it wasn't so disgusting. The tower stands on a makeshift island, surrounded by a moat filled with... water?</description>
     <exit alias="south" to="RaccoonBase">
       <inherit name="southdirection" />
     </exit>
@@ -463,67 +467,167 @@
       <inherit name="eastdirection" />
     </exit>
     <exit to="DogShore">
-      <prefix>into</prefix>
+      <prefix>to</prefix>
     </exit>
     <object name="DogShore">
       <inherit name="editor_room" />
+      <description><![CDATA[Rocco stands on the outer shore of the island, an island built in a massive pool. Rocco wonders why a junkyard would have an olympic-sized swimming pool. Before he can give this much thought, the stench of the water fills his nostrils. A moat of green sludge <i>oozes</i> in the stagnant pool; bones and other debris surface and recess under the murk like souls of the damned in the River Styx. <br/><br/>Rocco doesn't know what that is, but the scary voice in his head definitely isn't warming him up to the idea!]]></description>
+      <beforeenter type="script">
+      </beforeenter>
+      <onexit type="script">
+        if (game.pov.parent = DogIsland) {
+          if (Got(raft)) {
+            msg ("Rocco crosses the moat with ease, though the oar seems to melt a little.")
+          }
+          else {
+            msg ("Rocco decides to swim across the moat. Wow, not to be rude Rocco, but we literally just compared this stuff to the River of Death. Rocco loses 20 hunger, and his fur shows small signs of chemical burns.")
+            DecreaseHealth (20)
+          }
+        }
+      </onexit>
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
       <exit to="GuardDogOutpost">
-        <prefix>onto</prefix>
+        <prefix>back to</prefix>
+        <runscript type="boolean">false</runscript>
       </exit>
       <exit to="DogIsland">
         <prefix>onto</prefix>
+        <runscript type="boolean">false</runscript>
+        <script type="script">
+        </script>
       </exit>
       <object name="DogIsland">
         <inherit name="editor_room" />
+        <descprefix>You are on</descprefix>
+        <description><![CDATA[Despite the name, Rocco sees no signs of any dogs, guard or other variety. Despite the general vibe of death, Rocco notices the island is made of rather high quality sand, leaving perfect little hand/paw prints in his wake.  <br/><br/>The main structure of the island is a massive tower constructed of rebar and scrap metal. The faint scent of meat, both fresh and spoiled, permeates the cavernous entrance. A few bushes line the main entrance. One rustles unnaturally.]]></description>
+        <beforeenter type="script">
+        </beforeenter>
+        <onexit type="script">
+          if (game.pov.parent = DogShore) {
+            if (Got(raft)) {
+              msg ("Rocco crosses the moat with ease, though the oar seems to melt a little.")
+            }
+            else {
+              msg ("Rocco decides to swim across the moat. Wow, not to be rude Rocco, but we literally just compared this stuff to the River of Death. Rocco loses 20 hunger, and his fur shows small signs of chemical burns.")
+              DecreaseHealth (20)
+            }
+          }
+        </onexit>
+        <usedefaultprefix type="boolean">false</usedefaultprefix>
         <object name="DogSign">
           <inherit name="editor_object" />
+          <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u>]]></look>
         </object>
         <exit to="DogShore">
-          <prefix>into</prefix>
+          <prefix>back to</prefix>
+          <runscript type="boolean">false</runscript>
+          <script type="script">
+            if (Got(raft)) {
+              msg ("Rocco crosses the moat with ease, though the oar seems to melt a little.")
+            }
+            else {
+              msg ("Rocco decides to swim across the moat. Wow, not to be rude Rocco, but we literally just compared this stuff to the River of Death. Rocco loses 20 hunger, and his fur shows small signs of chemical burns.")
+              DecreaseHealth (20)
+            }
+          </script>
         </exit>
         <exit to="DogTower">
           <prefix>to</prefix>
         </exit>
-        <exit to="DogBushes">
-          <prefix>to</prefix>
-        </exit>
-        <object name="DogBushes">
+        <object name="DogTower">
           <inherit name="editor_room" />
+          <description>The inside of the tower smells sour; the air dry and the ground is damp. The boines of fish and small rodent litter the floor. Rocco expected there to be several floors to the tower, but the ceiling extends far into the darkness. There are no dogs to be found.</description>
+          <usedefaultprefix type="boolean">false</usedefaultprefix>
+          <prefix>the</prefix>
           <exit to="DogIsland">
-            <prefix>to</prefix>
+            <prefix>out to</prefix>
           </exit>
-          <object name="Bush1">
+          <object name="Trash">
             <inherit name="editor_object" />
-          </object>
-          <object name="Bush3">
-            <inherit name="editor_object" />
-          </object>
-          <exit to="Bush2" />
-          <object name="Bush2">
-            <inherit name="editor_room" />
-            <exit to="DogBushes">
-              <prefix>to</prefix>
-            </exit>
-            <object name="Apple">
+            <inherit name="container_closed" />
+            <look>A bag of trash, maybe there is something useful inside.</look>
+            <feature_container />
+            <isopen type="boolean">false</isopen>
+            <openmsg><![CDATA[After openning the bag, it is clear there is nothing of value inside. {once:Oh well. <i> something flutters to the ground from the open bag</i>}]]></openmsg>
+            <onopen type="script">
+              firsttime {
+                MoveObject (Ice Cream Wrapper, DogTower)
+                MakeObjectVisible (Ice Cream Wrapper)
+              }
+            </onopen>
+            <transparent type="boolean">false</transparent>
+            <alias>trash bag</alias>
+            <object name="Ice Cream Wrapper">
               <inherit name="editor_object" />
+              <visible type="boolean">false</visible>
+              <look>A crinkled wrapper for an ice cream sandwich. Just looking at it makes Rocco nearly cry of joy. </look>
+              <take />
+              <drop type="boolean">false</drop>
+              <takemsg>Maybe this will interest the bush outside?</takemsg>
             </object>
           </object>
         </object>
-        <object name="DogTower">
-          <inherit name="editor_room" />
-          <exit to="DogIsland">
-            <prefix>to</prefix>
-          </exit>
-          <object name="Door">
+        <object name="bush2">
+          <inherit name="editor_object" />
+          <alias>bush1</alias>
+          <look><![CDATA[It's just a {random:bush:<i>Clethera alnifolia</i> (that means bush in smart):bunch of leaves} {notfirst: you really like this one huh? Or didja forget silly raccoon. Rocco blushes}]]></look>
+        </object>
+        <object name="bush3">
+          <inherit name="editor_object" />
+          <alias>bush2</alias>
+          <look type="script">
+            firsttime {
+              msg ("As Rocco places his paw against the leaves, an apple rolls from the bush. Wait, don't apples grow from trees? Rocco stares at the apple, then turns to the toxic goo in the moat, then back to the apple. He decides it is better not to think about it")
+              AddToInventory (apple)
+            }
+            otherwise {
+              msg ("Sadly, there are no more bush apples.")
+            }
+          </look>
+          <object name="apple">
             <inherit name="editor_object" />
+            <inherit name="edible" />
+            <feature_edible />
+            <eatmsg>Despite coming from a strange bush, it still tastes great!</eatmsg>
+            <eathealth type="int">20</eathealth>
+            <take />
           </object>
-          <object name="Ice Cream Wrapper">
-            <inherit name="editor_object" />
-          </object>
-          <object name="Trash">
+        </object>
+        <object name="bush">
+          <inherit name="editor_object" />
+          <alias>bush3</alias>
+          <look type="script"><![CDATA[
+            if (Got(Ice Cream Wrapper)) {
+              firsttime {
+                msg ("A raccoon face bursts from the bush. \"Oh! You there!\" Rocco looks around before meekly pointing at himself. \"Yes, you bonehead. Where did you get that wrapper!\" Rocco gestures towards the tower. \"You went in alone! You madman!\" Rocco shrugs. \"Wait, it was empty? That explains the lack of recent movement.\" The raccoon pulls a pair of binoculars from within the bush.")
+                msg ("After peering at the tower for a second, he brings his hands down and wrings them together slowly. \"Alright guy listen\" Rocco crosses his arms; he is not <b>guy</b>, he is Rocco. \"Alright fine, Rocco. I'm Boxhead, happy? Moving on, that wrapper is the evidence I needed. I'm certain that the dogs are importing goods from the outside world, and they ain't sharing one bit.\" Rocco clasps his cheecks with his paws, as if to gesture <i>even ice cream</i>. Boxhead sighs, \"Yes, cream for brains, even ice cream. If you were able to get in and out of that tower, that means this place is abandoned, and my time is wasted here. Meet me at the GuardDogCamp, there's sure to be clues there. So long!\" Boxheasd dissapears back into the bush. Rocco waits a few moments for Boxhead to leave before realizing the other raccoon has vanished into thin air.")
+                MoveObject (Boxhead, GuardDogCamp)
+                msg ("Rocco takes this as his cue to leave as well.")
+              }
+              otherwise {
+                msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
+              }
+            }
+            else {
+              msg ("The bush shakes and rustles. Something is inside but doesn't want to show itself. <i>I just need to get inside </i> Rocco hears a voice mutter to itself.")
+            }
+          ]]></look>
+          <object name="Boxhead">
             <inherit name="editor_object" />
           </object>
         </object>
+      </object>
+      <object name="raft">
+        <inherit name="editor_object" />
+        <look type="script">
+          if (Got(raft)) {
+            msg ("A collection of stick combined with twine. Light enough to carry and if you buy one now it comes with a free oar! Rocco reads this from an informational pamphlet stuck to the raft's oar. ")
+          }
+          else {
+            msg ("A collection of stick combined with twine. Light enough to carry and if you buy one now it comes with a free oar! Rocco reads this from an informational pamphlet stuck to the raft's oar. He swivals his head, but sees no salesman. His raccoon instincts inform him that he should just steal it.")
+          }
+        </look>
+        <take />
       </object>
     </object>
   </object>
@@ -573,7 +677,7 @@
           }
         }
         else {
-          msg ("The possum ignores you.")
+          msg ("The possum ignores you. ")
         }
       </speak>
       <object name="soup can">
@@ -598,7 +702,7 @@
       <giveto type="scriptdictionary">
         <item key="creature">
           MoveObject (flower, creature)
-          msg ("The possum grips the flower gently, a smile creeps on its lips.")
+          msg ("The possum grips the flower gently, a smile creeps on its lips. He beckons you to speak.")
         </item>
       </giveto>
     </object>
@@ -789,7 +893,7 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix>the</prefix>
     <description><![CDATA[Crossing the road, Rocco stands before the towering ice cream shop. The sweet scent of dairy wafts from the open door. A window reveals buckets of swirling colors that call to him; his tummy growls. A large being guards the door, but Rocco is determined.<br/>]]></description>
-    <exit alias="in" to="RorysIceCteamShop">
+    <exit alias="in" to="RorysIceCreamShop">
       <inherit name="indirection" />
     </exit>
     <exit name="backroad" alias="east" to="Road">
@@ -805,9 +909,9 @@
       <attack>Rocco swings his mitts at the menace before him. His fists are met with the dull thuds of rubber and plastic. Soon he grows tired and gives up.</attack>
     </object>
   </object>
-  <object name="RorysIceCteamShop">
+  <object name="RorysIceCreamShop">
     <inherit name="editor_room" />
-    <alias>Rory's Ice Cteam Shop</alias>
+    <alias>Rory's Ice Cream Shop</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
@@ -825,6 +929,7 @@
         MoveObject (player, RaccoonBase)
       }
     </firstenter>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
   </object>
   <verb>
     <property>enterbunker</property>
