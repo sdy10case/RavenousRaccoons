@@ -56,6 +56,11 @@
       EnableTurnScript (Day Cycle)
       msg ("(New to Rocco's misadventures? Type help for some quick rules and goals)")
     </firstenter>
+    <enter type="script">
+      if (Got(tyre)) {
+        msg ("Casey sees Rocco strugg.ing to drag a tyre larger than his body back to the base. Without moving to help, he shouts \"Hey! Nice work champ. Go use that tyre on the truck and come speak to me.\" Rocco huffs and continues pulling the tyre with all his might. Casey says, \"You know... that's a tyre, right? Just roll it.\" Embarressed, Rocco quickly rolls the tyre next to the truck.")
+      }
+    </enter>
     <exit alias="north" to="GuardDogOutpost">
       <inherit name="northdirection" />
     </exit>
@@ -256,11 +261,6 @@
     <object name="Cabin">
       <inherit name="editor_object" />
     </object>
-    <object name="FilledCan">
-      <inherit name="editor_object" />
-      <take />
-      <takemsg>You filled the gasoline can with gas.</takemsg>
-    </object>
     <object name="FoodDrinkTrolley">
       <inherit name="editor_object" />
       <inherit name="container_closed" />
@@ -452,10 +452,12 @@
       ]]></beforeenter>
       <object name="Car key">
         <inherit name="editor_object" />
-        <feature_usegive />
+        <attr name="feature_usegive" type="boolean">false</attr>
         <look>An electric starter and key. The key itself is rather sharp.</look>
         <take />
         <drop />
+        <takemsg>Rocco realizes this key is operational. It may belong to a working car in the Graveyard! This adventure got him close (in a way) to ice cream. Why not try another?</takemsg>
+        <use />
         <selfuseanything type="script">
           msg ("This key does not work here.")
         </selfuseanything>
@@ -468,14 +470,7 @@
             }
           }
         ]]></stab>
-        <selfuseon type="scriptdictionary">
-          <item key="pickuptruck">
-            HelperOpenObject (pickuptruck)
-            msg ("Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. ")
-            RemoveObject (Car key)
-          </item>
-        </selfuseon>
-        <takemsg>Rocco realizes this key is operational. It may belong to a working car in the Graveyard! This adventure got him close (in a way) to ice cream. Why not try another?</takemsg>
+        <selfuseon type="scriptdictionary" />
       </object>
       <exit name="dumpster exit" alias="out to Dumpsite" to="Dumpsite">
         <inherit name="outdirection" />
@@ -500,7 +495,7 @@
       <look>Long pieces of metal scrap rest in a pile by themselves. Mishappen and jagged, Rocco thinks they might be helpful if he can avoid cutting himself. </look>
       <take />
       <feature_usegive />
-      <use type="boolean">false</use>
+      <use />
       <selfuseon type="scriptdictionary">
         <item key="DumpsterBin">
           UnlockExit (closeddumpster)
@@ -843,12 +838,16 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <description><![CDATA[Gasoline Jerrycan<br/>some more miscellaneous metal scrap<br/>an old food trailer<br/>dilapilated pickup truck<br/>stack of car tires<br/>an Old Red Car<br/><br/>interactions:<br/>Gasoline Jerrycan can be interacted with and used<br/>Metal scrap gives access to some useful tools<br/>old food trailer gives access to food-related utensils<br/>The old red car seemed to be locked, by breaking the window from the metal scraps allows rocco to access the car. Contents includes an ID card, trampoline (used to jump into factory).<br/>]]></description>
+    <description>Stacks of battered cars rise high into the sky like a gian'ts sloppy game of jenga. Shards of glass and metal make exploring this place rather dangerous, but the value of these car parts make the risk worth it for raccoons like Casey. A pile of car tyres are stacked in the middle of the graveyard like one big tombstone. </description>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix>the</prefix>
     <exit alias="south" to="BrokenPlane">
       <inherit name="southdirection" />
     </exit>
-    <exit alias="east" to="RecyclingPlant">
+    <exit name="recycle entrance" alias="east" to="RecyclingPlant">
       <inherit name="eastdirection" />
+      <locked />
+      <lockmessage>Rocco attempts to move east. By the shape of the junkyard, he know something should be there, yet the mountains of trash block any point of entry.</lockmessage>
     </exit>
     <exit alias="west" to="GuardDogOutpost">
       <inherit name="westdirection" />
@@ -856,29 +855,161 @@
     <object name="Jerrycan">
       <inherit name="editor_object" />
       <alias>Jerrycan</alias>
+      <look>A jerrycan used to transport fuel. Don't drink any Rocco!</look>
+      <take />
+      <takemsg>The jerrycan is heavy, even when its empty. Rocco better hurry or he'll get hungry fast!</takemsg>
+      <dropmsg>Rocco drops the jerrycan with a grunt. He cracks his back and performs some light stretches.</dropmsg>
+      <feature_usegive />
+      <use />
+      <ontake type="script">
+        EnableTimer (dump dive timer)
+      </ontake>
+      <ondrop type="script">
+        DisableTimer (dump dive timer)
+      </ondrop>
+      <selfuseon type="scriptdictionary">
+        <item key="OldRedCar">
+          msg ("Unfortunately, the fuelcap of the red car is sealed shut.")
+        </item>
+        <item key="pickuptruck">
+          msg ("Rocco attempts to siphon gas from the pickup truck. When he opens the truck's fuel cap, a puff of smoke billows out like a cough, Nothing there.")
+        </item>
+      </selfuseon>
     </object>
     <object name="OldRedCar">
       <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <inherit name="container_lockable" />
       <alias>Old Red Car</alias>
-    </object>
-    <object name="metalscrap2">
-      <inherit name="editor_object" />
-      <alias>metal scrap</alias>
+      <look>One car stands out among the rest. It isn't part of a stack, and the paint is still bright and red.</look>
+      <feature_container />
+      <attr name="feature_usegive" type="boolean">false</attr>
+      <totaled type="boolean">false</totaled>
+      <use type="script">
+        if (OldRedCar.totaled = false) {
+        }
+      </use>
+      <rewire type="script">
+        if (OldRedCar.isopen) {
+          msg ("")
+          firsttime {
+            msg ("The car is old, and despte its nice exterior, the wires inside are easily exposed. As a trained engineer, Rocco carefully and delicately smashes the wires together, only electrocuting himself three times. The car thrums to life.")
+            SetObjectFlagOn (OldRedCar, "on")
+          }
+          otherwise {
+            msg ("The car is already on and Rocco doesn't want to get shocked anymore.")
+          }
+        }
+        else {
+          msg ("Rocco would love to, but he can't get in.")
+        }
+      </rewire>
+      <isopen />
+      <keycount type="int">1</keycount>
+      <key type="object">Car key</key>
+      <unlockmessage>Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. </unlockmessage>
+      <onunlock type="script">
+        RemoveObject (Car key)
+      </onunlock>
+      <drive type="script">
+        if (GetBoolean(OldRedCar, "on")) {
+          firsttime {
+            msg ("Rocco forgets momentarily that he is a raccoon, and cars are built for humans. Reaching up to grasp the very bottom of the steering wheel, he presses his foot on one of the pedals. The car immediantly shoots forward, crashing into the pickup truck. The pickup truck moves slightly, causing the whole car stack to topple over.")
+            msg ("Miraculously, Rocco is okay, and despite the numerous explosions that follow, he believes that no harm was done.")
+            UnlockExit (recycle entrance)
+            msg ("Exiting the car, Rocco realizes there is a path hidden behind the pickup truck. He can now travel east.")
+            OldRedCar.totaled = true
+          }
+          otherwise {
+            msg ("Rocco giggles before staring at the player and shaking his head no.")
+          }
+        }
+        else {
+          msg ("The car is not on, Rocco wishes he still had the key...")
+        }
+      </drive>
+      <object name="nuts">
+        <inherit name="editor_object" />
+        <inherit name="edible" />
+        <look>A bag of mixed nuts.</look>
+        <feature_edible />
+        <eatmsg>Rocco dips a little paw in the bag and feels around for a cashew.</eatmsg>
+        <eathealth type="int">10</eathealth>
+      </object>
     </object>
     <object name="foodtrailer">
       <inherit name="editor_object" />
+      <inherit name="container_closed" />
       <alias>food trailer</alias>
+      <look>A car trailer for what appears to have been a raccoon-themed taco stand! Rocco gulps. He hopes that the theme was the only thing made out of raccoons. </look>
+      <feature_container />
+      <listchildren />
+      <openmsg>Luckily it appears there is no meat inside.</openmsg>
+      <object name="lettuce">
+        <inherit name="editor_object" />
+        <inherit name="edible" />
+        <feature_edible />
+        <eatmsg>crunchy</eatmsg>
+        <eathealth type="int">15</eathealth>
+        <look>A wilted head of lettuce. Looks edible enough.</look>
+      </object>
+      <object name="tomato">
+        <inherit name="editor_object" />
+        <inherit name="edible" />
+        <look>A squishy tomato. Rocco hates tomatos, but its better than starving.</look>
+        <feature_edible />
+        <eatmsg>Rocco nearly gags, but he eat the whole thing</eatmsg>
+        <eathealth type="int">3</eathealth>
+      </object>
     </object>
     <object name="pickuptruck">
       <inherit name="editor_object" />
+      <inherit name="container_closed" />
       <alias>pickup truck</alias>
+      <look type="script">
+        if (OldRedCar.totaled = false) {
+          msg ("The pickup truck is at the bottom of a car stack. Its paint is chipped and the hood is completely smashed in.  It's wedged between two other car stacks against a backdrop of the familiar sea of trash. Peering through the window, Rocco swears he can see an opening behing the truck. Too bad he can't get through it.")
+        }
+        else {
+          msg ("The pickup truck has been freed from its stack, a pathway carved through the trash lies beyond it.")
+        }
+      </look>
+      <feature_container />
+      <hidechildren />
+      <listchildren />
+      <openmsg>The trunk opens with a crash, the back door falling off in the process. The truck bed is empty except for a small card in the back corner.</openmsg>
+      <close type="boolean">false</close>
+      <object name="ID Card">
+        <inherit name="editor_object" />
+        <look>An ID card with a human face, for the... RP facility? How strange, Rocco hadn't seen any humans here in years. Maybe it was left when the truck was scrapped.</look>
+      </object>
     </object>
     <object name="carwheelstack">
       <inherit name="editor_object" />
       <alias>car wheel stack</alias>
+      <look>Despite the sheer number of tyres; most are popped, battered, or rusted. Rocco could crawl in to find the needle in the haystack, but he is too lazy.</look>
     </object>
     <object name="tyre">
       <inherit name="editor_object" />
+      <look>A functional tyre! Looks like this would work with the ice cream truck.</look>
+      <take />
+      <alt type="stringlist">
+        <value>tire</value>
+      </alt>
+      <feature_usegive />
+      <selfuseanything type="script">
+        msg ("Cannot use the tyre on this.")
+      </selfuseanything>
+      <use type="script">
+        msg ("Use the tyre on what?")
+      </use>
+      <selfuseon type="scriptdictionary">
+        <item key="IceCreamTruck">
+          if (Got(tyre)) {
+            MoveObject (tyre, IceCreamTruck)
+          }
+        </item>
+      </selfuseon>
     </object>
   </object>
   <object name="GuardDogBase">
@@ -889,8 +1020,10 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <exit alias="north" to="RecyclingPlant">
+    <exit name="false recycle entry" alias="north" to="RecyclingPlant">
       <inherit name="northdirection" />
+      <locked />
+      <lockmessage>There should be a pathway north, but it has been sealed and barricaded by the dogs. </lockmessage>
     </exit>
     <exit alias="south" to="Bunker">
       <inherit name="southdirection" />
@@ -1086,6 +1219,16 @@
     <property>stab</property>
     <pattern>stab #object#, puncture #object#, cut #object#</pattern>
     <defaultexpression>"You can't stab " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>rewire</property>
+    <pattern>rewire</pattern>
+    <defaultexpression>"You can't rewire " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>drive</property>
+    <pattern>drive</pattern>
+    <defaultexpression>"You can't drive " + object.article + "."</defaultexpression>
   </verb>
   <timer name="frdge refill">
     <interval>60</interval>
