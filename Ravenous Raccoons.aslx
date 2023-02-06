@@ -210,6 +210,11 @@
           }
         }
       ]]></look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>Open</value>
+        <value>Close</value>
+      </displayverbs>
     </object>
     <exit name="broken road" alias="west" to="Road">
       <inherit name="westdirection" />
@@ -233,6 +238,9 @@
           }
         }
       </sleepon>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
   </object>
   <object name="BrokenPlane">
@@ -272,18 +280,29 @@
           msg ("You may need to find something to contain the fuel to bring it with you!")
         }
       </fillcan>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="cockpit">
       <inherit name="editor_object" />
       <alias>cockpit</alias>
       <attr name="feature_container" type="boolean">false</attr>
       <look>The cockpit sits away from the rest of the plane, torn from what appears to have been a nasty crash. Rocco gasps in horror at the captain's seat. A skeleton wearing the captain's hat sits upon the torn leather. Going against his greater judgement, he pokes the skeleton. It's a plastic toy. Rocco sighs in relief and patters away. Somebody in this place has a cruel sense of humor. </look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="Cabin">
       <inherit name="editor_object" />
       <inherit name="container_open" />
       <look>Accessing the plan would normally be difficult with their strange doors. Luckily for Rocco, and unluckily for the passangers during the flight, the plane's body had been ripped in half. This rupture provides easy access for Rocco. Inside he finds a few busted suitcases, and a locked trolley cart. Wait, was this plane decommissioned, or did it crash into the junkyard!? </look>
       <feature_container />
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>Open</value>
+        <value>Close</value>
+      </displayverbs>
       <object name="FoodDrinkTrolley">
         <inherit name="editor_object" />
         <inherit name="container_closed" />
@@ -479,7 +498,7 @@
           <object name="Door1">
             <inherit name="editor_object" />
             <alias>Door</alias>
-            <scenery type="boolean">false</scenery>
+            <scenery />
             <look type="script"><![CDATA[
               msg ("As Rocco approaches the door, the heat becomes unbearable. The sounds of production boom from all directions. Rocco can feel his arms go weak, his paws sweaty. He tries to walk away but his arms grow heavy. He's nervous, but on the surf... (<i> as the narrator loses himself in a poor imitation of Eminem, Rocco notices a plaque on the door written in English and some form of garbled language, possibly code. Sickened by both the door and the narrator's terrible rapping, Rocco retreats.</i>)  ")
               letter.hashmap = true
@@ -556,6 +575,9 @@
           msg ("Boxhead has moved on to the GuardDogBase.")
         }
       ]]></look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
   </object>
   <object name="Dumpsite">
@@ -804,6 +826,10 @@
               <take />
               <drop type="boolean">false</drop>
               <takemsg>Maybe this will interest the bush outside?</takemsg>
+              <displayverbs type="stringlist">
+                <value>Look at</value>
+                <value>Take</value>
+              </displayverbs>
             </object>
           </object>
         </object>
@@ -811,6 +837,9 @@
           <inherit name="editor_object" />
           <alias>bush1</alias>
           <look><![CDATA[It's just a {random:bush:<i>Clethera alnifolia</i> (that means bush in smart):bunch of leaves} {notfirst: you really like this one huh? Or didja forget silly raccoon. Rocco blushes}]]></look>
+          <displayverbs type="stringlist">
+            <value>Look at</value>
+          </displayverbs>
         </object>
         <object name="bush3">
           <inherit name="editor_object" />
@@ -824,6 +853,9 @@
               msg ("Sadly, there are no more bush apples.")
             }
           </look>
+          <displayverbs type="stringlist">
+            <value>Look at</value>
+          </displayverbs>
           <object name="apple">
             <inherit name="editor_object" />
             <inherit name="edible" />
@@ -858,6 +890,9 @@
               msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
             }
           ]]></look>
+          <displayverbs type="stringlist">
+            <value>Look at</value>
+          </displayverbs>
           <object name="Boxhead">
             <inherit name="editor_object" />
           </object>
@@ -979,7 +1014,7 @@
       <alias>mysterious barrels</alias>
       <visible type="boolean">false</visible>
       <look type="script"><![CDATA[
-        Ask ("look at barrels? (this will end the game)") {
+        Ask ("These barrels look suspicious, are you sure that you want to look into them?") {
           if (result) {
             msg ("Rocco rushes towards the barrels. Throwing the first one open and diving in. Odd...it doesn't taste like ice cream. Also, it's glowing... and green! Rocco failed to notice the signs on the barrel declaring this to be radioactive waste, and that RP may not stand for recycling plant but radiation processing. However, Rocco had no time to consider his mistake as he was already rapidly transforming. In the coming days, Rocco would destroy flatten the continent, always searchuing for his ice cream. Within the month, humans would realize his desires and begin producing an insane quantity to keep the beast satisfied. Congadulations, at the cost of your snaity you have gained more ice cream than you could ever enjoy before!<br/>Thank you for playing!")
             picture ("racco zilla.png")
@@ -987,11 +1022,17 @@
           }
         }
       ]]></look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="trashcompactor">
       <inherit name="editor_object" />
       <alias>trash compactor</alias>
       <look>Rocco inspects the trash compactor. It's complex structure is difficult for a human to understand, let alone this furry little guy. Rocco, however, does see a symbol etched into the machinery: A horse with the head of a raccoon, how peculiar. </look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="incinerator">
       <inherit name="editor_object" />
@@ -1003,6 +1044,9 @@
           MakeObjectVisible (safe)
         }
       ]]></look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="safe">
       <inherit name="editor_object" />
@@ -1021,6 +1065,10 @@
           }
         }
       </use>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>use</value>
+      </displayverbs>
     </object>
   </object>
   <object name="CarGraveyard">
@@ -1214,6 +1262,9 @@
       <inherit name="editor_object" />
       <alias>car wheel stack</alias>
       <look>Despite the sheer number of tyres; most are popped, battered, or rusted. Rocco could crawl in to find the needle in the haystack, but he is too lazy.</look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
     <object name="tyre">
       <inherit name="editor_object" />
@@ -1419,6 +1470,9 @@
           msg ("Rocco thinks about scaling the wall, but he was raised to respect other's privacy. Rocco knocks on the door and waits for someone to answer. After 20 minutes, Rocco feels his cheeks grow red. He coughs to clear the awkward silence <i> (even though he's alone. Well, except for us)</i> and walks away like nothing happened. ")
         }
       ]]></look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
     </object>
   </object>
   <object name="StoreEntrance">
@@ -1476,6 +1530,11 @@
     <property>enterbunker</property>
     <pattern>enter bunker</pattern>
     <defaultexpression>"You can't enter bunker " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>fillcan</property>
+    <pattern>fill can</pattern>
+    <defaultexpression>"You can't fill can " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>takecondensedmilk</property>
