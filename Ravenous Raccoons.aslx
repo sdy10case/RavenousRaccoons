@@ -189,6 +189,11 @@
       <inherit name="editor_object" />
       <inherit name="container_closed" />
       <alias>Ice Cream Truck</alias>
+      <feature_container />
+      <hidechildren />
+      <alt type="stringlist">
+        <value>truck</value>
+      </alt>
       <look type="script"><![CDATA[
         if (not GetBoolean(IceCreamTruck, "fixed")) {
           msg ("A broken ice cream truck, it has Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine inside it still works if you can get the ice cream truck to run! ")
@@ -204,11 +209,6 @@
           }
         }
       ]]></look>
-      <feature_container />
-      <hidechildren />
-      <alt type="stringlist">
-        <value>truck</value>
-      </alt>
     </object>
     <exit name="broken road" alias="west" to="Road">
       <inherit name="westdirection" />
@@ -377,22 +377,22 @@
           <value>milk</value>
           <value>can of milk</value>
         </alt>
+        <take />
+        <takemsg><![CDATA[<i>lEave THis PlaCe</i>]]></takemsg>
+        <feature_usegive />
         <takecondensedmilk type="script">
           msg ("You pick up a can of condensed milk, it's very heavy, but you suspect tasty treats could be made with its contents.")
           AddToInventory (CondensedMilk)
         </takecondensedmilk>
-        <take />
-        <takemsg><![CDATA[<i>lEave THis PlaCe</i>]]></takemsg>
-        <feature_usegive />
+        <selfuseanything type="script">
+          msg ("cannot use here")
+        </selfuseanything>
         <selfuseon type="scriptdictionary">
           <item key="IceCreamTruck">
             msg ("Rocco passes Casey the condensed milk, his paws slightly shaking. He decides its best to forget that place. Rocco hears the whirring of the ice cream machine.")
             MoveObject (CondensedMilk, IceCreamTruck)
           </item>
         </selfuseon>
-        <selfuseanything type="script">
-          msg ("cannot use here")
-        </selfuseanything>
       </object>
     </object>
     <exit alias="in" to="Bunker">
@@ -528,6 +528,7 @@
       <look type="script"><![CDATA[
         if (Contains (small tent,Boxhead)) {
           firsttime {
+            picture ("Raccoon peering from tent.png")
             msg ("Boxhead is nowhere in sight. Suddenly, Rocco realizes a tent has appeared next to the gate. Two holes in the side of the tent reveal a pair of eyes with dark pupils. It's Boxhead! Boxhead's voice emanates out. \"I've opened the gate for our investigaton. Unfortunately, I'm a huge coward, and physically can't go in. You'll have to go for the both of us. Find some clues!\" Rocco is disappointed he has to do all the work, and even more surprised that Boxhead has so many disguises.")
             UnlockExit (camp entrance)
           }
@@ -536,7 +537,7 @@
             if (Got(letter)) {
               if (letter.hashmap = true) {
                 msg ("Boxhead looks at the letter and watches as you draw the symbols and english letters from the Basement door (Rocco has an excellent memory). Boxhead studies the text and key map, his eyes growing wider by the second. \"Great Trash Panda above. The dogs plan on all out war with the the ice cream store! They weren't recieving supplies, the dogs were stealing them, and now they want more. They're making weapons of medium to medium-large destruction!\" Rocco throws his arms in the air and runs around in circles. Boxhead's eyes blink rapidly before settling down, \"Calm down, Rocco! Now is not the time for panic but action! Meet me at the GuardDogBase. That place is terrifying, but we must stop this heinous plot.\" Boxhead disappears into the tent. Rocco places a paw over his heart, steadying his breathing. Scrunching his paw into a fist, Rocco readies himself for the dangers that lie ahead")
-                MoveObject (Boxhead, GuardDogBase)
+                MoveObject (Boxhead, doorslot)
               }
               else {
                 msg ("Boxhead looks at the letter. \"Interesting, a secret message.\" His eyes squint. \"But I have no idea what it means. You need to find a code key Rocco, search the camp more. <u>You don't even need to bring it back to me</u>, seeing it yourself should be enough.\"")
@@ -838,6 +839,7 @@
             if (Contains (bush,Boxhead)) {
               if (Got(Ice Cream Wrapper)) {
                 firsttime {
+                  picture ("raccoon peering from bush.png")
                   msg ("A raccoon face bursts from the bush. \"Oh! You there!\" Rocco looks around before meekly pointing at himself. \"Yes, you bonehead. Where did you get that wrapper!\" Rocco gestures towards the tower. \"You went in alone! You madman!\" Rocco shrugs. \"Wait, it was empty? That explains the lack of recent movement.\" The raccoon pulls a pair of binoculars from within the bush.")
                   msg ("After peering at the tower for a second, he brings his hands down and wrings them together slowly. \"Alright guy listen\" Rocco crosses his arms; he is not <b>guy</b>, he is Rocco. \"Alright fine, Rocco. I'm Boxhead, happy? Moving on, that wrapper is the evidence I needed. I'm certain that the dogs are importing goods from the outside world, and they ain't sharing one bit.\" Rocco clasps his cheecks with his paws, as if to gesture <i>even ice cream</i>. Boxhead sighs, \"Yes, cream for brains, even ice cream. If you were able to get in and out of that tower, that means this place is abandoned, and my time is wasted here. Meet me at the GuardDogCamp, there's sure to be clues there. So long!\" Boxheasd dissapears back into the bush. Rocco waits a few moments for Boxhead to leave before realizing the other raccoon has vanished into thin air.")
                   msg ("Rocco takes this as his cue to leave as well.")
@@ -845,7 +847,6 @@
                   MakeObjectVisible (small tent)
                 }
                 otherwise {
-                  msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
                 }
               }
               else {
@@ -853,7 +854,7 @@
               }
             }
             else {
-              msg ("")
+              msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
             }
           ]]></look>
           <object name="Boxhead">
@@ -1174,6 +1175,7 @@
       <object name="ID Card">
         <inherit name="editor_object" />
         <look>An ID card with a human face, for the... RP facility? How strange, Rocco hadn't seen any humans here in years. Maybe it was left when the truck was scrapped.</look>
+        <take />
       </object>
     </object>
     <object name="carwheelstack">
@@ -1213,7 +1215,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <description>The </description>
+    <description>The sea of trash parts as Rocco approaches what appears to be a genuine fort. Walls of loose brick meet with the moutains of trash. A thick, metal door stands at the center. Rocco sees it has a slot near the top, like the humans at secret clubs or skeevy bars. Cool.</description>
     <exit name="false recycle entry" alias="north" to="RecyclingPlant">
       <inherit name="northdirection" />
       <locked />
@@ -1227,74 +1229,164 @@
     </exit>
     <object name="DogBase">
       <inherit name="editor_room" />
+      <description>Rocco's breath catches in his throat s he enters the base. In a word, beautiful. Not a scrap of trash, grime, or unidentifiable carcass. Rocco is impressed, not because of the cleanliness, but because it was the dogs who achieved it. An industrial strength roomba that scythe, teeth slowly vaccuums past. Well, that explains... some things. Beyond the grassy yard stands a large dog house, addorned with jewelery and precious metals salvaged from the trash. A global sattilite receiver is fastened to the roof, jutting towards space. Do they have a satellite!?</description>
       <exit alias="out" to="GuardDogBase">
         <inherit name="outdirection" />
       </exit>
-      <object name="Smoke Stack">
-        <inherit name="editor_object" />
-      </object>
       <object name="DogHouse">
         <inherit name="editor_room" />
+        <description><![CDATA[The inside of the doghouse is more posh than the exterior. Soft carpets, polished marble, even a freakin chandelier! Rocco wishes he had time to explore, and maybe <i>borrow</i> some things, but a gentle snore freezes him in place. A lone mutt sleeps on a rug in the center of the room. To the dog's left, a table carries a key and a clear bottle. To its right, a cabinet holds unknown secrets. <br/><br/><b> Be careful where you look, Rocco</b>]]></description>
         <exit alias="out" to="DogBase">
           <inherit name="outdirection" />
         </exit>
-        <object name="SteamRoom">
-          <inherit name="editor_room" />
-          <exit alias="out" to="DogHouse">
-            <inherit name="outdirection" />
-          </exit>
-          <object name="Dog">
-            <inherit name="editor_object" />
-          </object>
-          <object name="Cellphone">
-            <inherit name="editor_object" />
-          </object>
-        </object>
-        <exit alias="in" to="SteamRoom">
+        <exit name="operation entrance" alias="in" to="OperationRoom">
           <inherit name="indirection" />
-        </exit>
-        <object name="Table">
-          <inherit name="editor_room" />
-          <exit to="DogHouse">
-            <prefix>to</prefix>
-            <scenery />
-          </exit>
-          <object name="Green Key">
-            <inherit name="editor_object" />
-          </object>
-          <object name="Bottle">
-            <inherit name="editor_object" />
-          </object>
-        </object>
-        <exit to="Table">
-          <prefix>jump onto</prefix>
+          <locked />
+          <lockmessage>The door refuses to open</lockmessage>
         </exit>
         <object name="Cupboard">
-          <inherit name="editor_room" />
+          <inherit name="editor_object" />
+          <inherit name="container_closed" />
+          <look><![CDATA[A cupboard made from rich mahogony. While well-made, it appears to have been <u>jostled and dragged </u> along the ground to be put into place. Makes sense seeing how dogs lack hands. {if Cupboard.isopened:broken ceramic litters the floor, the mutt seems not to care.}]]></look>
+          <feature_container />
+          <onopen type="script">
+            firsttime {
+              msg ("As Rocco opens the cabinet, misplaced plates crash onto the ground. The mutt awakens, slobber and fresh drool spraying Rocco as it barks the alarm. Rocco hightails it out of the camp as sirens blare throughout the doghouse. Luckily, dogs have a relatievly short attention span, so they should forget in about... now. Despite his fortune, Rocco became very hungry from all his running around.")
+              DecreaseHealth (30)
+              MoveObject (player, GuardDogBase)
+            }
+            otherwise {
+              msg ("the cabinet doors swing open.")
+            }
+          </onopen>
+          <hidechildren />
+          <listchildren />
+          <object name="ice cream sandwich">
+            <inherit name="editor_object" />
+            <inherit name="edible" />
+            <alias>ice cream sandwich</alias>
+            <look>Rocco can't believe his luck, a real honest to goodness ice cream bar! Mostly melted but still!</look>
+            <feature_edible />
+            <take />
+            <eatmsg>Rocco sheds a tear of joy as he nearly eats his paw shoveling the treat down his gullet. </eatmsg>
+            <eathealth type="int">80</eathealth>
+          </object>
+        </object>
+        <object name="OperationRoom">
+          <inherit name="container_open" />
+          <inherit name="container_lockable" />
+          <visible />
+          <look type="script">
+            if (Got(DNA sequence)) {
+              msg ("Rocco presses the DNA chip against the sensor next o the door. It hums, blasts a clicky tune, and opens. Rocco can go in")
+              UnlockExit (operation entrance)
+            }
+            else if (Got(Green Key)) {
+              msg ("Rocco smugly approaches the door, Green key in hand. He presses the key against the door, and winces as it bounces off. Oh, the door has no keyhole. He glances to the sensor next to it. A DNA sequencer? Where would he find a device that carries a dog's unique DNA signiture!? The mutt in the main hall snores loudly.")
+            }
+            else {
+              msg ("Rocco sneaks around the slumberin mutt. The door is locked, Rocco needs some sort of key.")
+            }
+          </look>
+          <isroom />
+          <attr name="feature_container" type="boolean">false</attr>
+          <keycount type="int">1</keycount>
+          <description>Inside the operation room, Rocco seizes up. The room is full of dogs. Some wearing suits, others in combat gear. The majority are staring at a large screen that coveres the far wall like a team preparing to launch a rocket into space. Hopefully, this isn't that. Rocco has no idea how he could possibly reach the shutoff switch. Taking a single step into this room would be like feeding himself to the... the... well the dogs! Oh cruel fate, to get so close yet be robbed at the last possible moment. How will Rocco ever get his ice cr- oh. Rocco turns to his left during his melodramatic monologue. The switch is next to the door. Nice. </description>
           <exit alias="out" to="DogHouse">
             <inherit name="outdirection" />
           </exit>
-          <object name="Apple1">
+          <object name="Control Switch">
             <inherit name="editor_object" />
-            <alias>Apple</alias>
-          </object>
-          <object name="Blue Key">
-            <inherit name="editor_object" />
+            <look type="script"><![CDATA[
+              Ask ("Pull the Switch? (This will end the game)") {
+                get input {
+                  if (result) {
+                    msg ("Rocco pulls the switch, and everything immediantly grinds to a sudden halt. The lights dim and the dogs begin to panic, the air fills with frantic barks and yips. Rocco sighs in satisfaction and prepares to leave. However, at the last second he stops. What's wrong with the dogs attacking the humans? All the raccoons should care about is getting ethir share too! Rocco hits the switch again. As the power returns, he stands before the dogs, claiming to be a greater being who restored their power with his abilities. The dogs were a well organized bunch, but not the brightest, they wuickly made Rocco their leader and continued their plans of conquest. Rocco led his militia against the humans, securing enough ice cream to last a lifetime! All it cost was the lives of millions, but necessary sacrifices right?<br/>Thanks for playing!")
+                    picture ("Rocco leader.png")
+                    finish
+                  }
+                }
+              }
+            ]]></look>
           </object>
         </object>
-        <exit to="Cupboard">
-          <prefix>in</prefix>
-        </exit>
+        <object name="Dog">
+          <inherit name="editor_object" />
+          <inherit name="container_limited" />
+          <look><![CDATA[The mutt is rather repulsive, somewhere between a pittbull and a pug. Rocco stops in his tracks and faces the narrator. (You may imagine what direction that would be.) Rocco scolds the narrator for his superficial opinion. Both dogs can be lovable and kind, it is humans who breed them for their own selfish interests, turning them into the freaks they are today. The narrator is too stunned by Rocco's outburst to point out Rocco just called the mutt freak himself.<br/><br/>During this quarrel, the mutt scratches its <b>collar</b> with a hind leg in its sleep. The green camoflouge pattern of the collar rather clashes with the mutt's silver, gray fur, but the narrator fears evoking Rocco's rage, should he say more.]]></look>
+          <feature_container />
+          <open type="boolean">false</open>
+          <close type="boolean">false</close>
+          <hidechildren />
+          <openmsg>What? Rocco, leave the mutt alone.</openmsg>
+          <closemsg>You're being really weird Rocco. Just...just stop.</closemsg>
+          <object name="collar">
+            <inherit name="editor_object" />
+            <inherit name="container_limited" />
+            <inherit name="container_lockable" />
+            <feature_container />
+            <isopen />
+            <visible />
+            <keycount type="int">1</keycount>
+            <autoopen type="boolean">false</autoopen>
+            <key type="object">Green Key</key>
+            <unlockmessage>The collar has a keyhole on the side. Rocco gingerly inserts the key, careful to not wake the slumbering beast. As the key turns, a chip shoots out of the collar and into his paw. It's a DNA sequence!</unlockmessage>
+            <onunlock type="script">
+              AddToInventory (DNA sequence)
+            </onunlock>
+            <scenery type="boolean">false</scenery>
+            <hidechildren />
+            <nokeymessage>You do not have the key.</nokeymessage>
+            <object name="DNA sequence">
+              <inherit name="editor_object" />
+              <visible />
+            </object>
+          </object>
+        </object>
+        <object name="Table">
+          <inherit name="editor_object" />
+          <inherit name="surface" />
+          <feature_container />
+          <look>Rocco approaches the table. It's glass surface gleams rightly. </look>
+          <listchildren />
+          <hidechildren />
+          <object name="Green Key">
+            <inherit name="editor_object" />
+            <take />
+            <drop type="boolean">false</drop>
+            <takemsg>Rocco takes the green key in hand. Strange that it would be placed somewhere so open. Oh well, better for Rocco.</takemsg>
+            <look>A green key. Text scrawled along the side is written in code. From what Boxhead told him, it should say "unlock co..." the rest is too messy to read.</look>
+          </object>
+        </object>
       </object>
       <exit alias="in" to="DogHouse">
         <inherit name="indirection" />
       </exit>
     </object>
-    <exit alias="in" to="DogBase">
+    <exit name="guard dog base" alias="in" to="DogBase">
       <inherit name="indirection" />
+      <locked />
+      <lockmessage>Rocco refuses to break in due to a high sense of morality and an even greater sense of laziness.</lockmessage>
     </exit>
-    <object name="Plate">
+    <object name="doorslot">
       <inherit name="editor_object" />
+      <look type="script"><![CDATA[
+        if (Contains (doorslot,Boxhead)) {
+          firsttime {
+            msg ("Rocco approaches the door when the slot opens suddenly. Rocco jumps, fur standing on end, back arched like a cat, when a familiar voice shouts out. \"Oh good, you're here.\" It's Boxhead!")
+            picture ("Raccoon peering from speakeasy grate.png")
+            msg ("Rocco settles down slowly, unsure how many times this buffoon has popped out of nowhere now (<i>for those wondering at home, it's three.</i>). Rocco hears a click and metallic grunting as the door swings open. Bohead still hangs from the speakeasy grill, \"I've openned the way Rocco; it's time for us to rise and save the world!\" Rocco nods confidently, rising to stand on his hind legs, hands on hips. \"And by we, I mean you!\" Boxhead's trademark cowardice makes Rocco slump his shoulders forward before settling back onto all fours. Oh well, it was time to infiltrate the camp. Boxhead rattles off a few more details as Rocco saunters past. \"This base is the dogs' center of command as well as their operations base. If you can find and hit the emergency override switch, all weapon production will stop. That's the best we can do for now.\"<br/><b> The camp entrance is unlocked<b>")
+            UnlockExit (guard dog base)
+          }
+          otherwise {
+            msg ("the doorslot is closed, Boxhead has already openned the way for you.")
+          }
+        }
+        else {
+          msg ("Rocco thinks about scaling the wall, but he was raised to respect other's privacy. Rocco knocks on the door and waits for someone to answer. After 20 minutes, Rocco feels his cheeks grow red. He coughs to clear the awkward silence <i> (even though he's alone. Well, except for us)</i> and walks away like nothing happened. ")
+        }
+      ]]></look>
+      <feature_container />
     </object>
   </object>
   <object name="StoreEntrance">
