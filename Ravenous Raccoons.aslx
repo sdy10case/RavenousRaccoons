@@ -999,7 +999,7 @@
       <feature_container />
       <attr name="feature_usegive" type="boolean">false</attr>
       <totaled type="boolean">false</totaled>
-      <isopen />
+      <isopen type="boolean">false</isopen>
       <keycount type="int">1</keycount>
       <unlockmessage>Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. </unlockmessage>
       <key type="object">Car key</key>
@@ -1042,6 +1042,7 @@
           msg ("The car is not on, Rocco wishes he still had the key...")
         }
       </drive>
+      <locked />
       <object name="nuts">
         <inherit name="editor_object" />
         <inherit name="edible" />
