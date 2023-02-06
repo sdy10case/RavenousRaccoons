@@ -285,12 +285,28 @@
           <look>An airline branded packet of chocolates.</look>
           <take />
           <takemsg>You took the chocolates.</takemsg>
+          <feature_usegive />
+          <selfuseon type="scriptdictionary">
+            <item key="IceCreamTruck">
+              msg ("Rocco hands the chocolate over it Casey. He drools in anticipation.")
+              MoveObject (ChocolatePackets, IceCreamTruck)
+            </item>
+          </selfuseon>
         </object>
         <object name="AlmondPackets">
           <inherit name="editor_object" />
           <look>An airline branded packet of almonds.</look>
           <take />
           <takemsg>You took the almonds.</takemsg>
+          <feature_usegive />
+          <selfuseon type="scriptdictionary">
+            <item key="IceCreamTruck">
+              msg ("Rocco hands the almonds over to Casey. He nods his approval.")
+              MoveObject (AlmondPackets, IceCreamTruck)
+              if () {
+              }
+            </item>
+          </selfuseon>
         </object>
       </object>
     </object>
@@ -335,7 +351,7 @@
       </exit>
       <object name="CondensedMilk">
         <inherit name="editor_object" />
-        <look><![CDATA[It's a bag of condensed milk, it weighs as much as a brick! <br/><br/><br/><br/><i>lEave THis PlaCe</i>]]></look>
+        <look>It's a bag of condensed milk, it weighs as much as a brick! </look>
         <alt type="stringlist">
           <value>milk</value>
           <value>can of milk</value>
@@ -344,6 +360,18 @@
           msg ("You pick up a can of condensed milk, it's very heavy, but you suspect tasty treats could be made with its contents.")
           AddToInventory (CondensedMilk)
         </takecondensedmilk>
+        <take />
+        <takemsg><![CDATA[<i>lEave THis PlaCe</i>]]></takemsg>
+        <feature_usegive />
+        <selfuseon type="scriptdictionary">
+          <item key="IceCreamTruck">
+            msg ("Rocco passes Casey the condensed milk, his paws slightly shaking. He decides its best to forget that place. Rocco hears the whirring of the ice cream machine.")
+            MoveObject (CondensedMilk, IceCreamTruck)
+          </item>
+        </selfuseon>
+        <selfuseanything type="script">
+          msg ("cannot use here")
+        </selfuseanything>
       </object>
     </object>
     <exit alias="in" to="Bunker">
