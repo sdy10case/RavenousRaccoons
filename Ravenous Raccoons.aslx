@@ -317,6 +317,7 @@
           AddToInventory (ChocolatePackets)
           AddToInventory (AlmondPackets)
         </onopen>
+        <alias>Food Drink Trolley</alias>
         <object name="ChocolatePackets">
           <inherit name="editor_object" />
           <look>An airline branded packet of chocolates.</look>
@@ -332,6 +333,7 @@
               }
             </item>
           </selfuseon>
+          <alias>Chocolate Packets</alias>
         </object>
         <object name="AlmondPackets">
           <inherit name="editor_object" />
@@ -348,6 +350,7 @@
               }
             </item>
           </selfuseon>
+          <alias>Almond Packets</alias>
         </object>
       </object>
     </object>
@@ -362,11 +365,12 @@
       <eatmsg>You ate the protein bar, it tasted like peanut butter!</eatmsg>
       <eathealth type="int">50</eathealth>
       <feature_container />
+      <alias>protein bar</alias>
     </object>
   </object>
   <object name="GarbageAlcove">
     <inherit name="editor_room" />
-    <alias>GarbageAlcove</alias>
+    <alias>Garbage Alcove</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
@@ -413,6 +417,7 @@
             MoveObject (CondensedMilk, IceCreamTruck)
           </item>
         </selfuseon>
+        <alias>condensed milk</alias>
       </object>
     </object>
     <exit alias="in" to="Bunker">
@@ -421,7 +426,7 @@
   </object>
   <object name="GuardDogCamp">
     <inherit name="editor_room" />
-    <alias>Guard Dog Camp</alias>
+    <alias>Guard Dog Camp Entrance</alias>
     <attr name="grid_width" type="int">3</attr>
     <attr name="grid_length" type="int">3</attr>
     <attr name="grid_fill">Transparent</attr>
@@ -452,6 +457,7 @@
           DecreaseHealth (50)
         }
       </beforefirstenter>
+      <alias>Dog Camp</alias>
       <exit to="GuardDogCamp">
         <prefix>to</prefix>
       </exit>
@@ -482,6 +488,7 @@
         <usedefaultprefix type="boolean">false</usedefaultprefix>
         <look>A warmth radiates from this tent. Rushing hot air makes it bellow and sway, almost breaking free from the ground and floating away.</look>
         <description>The tent is empty, except for a dark hole in the middle. Upon further inspection, Rocco sees it is a staircase that descends into darkness. The hot air is coming from this tent basement. Faint, rhythmic thuds emanate from the darkness.</description>
+        <alias>blue tent</alias>
         <exit alias="out" to="DogCamp">
           <inherit name="outdirection" />
         </exit>
@@ -509,6 +516,7 @@
       <object name="Tent2">
         <look>This tent has muddy pawprints all over the outside. Clearly these dogs don't know how to wipe their paws.</look>
         <description>Inside the tent is a mishmash of chew toys, food bowls, and... industrial equipment? Most is too heavy to pick up, except for a lockpick lying amongst the pipes and metal scrap.</description>
+        <alias>red tent</alias>
         <exit alias="out to" to="DogCamp">
           <inherit name="outdirection" />
           <prefix>the</prefix>
@@ -628,6 +636,7 @@
           EnableTimer (dump dive timer)
         }
       ]]></beforeenter>
+      <alias>Dumpster Bin</alias>
       <object name="Car key">
         <inherit name="editor_object" />
         <attr name="feature_usegive" type="boolean">false</attr>
@@ -649,6 +658,7 @@
           }
         ]]></stab>
         <selfuseon type="scriptdictionary" />
+        <alias>car key</alias>
       </object>
       <exit name="dumpster exit" alias="out to Dumpsite" to="Dumpsite">
         <inherit name="outdirection" />
@@ -680,6 +690,7 @@
           msg ("Rocco carefully leans the metal scraps against the dumpster bin, creating a makeshift ramp.")
         </item>
       </selfuseon>
+      <alias>metal scrap</alias>
     </object>
     <object name="CompostPile">
       <inherit name="editor_object" />
@@ -687,6 +698,7 @@
       <feature_container />
       <close type="boolean">false</close>
       <look>A pile of compost. One may think it would be dehumanizing to wade through a compost pile for scraps. Luckily, Rocco is not a human.</look>
+      <alias>compost pile</alias>
       <object name="open can of beans">
         <inherit name="editor_object" />
         <inherit name="edible" />
@@ -704,6 +716,7 @@
         DecreaseHealth (5)
         msg ("hunger decreases by 5")
       </look>
+      <alias>trash bags</alias>
     </object>
     <exit name="closeddumpster" alias="into Dumpster Bin" to="DumpsterBin">
       <inherit name="indirection" />
@@ -748,6 +761,7 @@
           }
         }
       </onexit>
+      <alias>Dog Shore</alias>
       <exit to="GuardDogOutpost">
         <prefix>back to</prefix>
         <runscript type="boolean">false</runscript>
@@ -776,9 +790,11 @@
             }
           }
         </onexit>
+        <alias>Dog Island</alias>
         <object name="DogSign">
           <inherit name="editor_object" />
           <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u><br/><br/>Underneath is a crudely drawn raccoon with the body of a fish. The eyes are crossed out. How rude.]]></look>
+          <alias>sign</alias>
         </object>
         <exit to="DogShore">
           <prefix>back to</prefix>
@@ -801,6 +817,7 @@
           <description>The inside of the tower smells sour; the air dry and the ground is damp. The boines of fish and small rodent litter the floor. Rocco expected there to be several floors to the tower, but the ceiling extends far into the darkness. There are no dogs to be found.</description>
           <usedefaultprefix type="boolean">false</usedefaultprefix>
           <prefix>the</prefix>
+          <alias>Dog Tower</alias>
           <exit to="DogIsland">
             <prefix>out to</prefix>
           </exit>
@@ -835,7 +852,7 @@
         </object>
         <object name="bush2">
           <inherit name="editor_object" />
-          <alias>bush1</alias>
+          <alias>bush</alias>
           <look><![CDATA[It's just a {random:bush:<i>Clethera alnifolia</i> (that means bush in smart):bunch of leaves} {notfirst: you really like this one huh? Or didja forget silly raccoon. Rocco blushes}]]></look>
           <displayverbs type="stringlist">
             <value>Look at</value>
@@ -1313,12 +1330,14 @@
     <object name="DogBase">
       <inherit name="editor_room" />
       <description>Rocco's breath catches in his throat s he enters the base. In a word, beautiful. Not a scrap of trash, grime, or unidentifiable carcass. Rocco is impressed, not because of the cleanliness, but because it was the dogs who achieved it. An industrial strength roomba that scythe, teeth slowly vaccuums past. Well, that explains... some things. Beyond the grassy yard stands a large dog house, addorned with jewelery and precious metals salvaged from the trash. A global sattilite receiver is fastened to the roof, jutting towards space. Do they have a satellite!?</description>
+      <alias>Dog Base</alias>
       <exit alias="out" to="GuardDogBase">
         <inherit name="outdirection" />
       </exit>
       <object name="DogHouse">
         <inherit name="editor_room" />
         <description><![CDATA[The inside of the doghouse is more posh than the exterior. Soft carpets, polished marble, even a freakin chandelier! Rocco wishes he had time to explore, and maybe <i>borrow</i> some things, but a gentle snore freezes him in place. A lone mutt sleeps on a rug in the center of the room. To the dog's left, a table carries a key and a clear bottle. To its right, a cabinet holds unknown secrets. <br/><br/><b> Be careful where you look, Rocco</b>]]></description>
+        <alias>Dog House</alias>
         <exit alias="out" to="DogBase">
           <inherit name="outdirection" />
         </exit>
@@ -1375,6 +1394,7 @@
               msg ("Rocco sneaks around the slumbering mutt. The door is locked, Rocco needs some sort of key.")
             }
           </look>
+          <alias>Operation Room</alias>
           <exit alias="out" to="DogHouse">
             <inherit name="outdirection" />
           </exit>
