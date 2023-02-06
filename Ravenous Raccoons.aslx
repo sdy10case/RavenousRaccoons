@@ -102,20 +102,23 @@
         ]]></item>
         <item key="list fix repair"><![CDATA[
           if (not Contains (IceCreamTruck,tyre)) {
-            msg ("First things first. This puppy is missing a tyre. Casey crawls from the roof of the truck to the ground, deftly passing through the passanger window. He points at the spot that is missing a tyre. Grab one from the graveyard. {once: Rocco shudders. Not the real one you dope. The car graveyard. Rocco sighs in relief")
-            }
-            else if (not Contains (IceCreamTruck,Jerrycan)) {
-              msg ("Second part on our docet is fuel. Casey taps the empty tank, a hollow thud reveberates through the truck. That crashed plane should have some, its human tech. Prob'ly work for us too. Just don't go drinking any! Rocco places a paw to his chest, deeply offended. Casey scoffs. Yeah yeah, \"<i>You would never</i>\"")
-            }
-            else if (not Contains (IceCreamTruck,CondensedMilk)) {
-              msg ("Last thing we need is the stuff you're craving, that delectible dairy. Except, it ain't just dairy. We have to make this ice cream ourselves. Luckily for you, the doomsday prepper who owns this junkyard has a bunker full of goodies. Let's hope they can be our goodies too. See if you can grab some condensed milk down there. The rest we'll figure out later.")
-            }
-            else {
-              msg ("Our final obstacle, at long last. Rocco tilts his head in surprise at Casey's enthusiam. 'What', he responds. We've been at this for " + player.day + " days. I'm hungry now too. Last thing we need is flavors, I'm talking about sweet stuff, nuts too. I don't know where you'd find it in this junk heap but you've done well so far. Retrace some places you've already visited, might have missed something. {once:And here, take this key. Don't know where it goes, but} nothing ventured, nothing makes this ice cream taste better than dry milk.}")
-            firsttime {
-              AddToInventory (key)
-            }
+            picture ("Burnt ice cream truck.png")
+            msg ("First things first. This puppy is missing a tyre. Casey crawls from the roof of the truck to the ground, deftly passing through the passanger window. He points at the spot that is missing a tyre. Grab one from the graveyard. {once: Rocco shudders. Not the real one you dope. The car graveyard. Rocco sighs in relief}")
           }
+          else if (not Contains (IceCreamTruck,Jerrycan)) {
+            picture ("old ice cream truck.png")
+            msg ("Second part on our docet is fuel. Casey taps the empty tank, a hollow thud reveberates through the truck. That crashed plane should have some, its human tech. Prob'ly work for us too. Just don't go drinking any! Rocco places a paw to his chest, deeply offended. Casey scoffs. \"Yeah yeah, <i>You would never</i>\"")
+          }
+          else if (not Contains (IceCreamTruck,CondensedMilk)) {
+            picture ("better ice cream truck.png")
+            msg ("Last thing we need is the stuff you're craving, that delectible dairy. Except, it ain't just dairy. We have to make this ice cream ourselves. Luckily for you, the doomsday prepper who owns this junkyard has a bunker full of goodies. Let's hope they can be our goodies too. See if you can grab some condensed milk down there. The rest we'll figure out later.")
+          }
+          else {
+            msg ("Our final obstacle, at long last. Rocco tilts his head in surprise at Casey's enthusiam. 'What', he responds. We've been at this for " + player.day + " days. I'm hungry now too. Last thing we need is flavors, I'm talking about sweet stuff, nuts too. I don't know where you'd find it in this junk heap but you've done well so far. Retrace some places you've already visited, might have missed something. {once:And here, take this key. Don't know where it goes, but} nothing ventured, nothing makes this ice cream taste better than dry milk.}")
+          firsttime {
+            AddToInventory (key)
+          }
+        }
         ]]></item>
         <item key="dogs guard bones north"><![CDATA[
           msg ("Yeah those guard dogs are a piece of work. Think they're better than us just cause they got sharper teeth and the big man says they're supposed to be here. <br/>(Just a quick reminder that this is a game about ice cream and definitely nothing else)<br/>You seen Boxhead? He's been scouting the dog outpost up north, apparantly he thinks they've got a stash of real food hidden somewhere, ice cream included. <i>Rocco's ears twitch.</i>  Hiding in the bushes like a real weirdo. Seems like your kinda guy. Go find him, maybe he can help you.")
@@ -186,7 +189,21 @@
       <inherit name="editor_object" />
       <inherit name="container_closed" />
       <alias>Ice Cream Truck</alias>
-      <look>A broken ice cream truck, it has Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine inside it still works if you can get the ice cream truck to run! </look>
+      <look type="script"><![CDATA[
+        if (not GetBoolean(IceCreamTruck, "fixed")) {
+          msg ("A broken ice cream truck, it has Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine inside it still works if you can get the ice cream truck to run! ")
+        }
+        else {
+          Ask ("End the game?") {
+            if (result) {
+              msg ("Rocco and Casey look over their work.")
+              picture ("ice cream truck fixed.png")
+              msg ("Having successfully, rebuilt the ice cream machine, Rocco now had a limitless supply of ice cream, and a way to share it with others. There were some strange things that happened along the way, but it all turned out fine in the end. Just Fine,<br/><br/>Thanks for Playing!")
+              finish
+            }
+          }
+        }
+      ]]></look>
       <feature_container />
       <hidechildren />
       <alt type="stringlist">
@@ -290,6 +307,9 @@
             <item key="IceCreamTruck">
               msg ("Rocco hands the chocolate over it Casey. He drools in anticipation.")
               MoveObject (ChocolatePackets, IceCreamTruck)
+              if (Contains (IceCreamTruck,AlmondPackets)) {
+                SetObjectFlagOn (IceCreamTruck, "fixed")
+              }
             </item>
           </selfuseon>
         </object>
@@ -303,7 +323,8 @@
             <item key="IceCreamTruck">
               msg ("Rocco hands the almonds over to Casey. He nods his approval.")
               MoveObject (AlmondPackets, IceCreamTruck)
-              if () {
+              if (Contains (IceCreamTruck,ChocolatePackets)) {
+                SetObjectFlagOn (IceCreamTruck, "fixed")
               }
             </item>
           </selfuseon>
