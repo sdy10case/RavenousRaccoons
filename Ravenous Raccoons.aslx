@@ -975,13 +975,11 @@
       <alias>mysterious barrels</alias>
       <visible type="boolean">false</visible>
       <look type="script"><![CDATA[
-        Ask ("look at barrels?") {
-          get input {
-            if (result) {
-              msg ("Rocco rushes towards the barrels. Throwing the first one open and diving in. Odd...it doesn't taste like ice cream. Also, it's glowing... and green! Rocco failed to notice the signs on the barrel declaring this to be radioactive waste, and that RP may not stand for recycling plant but radiation processing. However, Rocco had no time to consider his mistake as he was already rapidly transforming. In the coming days, Rocco would destroy flatten the continent, always searchuing for his ice cream. Within the month, humans would realize his desires and begin producing an insane quantity to keep the beast satisfied. Congadulations, at the cost of your snaity you have gained more ice cream than you could ever enjoy before!<br/>Thank you for playing!")
-              picture ("racco zilla.png")
-              finish
-            }
+        Ask ("look at barrels? (this will end the game)") {
+          if (result) {
+            msg ("Rocco rushes towards the barrels. Throwing the first one open and diving in. Odd...it doesn't taste like ice cream. Also, it's glowing... and green! Rocco failed to notice the signs on the barrel declaring this to be radioactive waste, and that RP may not stand for recycling plant but radiation processing. However, Rocco had no time to consider his mistake as he was already rapidly transforming. In the coming days, Rocco would destroy flatten the continent, always searchuing for his ice cream. Within the month, humans would realize his desires and begin producing an insane quantity to keep the beast satisfied. Congadulations, at the cost of your snaity you have gained more ice cream than you could ever enjoy before!<br/>Thank you for playing!")
+            picture ("racco zilla.png")
+            finish
           }
         }
       ]]></look>
@@ -998,6 +996,7 @@
         msg ("Rocco bravely looks into the incinerator. It smells of ash and things lost.")
         firsttime {
           msg ("Rocco presses a tiny paw against the wall of the incinerator. He failed to notice as his paw pressed against the cracks along the walls. Suddenly, the cracks deepen, rushing along the stone interior until dust falls from the ceiling and settles. <br/>Rocco breathes a sigh of relief and walks back towards the entrance. He is mere inches away as the ceiling caves in and a safe crashes into the ground. The wall beyond it crumbles away, revealing a hidden doorway!<br/>Maybe<br/>Just maybe<br/>The great Trash Panda above has been leading Rocco to hidden ice cream!?")
+          MakeObjectVisible (safe)
         }
       ]]></look>
     </object>
@@ -1017,6 +1016,14 @@
           }
         }
       </use>
+      <visible type="boolean">false</visible>
+    </object>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+      <turns type="int">0</turns>
+      <day type="int">0</day>
+      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
     </object>
   </object>
   <object name="CarGraveyard">
@@ -1497,13 +1504,6 @@
         MoveObject (player, Road)
       }
     </beforefirstenter>
-    <object name="player">
-      <inherit name="editor_object" />
-      <inherit name="editor_player" />
-      <turns type="int">0</turns>
-      <day type="int">0</day>
-      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
-    </object>
   </object>
   <verb>
     <property>attack</property>
