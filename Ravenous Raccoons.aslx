@@ -352,7 +352,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <description>The piles of trash coalsce into a damp alcove. At its center, a pair of doors built into the earth itself. Rocco notices a strange symbol carved into one of the doors. A mermaid, but with the head of a raccoon. It glitters in the thin streams of light that permeate the loose garage ceiling. </description>
+    <description>The piles of trash coalsce into a damp alcove. At its center, a pair of doors built into the earth itself. Rocco notices a strange symbol carved into one of the doors. An eagle, but with the head of a raccoon. It glitters in the thin streams of light that permeate the loose garage ceiling. </description>
     <exit alias="north" to="GuardDogBase">
       <inherit name="northdirection" />
     </exit>
@@ -755,7 +755,7 @@
         </onexit>
         <object name="DogSign">
           <inherit name="editor_object" />
-          <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u>]]></look>
+          <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u><br/><br/>Underneath is a crudely drawn raccoon with the body of a fish. The eyes are crossed out. How rude.]]></look>
         </object>
         <exit to="DogShore">
           <prefix>back to</prefix>
@@ -963,32 +963,60 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <description><![CDATA[littered metal scrap scattered around you<br/>Rows of barrels with unknown content (radioactive waste)<br/>A dilapilated trash compactor, with compacted trash inside.<br/>A conveyor belt leading to a broken down incinerator, with junk laying around<br/><br/>interactions:<br/>interacting with the trash compactor can open up the ceiling due to the massive apparatus jamming up.<br/>Rows of barrels is the ending where Rocco gets the mutation powers to get the ice cream<br/>the key unlocks the barrels or something<br/>Puzzle in the safe found falling out of the ceiling presents a puzzle where Rocco needs to find 3 distinct items within the three rooms (junkyard, car stack, and recycling plant)<br/>some ideas ^ (engraved skull in the metal scrap found in the junkyard, radiation symbol on the barrel, and the star found on the pickup truck.)<br/>]]></description>
+    <description>Pushing past the pickup truck, Rocco finds himself in front of a delapitated building. The leafy vines constrast the modern structure of the building, all sharp turn and edges, very little uniformity. It looks like a sphere shifting into a million triangles. The letters RP are stampted over the entrance. Huh, Rocco didn't know the junkyard had a recycling plant. Inside, Rocco sees an old metal compactor that leads to a cold incinerator. Cracks stretch across the walls to the ceiling.</description>
     <exit alias="south" to="GuardDogBase">
       <inherit name="southdirection" />
     </exit>
     <exit alias="west" to="CarGraveyard">
       <inherit name="westdirection" />
     </exit>
-    <object name="metalscrap">
-      <inherit name="editor_object" />
-      <alias>metal scrap</alias>
-    </object>
-    <object name="ceiling">
-      <inherit name="editor_object" />
-      <alias>ceiling</alias>
-    </object>
     <object name="radioactivewaste">
       <inherit name="editor_object" />
-      <alias>radioactive waste</alias>
+      <alias>mysterious barrels</alias>
+      <visible type="boolean">false</visible>
+      <look type="script"><![CDATA[
+        Ask ("look at barrels?") {
+          get input {
+            if (result) {
+              msg ("Rocco rushes towards the barrels. Throwing the first one open and diving in. Odd...it doesn't taste like ice cream. Also, it's glowing... and green! Rocco failed to notice the signs on the barrel declaring this to be radioactive waste, and that RP may not stand for recycling plant but radiation processing. However, Rocco had no time to consider his mistake as he was already rapidly transforming. In the coming days, Rocco would destroy flatten the continent, always searchuing for his ice cream. Within the month, humans would realize his desires and begin producing an insane quantity to keep the beast satisfied. Congadulations, at the cost of your snaity you have gained more ice cream than you could ever enjoy before!<br/>Thank you for playing!")
+              picture ("racco zilla.png")
+              finish
+            }
+          }
+        }
+      ]]></look>
     </object>
     <object name="trashcompactor">
       <inherit name="editor_object" />
       <alias>trash compactor</alias>
+      <look>Rocco inspects the trash compactor. It's complex structure is difficult for a human to understand, let alone this furry little guy. Rocco, however, does see a symbol etched into the machinery: A horse with the head of a raccoon, how peculiar. </look>
     </object>
     <object name="incinerator">
       <inherit name="editor_object" />
       <alias>incinerator</alias>
+      <look type="script"><![CDATA[
+        msg ("Rocco bravely looks into the incinerator. It smells of ash and things lost.")
+        firsttime {
+          msg ("Rocco presses a tiny paw against the wall of the incinerator. He failed to notice as his paw pressed against the cracks along the walls. Suddenly, the cracks deepen, rushing along the stone interior until dust falls from the ceiling and settles. <br/>Rocco breathes a sigh of relief and walks back towards the entrance. He is mere inches away as the ceiling caves in and a safe crashes into the ground. The wall beyond it crumbles away, revealing a hidden doorway!<br/>Maybe<br/>Just maybe<br/>The great Trash Panda above has been leading Rocco to hidden ice cream!?")
+        }
+      ]]></look>
+    </object>
+    <object name="safe">
+      <inherit name="editor_object" />
+      <look><![CDATA[The safe holds a three turn combination lock, Rocco has no idea how to open it. He notices a piece of paper fell with the safe, it reads "Should one <b>use</b> this safe, remember the secrets it holds are not for the faint of heart. You must <br/>check the equipment for proper maintainance<br/>see the signs of danger presented<br/>and<br/>seek shelter in case of catyclismic events.<br/><br/>(A hint for this version, seek the symbols in places that correspond to these messages, you may have already seen them. The numbers required are the first letter of the animal found in each symbol converted to a number.<br/>  ]]></look>
+      <feature_usegive />
+      <use type="script">
+        msg ("input the safe number code")
+        get input {
+          if (result = "865") {
+            msg ("The safe clicks open. Inside lies a single button. Rocco presses it. The revealed doorway opens to a large room of sealed barrels. Could it be, barrels...of ICE CREAM!")
+            MakeObjectVisible (radioactivewaste)
+          }
+          else {
+            msg ("wrong code, try again!")
+          }
+        }
+      </use>
     </object>
   </object>
   <object name="CarGraveyard">
@@ -1278,14 +1306,14 @@
           <visible />
           <look type="script">
             if (Got(DNA sequence)) {
-              msg ("Rocco presses the DNA chip against the sensor next o the door. It hums, blasts a clicky tune, and opens. Rocco can go in")
+              msg ("Rocco presses the DNA chip against the sensor next to the door. It hums, blasts a clicky tune, and opens. Rocco can go in.")
               UnlockExit (operation entrance)
             }
             else if (Got(Green Key)) {
               msg ("Rocco smugly approaches the door, Green key in hand. He presses the key against the door, and winces as it bounces off. Oh, the door has no keyhole. He glances to the sensor next to it. A DNA sequencer? Where would he find a device that carries a dog's unique DNA signiture!? The mutt in the main hall snores loudly.")
             }
             else {
-              msg ("Rocco sneaks around the slumberin mutt. The door is locked, Rocco needs some sort of key.")
+              msg ("Rocco sneaks around the slumbering mutt. The door is locked, Rocco needs some sort of key.")
             }
           </look>
           <isroom />
