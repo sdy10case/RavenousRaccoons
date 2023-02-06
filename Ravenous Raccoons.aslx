@@ -1213,6 +1213,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <description>The </description>
     <exit name="false recycle entry" alias="north" to="RecyclingPlant">
       <inherit name="northdirection" />
       <locked />
