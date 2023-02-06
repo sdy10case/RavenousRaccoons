@@ -273,13 +273,13 @@
         <feature_container />
         <keycount type="int">1</keycount>
         <unlockmessage>Rocco opens the trolley and finds the ice cream condiments he needs! Sweet chocolate and savory almonds. Get back to Casey!</unlockmessage>
+        <openmsg> </openmsg>
+        <look><![CDATA[The trolley is ornate and dusty, like the stuff Rocco saw when the carnival came into town. Rocco is excited to finally see what is inside; he couldn't go the carnival because of the clowns. <i> Rocco refuses to elaborate</i>]]></look>
         <key type="object">key</key>
         <onopen type="script">
           AddToInventory (ChocolatePackets)
           AddToInventory (AlmondPackets)
         </onopen>
-        <openmsg> </openmsg>
-        <look><![CDATA[The trolley is ornate and dusty, like the stuff Rocco saw when the carnival came into town. Rocco is excited to finally see what is inside; he couldn't go the carnival because of the clowns. <i> Rocco refuses to elaborate</i>]]></look>
         <object name="ChocolatePackets">
           <inherit name="editor_object" />
           <look>An airline branded packet of chocolates.</look>
@@ -358,7 +358,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
-    <description><![CDATA[Rocco reaches the outskirts of a camp. The smell of blood is faintly in the air. A high metal fence bars off the entrance. Beyond it, Rocco sees flickering torches and scattered bones. An ominous <b> string> stretching across the ground in ground of the gate is barely visible.]]></description>
+    <description><![CDATA[Rocco reaches the outskirts of a camp. The smell of blood is faintly in the air. A high metal fence bars off the entrance. Beyond it, Rocco sees flickering torches and scattered bones. An ominous <b> string</b> stretching across the ground in front of the gate is barely visible.]]></description>
     <exit alias="north" to="BrokenPlane">
       <inherit name="northdirection" />
     </exit>
@@ -376,13 +376,13 @@
     </exit>
     <object name="DogCamp">
       <inherit name="editor_room" />
+      <description>The camp is less impressive than the island, but more put together. Bones are collected in piles instead of strewn about randomly, and the stench of dog is much more bearable. A couple of well put-up tents sit behind a large bonfire pit. The smoldering ashes suggest the dogs were just here, where could they all be? A small box sits besides the bonfire.</description>
       <beforefirstenter type="script">
         if (string.seen = false) {
           msg ("Rocco struts forward confidently. He stays confident even as he feels his leg break an invisible string, causing some overly complex contraption to drop a giant ice cream cone from the trees above! Rocco grunts as the cone bounces off of him and rolls to the side. While the dogs weren't the best at choosing dangerous traps, they were certainly good at driving Rocco's hunger trhough the roof!")
           DecreaseHealth (50)
         }
       </beforefirstenter>
-      <description>The camp is less impressive than the island, but more put together. Bones are collected in piles instead of strewn about randomly, and the stench of dog is much more bearable. A couple of well put-up tents sit behind a large bonfire pit. The smoldering ashes suggest the dogs were just here, where could they all be? A small box sits besides the bonfire.</description>
       <exit to="GuardDogCamp">
         <prefix>to</prefix>
       </exit>
@@ -392,17 +392,18 @@
         <inherit name="container_closed" />
         <feature_container />
         <keycount type="int">1</keycount>
-        <key type="object">Lock Pick</key>
         <look>The box is sleek and compact. A faded military insignia suggest it contained weapons at some point. Rocco is a pacifist; he frowns at the box.</look>
         <nokeymessage>You have no way to force your way through.</nokeymessage>
         <listchildren />
         <hidechildren />
         <unlockmessage>The box contains a letter written in code. Rocco stares at the mess of symbols and concludes that he is too stupid to figure it out. (Rocco's just a little guy with a little brain, and he knows it.)</unlockmessage>
+        <key type="object">Lock Pick</key>
         <object name="letter">
           <inherit name="editor_object" />
           <take />
           <takemsg>Boxhead might be able to work with this.</takemsg>
-          <look>A letter of garbled symbols and a little bit of drool. Rocco deduces the dog </look>
+          <look>A letter of garbled symbols and a little bit of drool. Rocco deduces the dog who wrote this message used his tongue to hold the pencil.</look>
+          <hashmap type="boolean">false</hashmap>
         </object>
       </object>
       <exit alias="in" to="Tent2">
@@ -410,6 +411,8 @@
       </exit>
       <object name="Tent1">
         <usedefaultprefix type="boolean">false</usedefaultprefix>
+        <look>A warmth radiates from this tent. Rushing hot air makes it bellow and sway, almost breaking free from the ground and floating away.</look>
+        <description>The tent is empty, except for a dark hole in the middle. Upon further inspection, Rocco sees it is a staircase that descends into darkness. The hot air is coming from this tent basement. Faint, rhythmic thuds emanate from the darkness.</description>
         <exit alias="out" to="DogCamp">
           <inherit name="outdirection" />
         </exit>
@@ -426,6 +429,11 @@
           <object name="Door1">
             <inherit name="editor_object" />
             <alias>Door</alias>
+            <scenery />
+            <look type="script"><![CDATA[
+              msg ("As Rocco approaches the door, the heat becomes unbearable. The sounds of production boom from all directions. Rocco can feel his arms go weak, his paws sweaty. He tries to walk away but his arms grow heavy. He's nervous, but on the surf... (<i> as the narrator loses himself in a poor imitation of Eminem, Rocco notices a plaque on the door written in English and some form of garbled language, possibly code. Sickened by both the door and the narrator's terrible rapping, Rocco retreats.</i>)  ")
+              letter.hashmap = true
+            ]]></look>
           </object>
         </object>
       </object>
@@ -458,25 +466,45 @@
     <object name="string">
       <inherit name="editor_object" />
       <seen type="boolean">false</seen>
+      <scenery />
+      <visible />
       <look type="script">
         msg ("The string leads up the gate and disappears into the trees, Rocco will be careful to avoid it.")
         string.seen = true
       </look>
-      <scenery />
-      <visible />
     </object>
     <object name="small tent">
       <inherit name="editor_object" />
-      <look type="script">
-        firsttime {
-          msg ("Boxhead is nowhere in sight. Suddenly, Rocco realizes a tent has appeared next to the gate. Two holes in the side of the tent reveal a pair of eyes with dark pupils. It's Boxhead! Boxhead's voice emanates out. \"I've opened the gate for our investigaton. Unfortunately, I'm a huge coward, and physically can't go in. You'll have to go for the both of us. Find some clues!\" Rocco is disappointed he has to do all the work, and even more surprised that Boxhead has so many disguises.")
-          UnlockExit (camp entrance)
-        }
-        otherwise {
-          msg ("Boxhead's eyes watch Rocco. It's creepy.")
-        }
-      </look>
       <visible type="boolean">false</visible>
+      <look type="script"><![CDATA[
+        if (Contains (small tent,Boxhead)) {
+          firsttime {
+            msg ("Boxhead is nowhere in sight. Suddenly, Rocco realizes a tent has appeared next to the gate. Two holes in the side of the tent reveal a pair of eyes with dark pupils. It's Boxhead! Boxhead's voice emanates out. \"I've opened the gate for our investigaton. Unfortunately, I'm a huge coward, and physically can't go in. You'll have to go for the both of us. Find some clues!\" Rocco is disappointed he has to do all the work, and even more surprised that Boxhead has so many disguises.")
+            UnlockExit (camp entrance)
+          }
+          otherwise {
+            msg ("Boxhead's eyes watch Rocco from the slits in the tent. It's creepy.")
+            if (Got(letter)) {
+              if (letter.hashmap = true) {
+                msg ("Boxhead looks at the letter and watches as you draw the symbols and english letters from the Basement door (Rocco has an excellent memory). Boxhead studies the text and key map, his eyes growing wider by the second. \"Great Trash Panda above. The dogs plan on all out war with the the ice cream store! They weren't recieving supplies, the dogs were stealing them, and now they want more. They're making weapons of medium to medium-large destruction!\" Rocco throws his arms in the air and runs around in circles. Boxhead's eyes blink rapidly before settling down, \"Calm down, Rocco! Now is not the time for panic but action! Meet me at the GuardDogBase. That place is terrifying, but we must stop this heinous plot.\" Boxhead disappears into the tent. Rocco places a paw over his heart, steadying his breathing. Scrunching his paw into a fist, Rocco readies himself for the dangers that lie ahead")
+                MoveObject (Boxhead, GuardDogBase)
+              }
+              else {
+                msg ("Boxhead looks at the letter. \"Interesting, a secret message.\" His eyes squint. \"But I have no idea what it means. You need to find a code key Rocco, search the camp more. <u>You don't even need to bring it back to me</u>, seeing it yourself should be enough.\"")
+              }
+            }
+            else if (letter.hashmap = seen) {
+              msg ("Rocco describes the plaque he saw on the basement door. Boxhead looks up, \"That's useful Rocco, but only if we have something that needs to be translated. Search the camp for something written, or other clues.\"")
+            }
+            else {
+              msg ("Rocco stares back at Boxhead, defiantly. After an awkward pause, Boxhead blinks. Rocco wins. <br/><i>look for something in the camp before seeing Boxhead again.</i>")
+            }
+          }
+        }
+        else {
+          msg ("Boxhead has moved on to the GuardDogBase.")
+        }
+      ]]></look>
     </object>
   </object>
   <object name="Dumpsite">
@@ -944,12 +972,25 @@
       <dropmsg>Rocco drops the jerrycan with a grunt. He cracks his back and performs some light stretches.</dropmsg>
       <feature_usegive />
       <use />
+      <full type="boolean">false</full>
       <ontake type="script">
         EnableTimer (dump dive timer)
       </ontake>
       <ondrop type="script">
         DisableTimer (dump dive timer)
       </ondrop>
+      <selfuseanything type="script">
+        msg ("No gas here!")
+      </selfuseanything>
+      <drink type="script">
+        if (Jerrycan.full = true) {
+          msg ("Rocco. You...you didn't. Are you throwing up now? Throwing up from the jet fuel you drank? Oh Rocco. And he's unconcious.")
+          DecreaseHealth (100)
+        }
+        else {
+          msg ("Rocco, no. There isn't even any fuel.")
+        }
+      </drink>
       <selfuseon type="scriptdictionary">
         <item key="OldRedCar">
           msg ("Unfortunately, the fuelcap of the red car is sealed shut.")
@@ -976,19 +1017,6 @@
           }
         </item>
       </selfuseon>
-      <selfuseanything type="script">
-        msg ("No gas here!")
-      </selfuseanything>
-      <full type="boolean">false</full>
-      <drink type="script">
-        if (Jerrycan.full = true) {
-          msg ("Rocco. You...you didn't. Are you throwing up now? Throwing up from the jet fuel you drank? Oh Rocco. And he's unconcious.")
-          DecreaseHealth (100)
-        }
-        else {
-          msg ("Rocco, no. There isn't even any fuel.")
-        }
-      </drink>
     </object>
     <object name="OldRedCar">
       <inherit name="editor_object" />
@@ -1002,6 +1030,7 @@
       <isopen type="boolean">false</isopen>
       <keycount type="int">1</keycount>
       <unlockmessage>Rocco clicks the electric car opener, but the pickup battery is dead. Scrambling up the passenger door, he inserts the key and twists. The door swings upon with Rocco still attached. As Rocco collects himself, the rusted joints of the door crack sending Rocco, door and all, crashing to the ground. Rocco pats himself down, happy to be unharmed, before noticng the car key was crushed by the door. On the bright side, the car was now open. </unlockmessage>
+      <locked />
       <key type="object">Car key</key>
       <use type="script">
         if (OldRedCar.totaled = false) {
@@ -1042,7 +1071,6 @@
           msg ("The car is not on, Rocco wishes he still had the key...")
         }
       </drive>
-      <locked />
       <object name="nuts">
         <inherit name="editor_object" />
         <inherit name="edible" />
@@ -1256,6 +1284,7 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <description type="string"></description>
     <firstenter type="script"><![CDATA[
       msg ("Rocco stands in the parlor. The odd texture of linoleum marks this holy place, so alien to his own home. The ice cream he saw from the window is within his reach.<br/>What does Rocco do?")
       get input {
@@ -1268,7 +1297,6 @@
         MoveObject (player, RaccoonBase)
       }
     ]]></firstenter>
-    <description type="string"></description>
   </object>
   <verb>
     <property>enterbunker</property>
