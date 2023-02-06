@@ -37,7 +37,7 @@
       msg ("The sun shines brightly, a new day has begun.")
       player.turns = player.turns + (30 - (player.turns % 30))
       player.day = player.turns / 30
-      IncreaseHealth (20)
+      IncreaseHealth (21)
     </onhealthzero>
   </game>
   <object name="RaccoonBase">
@@ -245,11 +245,7 @@
       <alias>Tail</alias>
       <feature_container />
       <isopen />
-      <look type="script">
-        msg ("The airplane tail is large, the colors have faded to the point where it is generic. You examine it and notice that there is a fuel nozzle hanging out of the fuel tank.")
-        if (Got(Jerrycan)) {
-        }
-      </look>
+      <look>The airplane tail is large, the colors have faded to the point where it is generic. You examine it and notice that there is a fuel nozzle hanging out of the fuel tank. Rocco hasn't seen many planes (one to be exact), but he was fairly certain planes don't have fuel nozzles. Raccoons, however, doesn't care nearly as much about the rules of plausibility as humans do, so he ignores it.</look>
       <fillcan type="script">
         if (Got(Jerrycan)) {
           AddToInventory (FilledCan)
@@ -282,6 +278,8 @@
           AddToInventory (ChocolatePackets)
           AddToInventory (AlmondPackets)
         </onopen>
+        <openmsg> </openmsg>
+        <look><![CDATA[The trolley is ornate and dusty, like the stuff Rocco saw when the carnival came into town. Rocco is excited to finally see what is inside; he couldn't go the carnival because of the clowns. <i> Rocco refuses to elaborate</i>]]></look>
         <object name="ChocolatePackets">
           <inherit name="editor_object" />
           <look>An airline branded packet of chocolates.</look>
@@ -891,7 +889,38 @@
         <item key="pickuptruck">
           msg ("Rocco attempts to siphon gas from the pickup truck. When he opens the truck's fuel cap, a puff of smoke billows out like a cough, Nothing there.")
         </item>
+        <item key="AirplaneTail">
+          if (Jerrycan.full = false) {
+            msg ("Rocco fills the Jerrycan with fuel. Better hurry back to Casey before Rocco's little paws give out!")
+            Jerrycan.full = true
+          }
+          else {
+            msg ("Rocco already has enough fuel!")
+          }
+        </item>
+        <item key="IceCreamTruck">
+          if (Jerrycan.full = true) {
+            msg ("Rocco pours the gas into the truck. Casey is on top of the truck, buffering out dents and rewiring the electronics.")
+            MoveObject (Jerrycan, IceCreamTruck)
+          }
+          else {
+            msg ("The jerrycan is empty!")
+          }
+        </item>
       </selfuseon>
+      <selfuseanything type="script">
+        msg ("No gas here!")
+      </selfuseanything>
+      <full type="boolean">false</full>
+      <drink type="script">
+        if (Jerrycan.full = true) {
+          msg ("Rocco. You...you didn't. Are you throwing up now? Throwing up from the jet fuel you drank? Oh Rocco. And he's unconcious.")
+          DecreaseHealth (100)
+        }
+        else {
+          msg ("Rocco, no. There isn't even any fuel.")
+        }
+      </drink>
     </object>
     <object name="OldRedCar">
       <inherit name="editor_object" />
