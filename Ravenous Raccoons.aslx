@@ -81,7 +81,7 @@
       <look>It's Casey, your old pal. He's a more curious raccoon. Always tinkering with something from the scrap heap, and today is no different. {once:but what is this, a machine...with ice cream?}</look>
       <attr name="feature_usegive" type="boolean">false</attr>
       <asklist type="stringlist">
-        <value>ask Casey about </value>
+        <value><![CDATA[type (ask Casey about:<subject>): ]]></value>
         <value>food</value>
         <value>truck</value>
         <value>treasure</value>
