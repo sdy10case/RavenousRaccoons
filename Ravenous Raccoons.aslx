@@ -358,6 +358,7 @@
     <attr name="grid_fill">Transparent</attr>
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
+    <description><![CDATA[Rocco reaches the outskirts of a camp. The smell of blood is faintly in the air. A high metal fence bars off the entrance. Beyond it, Rocco sees flickering torches and scattered bones. An ominous <b> string> stretching across the ground in ground of the gate is barely visible.]]></description>
     <exit alias="north" to="BrokenPlane">
       <inherit name="northdirection" />
     </exit>
@@ -367,30 +368,58 @@
     <exit alias="west" to="Dumpsite">
       <inherit name="westdirection" />
     </exit>
-    <exit to="DogCamp">
+    <exit name="camp entrance" to="DogCamp">
       <prefix>to</prefix>
+      <locked />
+      <lockmessage>Rocco approaches the gate,but sees no way to get through</lockmessage>
+      <runscript type="boolean">false</runscript>
     </exit>
     <object name="DogCamp">
       <inherit name="editor_room" />
+      <beforefirstenter type="script">
+        if (string.seen = false) {
+          msg ("Rocco struts forward confidently. He stays confident even as he feels his leg break an invisible string, causing some overly complex contraption to drop a giant ice cream cone from the trees above! Rocco grunts as the cone bounces off of him and rolls to the side. While the dogs weren't the best at choosing dangerous traps, they were certainly good at driving Rocco's hunger trhough the roof!")
+          DecreaseHealth (50)
+        }
+      </beforefirstenter>
+      <description>The camp is less impressive than the island, but more put together. Bones are collected in piles instead of strewn about randomly, and the stench of dog is much more bearable. A couple of well put-up tents sit behind a large bonfire pit. The smoldering ashes suggest the dogs were just here, where could they all be? A small box sits besides the bonfire.</description>
       <exit to="GuardDogCamp">
         <prefix>to</prefix>
       </exit>
-      <object name="SheetMetal">
+      <object name="military box">
         <inherit name="editor_object" />
+        <inherit name="container_lockable" />
+        <inherit name="container_closed" />
+        <feature_container />
+        <keycount type="int">1</keycount>
+        <key type="object">Lock Pick</key>
+        <look>The box is sleek and compact. A faded military insignia suggest it contained weapons at some point. Rocco is a pacifist; he frowns at the box.</look>
+        <nokeymessage>You have no way to force your way through.</nokeymessage>
+        <listchildren />
+        <hidechildren />
+        <unlockmessage>The box contains a letter written in code. Rocco stares at the mess of symbols and concludes that he is too stupid to figure it out. (Rocco's just a little guy with a little brain, and he knows it.)</unlockmessage>
+        <object name="letter">
+          <inherit name="editor_object" />
+          <take />
+          <takemsg>Boxhead might be able to work with this.</takemsg>
+          <look>A letter of garbled symbols and a little bit of drool. Rocco deduces the dog </look>
+        </object>
       </object>
       <exit alias="in" to="Tent2">
         <inherit name="indirection" />
       </exit>
       <object name="Tent1">
-        <inherit name="editor_room" />
+        <usedefaultprefix type="boolean">false</usedefaultprefix>
         <exit alias="out" to="DogCamp">
           <inherit name="outdirection" />
         </exit>
-        <exit alias="in" to="Basement">
+        <exit alias="into" to="Basement">
           <inherit name="indirection" />
+          <prefix>the</prefix>
         </exit>
         <object name="Basement">
           <inherit name="editor_room" />
+          <description>Cold, metallic stairs lead to a industrial corridor stained with ash and oil. Rocco feels heat bellow from the passageway. A door on the opposite end of the corridor seems to waver and shake as Rocco stares at it. The sounds of clanging metal on metal and rushing flames deafen his ears. Rocco is scared.</description>
           <exit alias="out" to="Tent1">
             <inherit name="outdirection" />
           </exit>
@@ -401,20 +430,53 @@
         </object>
       </object>
       <object name="Tent2">
-        <inherit name="editor_room" />
-        <exit alias="out" to="DogCamp">
+        <look>This tent has muddy pawprints all over the outside. Clearly these dogs don't know how to wipe their paws.</look>
+        <description>Inside the tent is a mishmash of chew toys, food bowls, and... industrial equipment? Most is too heavy to pick up, except for a lockpick lying amongst the pipes and metal scrap.</description>
+        <exit alias="out to" to="DogCamp">
           <inherit name="outdirection" />
+          <prefix>the</prefix>
         </exit>
         <object name="Lock Pick">
           <inherit name="editor_object" />
+          <look>A standard lockpick. The tool of the trade for thiefs, rogues, and assassins. Also a baby raccoon's favorite toy.</look>
+          <take />
+          <takemsg>This might work on that box outside.</takemsg>
         </object>
-        <object name="Fruit">
+        <object name="kibble">
           <inherit name="editor_object" />
+          <inherit name="edible" />
+          <look>dry dog food. Good enough for them, good enough for Rocco.</look>
+          <feature_edible />
+          <eatmsg>Meaty</eatmsg>
+          <eathealth type="int">4</eathealth>
         </object>
       </object>
       <exit to="Tent1">
         <prefix>in</prefix>
       </exit>
+    </object>
+    <object name="string">
+      <inherit name="editor_object" />
+      <seen type="boolean">false</seen>
+      <look type="script">
+        msg ("The string leads up the gate and disappears into the trees, Rocco will be careful to avoid it.")
+        string.seen = true
+      </look>
+      <scenery />
+      <visible />
+    </object>
+    <object name="small tent">
+      <inherit name="editor_object" />
+      <look type="script">
+        firsttime {
+          msg ("Boxhead is nowhere in sight. Suddenly, Rocco realizes a tent has appeared next to the gate. Two holes in the side of the tent reveal a pair of eyes with dark pupils. It's Boxhead! Boxhead's voice emanates out. \"I've opened the gate for our investigaton. Unfortunately, I'm a huge coward, and physically can't go in. You'll have to go for the both of us. Find some clues!\" Rocco is disappointed he has to do all the work, and even more surprised that Boxhead has so many disguises.")
+          UnlockExit (camp entrance)
+        }
+        otherwise {
+          msg ("Boxhead's eyes watch Rocco. It's creepy.")
+        }
+      </look>
+      <visible type="boolean">false</visible>
     </object>
   </object>
   <object name="Dumpsite">
@@ -696,19 +758,25 @@
           <inherit name="editor_object" />
           <alias>bush3</alias>
           <look type="script"><![CDATA[
-            if (Got(Ice Cream Wrapper)) {
-              firsttime {
-                msg ("A raccoon face bursts from the bush. \"Oh! You there!\" Rocco looks around before meekly pointing at himself. \"Yes, you bonehead. Where did you get that wrapper!\" Rocco gestures towards the tower. \"You went in alone! You madman!\" Rocco shrugs. \"Wait, it was empty? That explains the lack of recent movement.\" The raccoon pulls a pair of binoculars from within the bush.")
-                msg ("After peering at the tower for a second, he brings his hands down and wrings them together slowly. \"Alright guy listen\" Rocco crosses his arms; he is not <b>guy</b>, he is Rocco. \"Alright fine, Rocco. I'm Boxhead, happy? Moving on, that wrapper is the evidence I needed. I'm certain that the dogs are importing goods from the outside world, and they ain't sharing one bit.\" Rocco clasps his cheecks with his paws, as if to gesture <i>even ice cream</i>. Boxhead sighs, \"Yes, cream for brains, even ice cream. If you were able to get in and out of that tower, that means this place is abandoned, and my time is wasted here. Meet me at the GuardDogCamp, there's sure to be clues there. So long!\" Boxheasd dissapears back into the bush. Rocco waits a few moments for Boxhead to leave before realizing the other raccoon has vanished into thin air.")
-                MoveObject (Boxhead, GuardDogCamp)
-                msg ("Rocco takes this as his cue to leave as well.")
+            if (Contains (bush,Boxhead)) {
+              if (Got(Ice Cream Wrapper)) {
+                firsttime {
+                  msg ("A raccoon face bursts from the bush. \"Oh! You there!\" Rocco looks around before meekly pointing at himself. \"Yes, you bonehead. Where did you get that wrapper!\" Rocco gestures towards the tower. \"You went in alone! You madman!\" Rocco shrugs. \"Wait, it was empty? That explains the lack of recent movement.\" The raccoon pulls a pair of binoculars from within the bush.")
+                  msg ("After peering at the tower for a second, he brings his hands down and wrings them together slowly. \"Alright guy listen\" Rocco crosses his arms; he is not <b>guy</b>, he is Rocco. \"Alright fine, Rocco. I'm Boxhead, happy? Moving on, that wrapper is the evidence I needed. I'm certain that the dogs are importing goods from the outside world, and they ain't sharing one bit.\" Rocco clasps his cheecks with his paws, as if to gesture <i>even ice cream</i>. Boxhead sighs, \"Yes, cream for brains, even ice cream. If you were able to get in and out of that tower, that means this place is abandoned, and my time is wasted here. Meet me at the GuardDogCamp, there's sure to be clues there. So long!\" Boxheasd dissapears back into the bush. Rocco waits a few moments for Boxhead to leave before realizing the other raccoon has vanished into thin air.")
+                  msg ("Rocco takes this as his cue to leave as well.")
+                  MoveObject (Boxhead, small tent)
+                  MakeObjectVisible (small tent)
+                }
+                otherwise {
+                  msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
+                }
               }
-              otherwise {
-                msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
+              else {
+                msg ("The bush shakes and rustles. Something is inside but doesn't want to show itself. <i>I just need to get inside </i> Rocco hears a voice mutter to itself.")
               }
             }
             else {
-              msg ("The bush shakes and rustles. Something is inside but doesn't want to show itself. <i>I just need to get inside </i> Rocco hears a voice mutter to itself.")
+              msg ("")
             }
           ]]></look>
           <object name="Boxhead">
