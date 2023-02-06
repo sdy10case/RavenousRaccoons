@@ -32,6 +32,7 @@
         MoveObjectHere (Jerrycan)
         msg ("Rocco drops the Jerrycan from exhaustion.")
       }
+      DisableTimer (dump dive timer)
       msg ("Uh Oh! Rocco is too hungry to continue. He blacks out. When he awakes, he finds himself back at the Base. If his body didn't hurt so much, he would think it was a miracle. He could also clearly see the marks where Casey dragged him through the dirt and trash! ")
       MoveObject (player, RaccoonBase)
       msg ("The sun shines brightly, a new day has begun.")
@@ -1007,6 +1008,7 @@
       <inherit name="editor_object" />
       <look><![CDATA[The safe holds a three turn combination lock, Rocco has no idea how to open it. He notices a piece of paper fell with the safe, it reads "Should one <b>use</b> this safe, remember the secrets it holds are not for the faint of heart. You must <br/>check the equipment for proper maintainance<br/>see the signs of danger presented<br/>and<br/>seek shelter in case of catyclismic events.<br/><br/>(A hint for this version, seek the symbols in places that correspond to these messages, you may have already seen them. The numbers required are the first letter of the animal found in each symbol converted to a number.<br/>  ]]></look>
       <feature_usegive />
+      <visible type="boolean">false</visible>
       <use type="script">
         msg ("input the safe number code")
         get input {
@@ -1019,14 +1021,6 @@
           }
         }
       </use>
-      <visible type="boolean">false</visible>
-    </object>
-    <object name="player">
-      <inherit name="editor_object" />
-      <inherit name="editor_player" />
-      <turns type="int">0</turns>
-      <day type="int">0</day>
-      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
     </object>
   </object>
   <object name="CarGraveyard">
@@ -1287,6 +1281,8 @@
           <inherit name="container_closed" />
           <look><![CDATA[A cupboard made from rich mahogony. While well-made, it appears to have been <u>jostled and dragged </u> along the ground to be put into place. Makes sense seeing how dogs lack hands. {if Cupboard.isopened:broken ceramic litters the floor, the mutt seems not to care.}]]></look>
           <feature_container />
+          <hidechildren />
+          <listchildren />
           <onopen type="script">
             firsttime {
               msg ("As Rocco opens the cabinet, misplaced plates crash onto the ground. The mutt awakens, slobber and fresh drool spraying Rocco as it barks the alarm. Rocco hightails it out of the camp as sirens blare throughout the doghouse. Luckily, dogs have a relatievly short attention span, so they should forget in about... now. Despite his fortune, Rocco became very hungry from all his running around.")
@@ -1297,8 +1293,6 @@
               msg ("the cabinet doors swing open.")
             }
           </onopen>
-          <hidechildren />
-          <listchildren />
           <object name="ice cream sandwich">
             <inherit name="editor_object" />
             <inherit name="edible" />
@@ -1314,6 +1308,10 @@
           <inherit name="container_open" />
           <inherit name="container_lockable" />
           <visible />
+          <isroom />
+          <attr name="feature_container" type="boolean">false</attr>
+          <keycount type="int">1</keycount>
+          <description>Inside the operation room, Rocco seizes up. The room is full of dogs. Some wearing suits, others in combat gear. The majority are staring at a large screen that coveres the far wall like a team preparing to launch a rocket into space. Hopefully, this isn't that. Rocco has no idea how he could possibly reach the shutoff switch. Taking a single step into this room would be like feeding himself to the... the... well the dogs! Oh cruel fate, to get so close yet be robbed at the last possible moment. How will Rocco ever get his ice cr- oh. Rocco turns to his left during his melodramatic monologue. The switch is next to the door. Nice. </description>
           <look type="script">
             if (Got(DNA sequence)) {
               msg ("Rocco presses the DNA chip against the sensor next to the door. It hums, blasts a clicky tune, and opens. Rocco can go in.")
@@ -1326,10 +1324,6 @@
               msg ("Rocco sneaks around the slumbering mutt. The door is locked, Rocco needs some sort of key.")
             }
           </look>
-          <isroom />
-          <attr name="feature_container" type="boolean">false</attr>
-          <keycount type="int">1</keycount>
-          <description>Inside the operation room, Rocco seizes up. The room is full of dogs. Some wearing suits, others in combat gear. The majority are staring at a large screen that coveres the far wall like a team preparing to launch a rocket into space. Hopefully, this isn't that. Rocco has no idea how he could possibly reach the shutoff switch. Taking a single step into this room would be like feeding himself to the... the... well the dogs! Oh cruel fate, to get so close yet be robbed at the last possible moment. How will Rocco ever get his ice cr- oh. Rocco turns to his left during his melodramatic monologue. The switch is next to the door. Nice. </description>
           <exit alias="out" to="DogHouse">
             <inherit name="outdirection" />
           </exit>
@@ -1367,14 +1361,14 @@
             <visible />
             <keycount type="int">1</keycount>
             <autoopen type="boolean">false</autoopen>
-            <key type="object">Green Key</key>
             <unlockmessage>The collar has a keyhole on the side. Rocco gingerly inserts the key, careful to not wake the slumbering beast. As the key turns, a chip shoots out of the collar and into his paw. It's a DNA sequence!</unlockmessage>
-            <onunlock type="script">
-              AddToInventory (DNA sequence)
-            </onunlock>
             <scenery type="boolean">false</scenery>
             <hidechildren />
             <nokeymessage>You do not have the key.</nokeymessage>
+            <key type="object">Green Key</key>
+            <onunlock type="script">
+              AddToInventory (DNA sequence)
+            </onunlock>
             <object name="DNA sequence">
               <inherit name="editor_object" />
               <visible />
@@ -1408,6 +1402,7 @@
     </exit>
     <object name="doorslot">
       <inherit name="editor_object" />
+      <feature_container />
       <look type="script"><![CDATA[
         if (Contains (doorslot,Boxhead)) {
           firsttime {
@@ -1424,7 +1419,6 @@
           msg ("Rocco thinks about scaling the wall, but he was raised to respect other's privacy. Rocco knocks on the door and waits for someone to answer. After 20 minutes, Rocco feels his cheeks grow red. He coughs to clear the awkward silence <i> (even though he's alone. Well, except for us)</i> and walks away like nothing happened. ")
         }
       ]]></look>
-      <feature_container />
     </object>
   </object>
   <object name="StoreEntrance">
@@ -1507,6 +1501,13 @@
         MoveObject (player, Road)
       }
     </beforefirstenter>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+      <turns type="int">0</turns>
+      <day type="int">0</day>
+      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
+    </object>
   </object>
   <verb>
     <property>attack</property>
