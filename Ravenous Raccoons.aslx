@@ -479,7 +479,7 @@
           <object name="Door1">
             <inherit name="editor_object" />
             <alias>Door</alias>
-            <scenery />
+            <scenery type="boolean">false</scenery>
             <look type="script"><![CDATA[
               msg ("As Rocco approaches the door, the heat becomes unbearable. The sounds of production boom from all directions. Rocco can feel his arms go weak, his paws sweaty. He tries to walk away but his arms grow heavy. He's nervous, but on the surf... (<i> as the narrator loses himself in a poor imitation of Eminem, Rocco notices a plaque on the door written in English and some form of garbled language, possibly code. Sickened by both the door and the narrator's terrible rapping, Rocco retreats.</i>)  ")
               letter.hashmap = true
@@ -1476,11 +1476,6 @@
     <property>enterbunker</property>
     <pattern>enter bunker</pattern>
     <defaultexpression>"You can't enter bunker " + object.article + "."</defaultexpression>
-  </verb>
-  <verb>
-    <property>fillcan</property>
-    <pattern>fill can</pattern>
-    <defaultexpression>"You can't fill can " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>takecondensedmilk</property>
