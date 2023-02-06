@@ -195,6 +195,11 @@
       <alt type="stringlist">
         <value>truck</value>
       </alt>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>Open</value>
+        <value>Close</value>
+      </displayverbs>
       <look type="script"><![CDATA[
         if (not GetBoolean(IceCreamTruck, "fixed")) {
           msg ("A broken ice cream truck, it has Rory's Ice Cream logo and mascot engraved on the side of it. The ice cream machine inside it still works if you can get the ice cream truck to run! ")
@@ -210,11 +215,6 @@
           }
         }
       ]]></look>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-        <value>Open</value>
-        <value>Close</value>
-      </displayverbs>
     </object>
     <exit name="broken road" alias="west" to="Road">
       <inherit name="westdirection" />
@@ -224,6 +224,9 @@
     <object name="bean bag">
       <inherit name="editor_object" />
       <look>A large bag rumored to be full of beans. Canned beans are rather rigid, but Rocco has found the bagged form to be a perfect place to sleep.</look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <sleepon type="script">
         Ask ("sleep, replenishing hunger and ending the day?") {
           if (result) {
@@ -238,9 +241,6 @@
           }
         }
       </sleepon>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
   </object>
   <object name="BrokenPlane">
@@ -272,6 +272,9 @@
       <feature_container />
       <isopen />
       <look>The airplane tail is large, the colors have faded to the point where it is generic. You examine it and notice that there is a fuel nozzle hanging out of the fuel tank. Rocco hasn't seen many planes (one to be exact), but he was fairly certain planes don't have fuel nozzles. Raccoons, however, doesn't care nearly as much about the rules of plausibility as humans do, so he ignores it.</look>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <fillcan type="script">
         if (Got(Jerrycan)) {
           AddToInventory (FilledCan)
@@ -280,9 +283,6 @@
           msg ("You may need to find something to contain the fuel to bring it with you!")
         }
       </fillcan>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
     <object name="cockpit">
       <inherit name="editor_object" />
@@ -545,6 +545,9 @@
     <object name="small tent">
       <inherit name="editor_object" />
       <visible type="boolean">false</visible>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <look type="script"><![CDATA[
         if (Contains (small tent,Boxhead)) {
           firsttime {
@@ -575,9 +578,6 @@
           msg ("Boxhead has moved on to the GuardDogBase.")
         }
       ]]></look>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
   </object>
   <object name="Dumpsite">
@@ -844,6 +844,9 @@
         <object name="bush3">
           <inherit name="editor_object" />
           <alias>bush2</alias>
+          <displayverbs type="stringlist">
+            <value>Look at</value>
+          </displayverbs>
           <look type="script">
             firsttime {
               msg ("As Rocco places his paw against the leaves, an apple rolls from the bush. Wait, don't apples grow from trees? Rocco stares at the apple, then turns to the toxic goo in the moat, then back to the apple. He decides it is better not to think about it")
@@ -853,9 +856,6 @@
               msg ("Sadly, there are no more bush apples.")
             }
           </look>
-          <displayverbs type="stringlist">
-            <value>Look at</value>
-          </displayverbs>
           <object name="apple">
             <inherit name="editor_object" />
             <inherit name="edible" />
@@ -868,6 +868,9 @@
         <object name="bush">
           <inherit name="editor_object" />
           <alias>bush3</alias>
+          <displayverbs type="stringlist">
+            <value>Look at</value>
+          </displayverbs>
           <look type="script"><![CDATA[
             if (Contains (bush,Boxhead)) {
               if (Got(Ice Cream Wrapper)) {
@@ -890,9 +893,6 @@
               msg ("Boxhead left his hiding spot, he said to meet him at the GuardDogCamp.")
             }
           ]]></look>
-          <displayverbs type="stringlist">
-            <value>Look at</value>
-          </displayverbs>
           <object name="Boxhead">
             <inherit name="editor_object" />
           </object>
@@ -1013,6 +1013,9 @@
       <inherit name="editor_object" />
       <alias>mysterious barrels</alias>
       <visible type="boolean">false</visible>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <look type="script"><![CDATA[
         Ask ("These barrels look suspicious, are you sure that you want to look into them?") {
           if (result) {
@@ -1022,9 +1025,6 @@
           }
         }
       ]]></look>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
     <object name="trashcompactor">
       <inherit name="editor_object" />
@@ -1037,6 +1037,9 @@
     <object name="incinerator">
       <inherit name="editor_object" />
       <alias>incinerator</alias>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <look type="script"><![CDATA[
         msg ("Rocco bravely looks into the incinerator. It smells of ash and things lost.")
         firsttime {
@@ -1044,15 +1047,16 @@
           MakeObjectVisible (safe)
         }
       ]]></look>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
     <object name="safe">
       <inherit name="editor_object" />
       <look><![CDATA[The safe holds a three turn combination lock, Rocco has no idea how to open it. He notices a piece of paper fell with the safe, it reads "Should one <b>use</b> this safe, remember the secrets it holds are not for the faint of heart. You must <br/>check the equipment for proper maintainance<br/>see the signs of danger presented<br/>and<br/>seek shelter in case of catyclismic events.<br/><br/>(A hint for this version, seek the symbols in places that correspond to these messages, you may have already seen them. The numbers required are the first letter of the animal found in each symbol converted to a number.<br/>  ]]></look>
       <feature_usegive />
       <visible type="boolean">false</visible>
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>use</value>
+      </displayverbs>
       <use type="script">
         msg ("input the safe number code")
         get input {
@@ -1065,10 +1069,6 @@
           }
         }
       </use>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-        <value>use</value>
-      </displayverbs>
     </object>
   </object>
   <object name="CarGraveyard">
@@ -1454,6 +1454,9 @@
     <object name="doorslot">
       <inherit name="editor_object" />
       <feature_container />
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
       <look type="script"><![CDATA[
         if (Contains (doorslot,Boxhead)) {
           firsttime {
@@ -1470,9 +1473,6 @@
           msg ("Rocco thinks about scaling the wall, but he was raised to respect other's privacy. Rocco knocks on the door and waits for someone to answer. After 20 minutes, Rocco feels his cheeks grow red. He coughs to clear the awkward silence <i> (even though he's alone. Well, except for us)</i> and walks away like nothing happened. ")
         }
       ]]></look>
-      <displayverbs type="stringlist">
-        <value>Look at</value>
-      </displayverbs>
     </object>
   </object>
   <object name="StoreEntrance">
@@ -1580,7 +1580,7 @@
     <unresolved>just type help for quick. Trying to help somebody specifically? Try simple verbs and context clues from room descriptions</unresolved>
     <pattern>help</pattern>
     <script><![CDATA[
-      msg ("Welcome to Ravenous Raccoon. Rocco is a Raccoon desperate for some ice cream, and he needs it before he dies from withdra- I mean lack of happiness! Heh... Anyway<br/><br/>Rocco has 30 days to get that ice cream. Each day consists of 30 turns and you have thirty days. That's 900 turns total. A turn is any action, whether you type it in or click on a hyperlink, so act carefully!<br/><br/>Additionally, we have the health bar: AKA Rocco is a very hungry critter. Every turn Rocco's hunger will drop by 1. It can be replenished by items found across the junkyard, or by sleeping at the raccoon base. Sleeping will fully recover health, but it will also end the day, so choose when you sleep carefully.<br/><br/>If hunger reaches zero, Rocco is carefully transported back to the Raccoon Base, hunger is restored to 20%, and a new day begins.<br/><br/>Rocco's goals lie at the far reaches of the junkyard. You can help him by just exploring or getting a helping hand from Casey. Go talk  to him now for the first questline. This game is meant to be comical and silly; don't take things too seriously and have fun!")
+      msg ("Welcome to Ravenous Raccoon. Rocco is a Raccoon desperate for some ice cream, and he needs it before he dies from withdra- I mean lack of happiness! Heh... Anyway<br/><br/>Rocco has 30 days to get that ice cream. Each day consists of 30 turns and you have thirty days. That's 900 turns total. A turn is any action, whether you type it in or click on a hyperlink, so act carefully!<br/><br/>Additionally, we have the health bar: AKA Rocco is a very hungry critter. Every turn Rocco's hunger will drop by 1. It can be replenished by items found across the junkyard, or by sleeping at the raccoon base. Sleeping will fully recover health, but it will also end the day, so choose when you sleep carefully.<br/><br/>If hunger reaches zero, Rocco is carefully transported back to the Raccoon Base, hunger is restored to 20%, and a new day begins.<br/><br/>The primary actions used in this game are look at and use, often in the form Use <object> on <object>. If stuck, try one of these actions with the items around you.<br/><br/>Rocco's goals lie at the far reaches of the junkyard. You can help him by just exploring or getting a helping hand from Casey. Go talk  to him now for the first questline. This game is meant to be comical and silly; don't take things too seriously and have fun!")
     ]]></script>
   </command>
   <verb>
