@@ -964,6 +964,9 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <description>Pushing past the pickup truck, Rocco finds himself in front of a delapitated building. The leafy vines constrast the modern structure of the building, all sharp turn and edges, very little uniformity. It looks like a sphere shifting into a million triangles. The letters RP are stampted over the entrance. Huh, Rocco didn't know the junkyard had a recycling plant. Inside, Rocco sees an old metal compactor that leads to a cold incinerator. Cracks stretch across the walls to the ceiling.</description>
+    <enter type="script">
+      picture ("recycling plant.png")
+    </enter>
     <exit alias="south" to="GuardDogBase">
       <inherit name="southdirection" />
     </exit>
