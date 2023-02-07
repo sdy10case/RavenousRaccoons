@@ -6,7 +6,7 @@
     <gameid>16087e81-508d-4efd-89b1-ca254cd139bc</gameid>
     <version>1.0</version>
     <firstpublished>2023</firstpublished>
-    <author>A Trizbort User</author>
+    <author>Team 11</author>
     <description />
     <cover>Raccoon with ice cream.png</cover>
     <povstatusattributes type="stringdictionary">
@@ -28,6 +28,10 @@
     <defaultfont>'Courier New', Courier, monospace</defaultfont>
     <defaultwebfont>Courier Prime</defaultwebfont>
     <defaultbackground>SlateGray</defaultbackground>
+    <defaultforeground>Coral</defaultforeground>
+    <gridmap />
+    <respondtogridclicks />
+    <mapexitcolour>Black</mapexitcolour>
     <start type="script">
     </start>
     <onhealthzero type="script">
@@ -43,10 +47,6 @@
       player.day = player.turns / 30
       IncreaseHealth (21)
     </onhealthzero>
-    <defaultforeground>Coral</defaultforeground>
-    <gridmap />
-    <respondtogridclicks />
-    <mapexitcolour>Black</mapexitcolour>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -162,9 +162,9 @@
       <listchildren />
       <openmsg>time for snacks!</openmsg>
       <closemsg>thank you fridge!</closemsg>
+      <attr name="feature_edible" type="boolean">false</attr>
       <onclose type="script">
       </onclose>
-      <attr name="feature_edible" type="boolean">false</attr>
       <object name="moldy bread">
         <inherit name="editor_object" />
         <inherit name="edible" />
@@ -1127,7 +1127,7 @@
       <alias>Jerrycan</alias>
       <look>A jerrycan used to transport fuel. Don't drink any Rocco!</look>
       <take />
-      <takemsg>The jerrycan is heavy, even when its empty. Rocco better hurry or he'll get hungry fast!</takemsg>
+      <takemsg><![CDATA[The jerrycan is heavy, even when its empty. <b> Rocco's hunger drops per second while carrying the can</b>. Rocco better hurry or he'll get hungry fast!]]></takemsg>
       <dropmsg>Rocco drops the jerrycan with a grunt. He cracks his back and performs some light stretches.</dropmsg>
       <feature_usegive />
       <use />
