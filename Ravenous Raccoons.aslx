@@ -312,18 +312,19 @@
         <unlockmessage>Rocco opens the trolley and finds the ice cream condiments he needs! Sweet chocolate and savory almonds. Get back to Casey!</unlockmessage>
         <openmsg> </openmsg>
         <look><![CDATA[The trolley is ornate and dusty, like the stuff Rocco saw when the carnival came into town. Rocco is excited to finally see what is inside; he couldn't go the carnival because of the clowns. <i> Rocco refuses to elaborate</i>]]></look>
+        <alias>Food Drink Trolley</alias>
         <key type="object">key</key>
         <onopen type="script">
           AddToInventory (ChocolatePackets)
           AddToInventory (AlmondPackets)
         </onopen>
-        <alias>Food Drink Trolley</alias>
         <object name="ChocolatePackets">
           <inherit name="editor_object" />
           <look>An airline branded packet of chocolates.</look>
           <take />
           <takemsg>You took the chocolates.</takemsg>
           <feature_usegive />
+          <alias>Chocolate Packets</alias>
           <selfuseon type="scriptdictionary">
             <item key="IceCreamTruck">
               msg ("Rocco hands the chocolate over it Casey. He drools in anticipation.")
@@ -333,7 +334,6 @@
               }
             </item>
           </selfuseon>
-          <alias>Chocolate Packets</alias>
         </object>
         <object name="AlmondPackets">
           <inherit name="editor_object" />
@@ -341,6 +341,7 @@
           <take />
           <takemsg>You took the almonds.</takemsg>
           <feature_usegive />
+          <alias>Almond Packets</alias>
           <selfuseon type="scriptdictionary">
             <item key="IceCreamTruck">
               msg ("Rocco hands the almonds over to Casey. He nods his approval.")
@@ -350,7 +351,6 @@
               }
             </item>
           </selfuseon>
-          <alias>Almond Packets</alias>
         </object>
       </object>
     </object>
@@ -404,6 +404,7 @@
         <take />
         <takemsg><![CDATA[<i>lEave THis PlaCe</i>]]></takemsg>
         <feature_usegive />
+        <alias>condensed milk</alias>
         <takecondensedmilk type="script">
           msg ("You pick up a can of condensed milk, it's very heavy, but you suspect tasty treats could be made with its contents.")
           AddToInventory (CondensedMilk)
@@ -417,7 +418,6 @@
             MoveObject (CondensedMilk, IceCreamTruck)
           </item>
         </selfuseon>
-        <alias>condensed milk</alias>
       </object>
     </object>
     <exit alias="in" to="Bunker">
@@ -451,13 +451,13 @@
     <object name="DogCamp">
       <inherit name="editor_room" />
       <description>The camp is less impressive than the island, but more put together. Bones are collected in piles instead of strewn about randomly, and the stench of dog is much more bearable. A couple of well put-up tents sit behind a large bonfire pit. The smoldering ashes suggest the dogs were just here, where could they all be? A small box sits besides the bonfire.</description>
+      <alias>Dog Camp</alias>
       <beforefirstenter type="script">
         if (string.seen = false) {
           msg ("Rocco struts forward confidently. He stays confident even as he feels his leg break an invisible string, causing some overly complex contraption to drop a giant ice cream cone from the trees above! Rocco grunts as the cone bounces off of him and rolls to the side. While the dogs weren't the best at choosing dangerous traps, they were certainly good at driving Rocco's hunger trhough the roof!")
           DecreaseHealth (50)
         }
       </beforefirstenter>
-      <alias>Dog Camp</alias>
       <exit to="GuardDogCamp">
         <prefix>to</prefix>
       </exit>
@@ -625,6 +625,7 @@
       <feature_container />
       <look>A tall dumpster bin covered in muck and grime. It might be difficult to escape if Rocco slips inside.</look>
       <punctured type="boolean">false</punctured>
+      <alias>Dumpster Bin</alias>
       <beforefirstenter type="script">
         msg ("Having successfully made a ramp, Rocco smugly scampers into the dumspter bin. He soon remembers the bin's height, and the tendency for trash to be sharp and rough. As he smacked against the bottom of the bin, Rocco counted his lucky stars that he was unharmed. Unfortunately, now he was stuck.")
         msg ("But what was this? His efforts were not in vain! A giant ice cream cone was stuck to the wall of the bin. Rocco hungrily licked at the cone. He stopped mid-lick, realizing this ice cream tasted like trash and metal. In his glee, Rocco failed to realize it was just a poster of ice cream. This was worse than finding nothing! Rocco was now getting hungrier by the second; he needed to find a way out fast or risk passing out. ")
@@ -636,7 +637,6 @@
           EnableTimer (dump dive timer)
         }
       ]]></beforeenter>
-      <alias>Dumpster Bin</alias>
       <object name="Car key">
         <inherit name="editor_object" />
         <attr name="feature_usegive" type="boolean">false</attr>
@@ -645,6 +645,7 @@
         <drop />
         <takemsg>Rocco realizes this key is operational. It may belong to a working car in the Graveyard! This adventure got him close (in a way) to ice cream. Why not try another?</takemsg>
         <use />
+        <alias>car key</alias>
         <selfuseanything type="script">
           msg ("This key does not work here.")
         </selfuseanything>
@@ -658,7 +659,6 @@
           }
         ]]></stab>
         <selfuseon type="scriptdictionary" />
-        <alias>car key</alias>
       </object>
       <exit name="dumpster exit" alias="out to Dumpsite" to="Dumpsite">
         <inherit name="outdirection" />
@@ -684,13 +684,13 @@
       <take />
       <feature_usegive />
       <use />
+      <alias>metal scrap</alias>
       <selfuseon type="scriptdictionary">
         <item key="DumpsterBin">
           UnlockExit (closeddumpster)
           msg ("Rocco carefully leans the metal scraps against the dumpster bin, creating a makeshift ramp.")
         </item>
       </selfuseon>
-      <alias>metal scrap</alias>
     </object>
     <object name="CompostPile">
       <inherit name="editor_object" />
@@ -711,12 +711,12 @@
     </object>
     <object name="TrashBags">
       <inherit name="editor_object" />
+      <alias>trash bags</alias>
       <look type="script">
         msg ("Years worth of trash turned this small patch of land into a maze of odds and ends: half broken, half rotting, all forgotten. Rocco gets sad thinking about these things. Now he wants ice cream more than ever.")
         DecreaseHealth (5)
         msg ("hunger decreases by 5")
       </look>
-      <alias>trash bags</alias>
     </object>
     <exit name="closeddumpster" alias="into Dumpster Bin" to="DumpsterBin">
       <inherit name="indirection" />
@@ -748,6 +748,7 @@
       <inherit name="editor_room" />
       <description><![CDATA[Rocco stands on the outer shore of the island, an island built in a massive pool. Rocco wonders why a junkyard would have an olympic-sized swimming pool. Before he can give this much thought, the stench of the water fills his nostrils. A moat of green sludge <i>oozes</i> in the stagnant pool; bones and other debris surface and recess under the murk like souls of the damned in the River Styx. <br/><br/>Rocco doesn't know what that is, but the scary voice in his head definitely isn't warming him up to the idea!]]></description>
       <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <alias>Dog Shore</alias>
       <beforeenter type="script">
       </beforeenter>
       <onexit type="script">
@@ -761,7 +762,6 @@
           }
         }
       </onexit>
-      <alias>Dog Shore</alias>
       <exit to="GuardDogOutpost">
         <prefix>back to</prefix>
         <runscript type="boolean">false</runscript>
@@ -777,6 +777,7 @@
         <descprefix>You are on</descprefix>
         <description><![CDATA[Despite the name, Rocco sees no signs of any dogs, guard or other variety. Despite the general vibe of death, Rocco notices the island is made of rather high quality sand, leaving perfect little hand/paw prints in his wake.  <br/><br/>The main structure of the island is a massive tower constructed of rebar and scrap metal. The faint scent of meat, both fresh and spoiled, permeates the cavernous entrance. A few bushes line the main entrance. One rustles unnaturally.]]></description>
         <usedefaultprefix type="boolean">false</usedefaultprefix>
+        <alias>Dog Island</alias>
         <beforeenter type="script">
         </beforeenter>
         <onexit type="script">
@@ -790,7 +791,6 @@
             }
           }
         </onexit>
-        <alias>Dog Island</alias>
         <object name="DogSign">
           <inherit name="editor_object" />
           <look><![CDATA[A wooden sign hangs over the tower entrance, chewed up and covered in drool. In letters carved by sharp canines, it reads <u>DAWGS ONLY</u><br/><br/>Underneath is a crudely drawn raccoon with the body of a fish. The eyes are crossed out. How rude.]]></look>
@@ -1382,6 +1382,7 @@
           <attr name="feature_container" type="boolean">false</attr>
           <keycount type="int">1</keycount>
           <description>Inside the operation room, Rocco seizes up. The room is full of dogs. Some wearing suits, others in combat gear. The majority are staring at a large screen that coveres the far wall like a team preparing to launch a rocket into space. Hopefully, this isn't that. Rocco has no idea how he could possibly reach the shutoff switch. Taking a single step into this room would be like feeding himself to the... the... well the dogs! Oh cruel fate, to get so close yet be robbed at the last possible moment. How will Rocco ever get his ice cr- oh. Rocco turns to his left during his melodramatic monologue. The switch is next to the door. Nice. </description>
+          <alias>Operation Room</alias>
           <look type="script">
             if (Got(DNA sequence)) {
               msg ("Rocco presses the DNA chip against the sensor next to the door. It hums, blasts a clicky tune, and opens. Rocco can go in.")
@@ -1394,7 +1395,6 @@
               msg ("Rocco sneaks around the slumbering mutt. The door is locked, Rocco needs some sort of key.")
             }
           </look>
-          <alias>Operation Room</alias>
           <exit alias="out" to="DogHouse">
             <inherit name="outdirection" />
           </exit>
