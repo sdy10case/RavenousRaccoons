@@ -163,9 +163,6 @@
       <openmsg>time for snacks!</openmsg>
       <closemsg>thank you fridge!</closemsg>
       <onclose type="script">
-        if (not Contains (Refrigerator,moldy bread)) {
-          CloneObjectAndMove (moldy bread, Refrigerator)
-        }
       </onclose>
       <attr name="feature_edible" type="boolean">false</attr>
       <object name="moldy bread">
@@ -262,16 +259,16 @@
     <descprefix>in front of</descprefix>
     <objectslistprefix>You can see</objectslistprefix>
     <description><![CDATA[You are in in a field of garbage, in front of you is a decomissioned commercial airplane (why and how? Shhhhh). <br/>The possibilities of loot excite you!<br/>At the front of the plane is the cockpit, the centre of the plane is the cabin, and at the back is the tail of the airplane - the smell of fuel stings the nostrils.]]></description>
-    <exit alias="north" to="CarGraveyard">
+    <exit alias="north to Graveyard" to="CarGraveyard">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="south" to="GuardDogCamp">
+    <exit alias="south to Camp" to="GuardDogCamp">
       <inherit name="southdirection" />
     </exit>
-    <exit alias="east" to="GuardDogBase">
+    <exit alias="east to Dog Base" to="GuardDogBase">
       <inherit name="eastdirection" />
     </exit>
-    <exit alias="west" to="RaccoonBase">
+    <exit alias="west to Raccoon Base" to="RaccoonBase">
       <inherit name="westdirection" />
     </exit>
     <object name="AirplaneTail">
