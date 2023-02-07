@@ -40,6 +40,9 @@
       player.day = player.turns / 30
       IncreaseHealth (21)
     </onhealthzero>
+    <defaultfont>'Courier New', Courier, monospace</defaultfont>
+    <defaultwebfont>Courier Prime</defaultwebfont>
+    <defaultbackground>SteelBlue</defaultbackground>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
