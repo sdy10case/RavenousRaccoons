@@ -280,14 +280,6 @@
       <displayverbs type="stringlist">
         <value>Look at</value>
       </displayverbs>
-      <fillcan type="script">
-        if (Got(Jerrycan)) {
-          AddToInventory (FilledCan)
-        }
-        else {
-          msg ("You may need to find something to contain the fuel to bring it with you!")
-        }
-      </fillcan>
     </object>
     <object name="cockpit">
       <inherit name="editor_object" />
