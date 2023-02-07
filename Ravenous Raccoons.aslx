@@ -22,9 +22,12 @@
     <showhealth />
     <showpanes />
     <showcommandbar />
-    <turnoffcompass />
+    <turnoffcompass type="boolean">false</turnoffcompass>
     <bordercolour>Cornsilk</bordercolour>
     <feature_asktell />
+    <defaultfont>'Courier New', Courier, monospace</defaultfont>
+    <defaultwebfont>Courier Prime</defaultwebfont>
+    <defaultbackground>SlateGray</defaultbackground>
     <start type="script">
     </start>
     <onhealthzero type="script">
@@ -40,9 +43,10 @@
       player.day = player.turns / 30
       IncreaseHealth (21)
     </onhealthzero>
-    <defaultfont>'Courier New', Courier, monospace</defaultfont>
-    <defaultwebfont>Courier Prime</defaultwebfont>
-    <defaultbackground>SteelBlue</defaultbackground>
+    <defaultforeground>Coral</defaultforeground>
+    <gridmap />
+    <respondtogridclicks />
+    <mapexitcolour>Black</mapexitcolour>
   </game>
   <object name="RaccoonBase">
     <inherit name="editor_room" />
@@ -69,13 +73,13 @@
         msg ("Casey sees Rocco strugg.ing to drag a tyre larger than his body back to the base. Without moving to help, he shouts \"Hey! Nice work champ. Go use that tyre on the truck and come speak to me.\" Rocco huffs and continues pulling the tyre with all his might. Casey says, \"You know... that's a tyre, right? Just roll it.\" Embarressed, Rocco quickly rolls the tyre next to the truck.")
       }
     </enter>
-    <exit alias="north" to="GuardDogOutpost">
+    <exit alias="north to Outpost" to="GuardDogOutpost">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="south" to="Dumpsite">
+    <exit alias="south to Dumpsite" to="Dumpsite">
       <inherit name="southdirection" />
     </exit>
-    <exit alias="east" to="BrokenPlane">
+    <exit alias="east to Plane" to="BrokenPlane">
       <inherit name="eastdirection" />
     </exit>
     <object name="Casey">
@@ -163,6 +167,7 @@
           CloneObjectAndMove (moldy bread, Refrigerator)
         }
       </onclose>
+      <attr name="feature_edible" type="boolean">false</attr>
       <object name="moldy bread">
         <inherit name="editor_object" />
         <inherit name="edible" />
@@ -306,6 +311,9 @@
         <value>Open</value>
         <value>Close</value>
       </displayverbs>
+      <open type="boolean">false</open>
+      <close type="boolean">false</close>
+      <transparent />
       <object name="FoodDrinkTrolley">
         <inherit name="editor_object" />
         <inherit name="container_closed" />
@@ -380,10 +388,10 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <description>The piles of trash coalsce into a damp alcove. At its center, a pair of doors built into the earth itself. Rocco notices a strange symbol carved into one of the doors. An eagle, but with the head of a raccoon. It glitters in the thin streams of light that permeate the loose garage ceiling. </description>
-    <exit alias="north" to="GuardDogBase">
+    <exit alias="north to Dog Base" to="GuardDogBase">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="west" to="GuardDogCamp">
+    <exit alias="west to Dog Camp" to="GuardDogCamp">
       <inherit name="westdirection" />
     </exit>
     <object name="Rose">
@@ -436,13 +444,13 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <description><![CDATA[Rocco reaches the outskirts of a camp. The smell of blood is faintly in the air. A high metal fence bars off the entrance. Beyond it, Rocco sees flickering torches and scattered bones. An ominous <b> string</b> stretching across the ground in front of the gate is barely visible.]]></description>
-    <exit alias="north" to="BrokenPlane">
+    <exit alias="north to Plane" to="BrokenPlane">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="east" to="GarbageAlcove">
+    <exit alias="east to Garbage Alcove" to="GarbageAlcove">
       <inherit name="eastdirection" />
     </exit>
-    <exit alias="west" to="Dumpsite">
+    <exit alias="west to Dumpsite" to="Dumpsite">
       <inherit name="westdirection" />
     </exit>
     <exit name="camp entrance" to="DogCamp">
@@ -618,10 +626,10 @@
     </beforefirstenter>
     <firstenter type="script">
     </firstenter>
-    <exit alias="north" to="RaccoonBase">
+    <exit alias="north to Raccoon Base" to="RaccoonBase">
       <inherit name="northdirection" />
     </exit>
-    <exit alias="east" to="GuardDogCamp">
+    <exit alias="east to Camp" to="GuardDogCamp">
       <inherit name="eastdirection" />
     </exit>
     <object name="DumpsterBin">
@@ -738,10 +746,10 @@
     <attr name="grid_border">Transparent</attr>
     <implementation_notes />
     <description>Before Rocco stands a medivial castle, if by castle, one means tower of trash and gunk. It would be impressive if it wasn't so disgusting. The tower stands on a makeshift island, surrounded by a moat filled with... water?</description>
-    <exit alias="south" to="RaccoonBase">
+    <exit alias="south to Raccoon Base" to="RaccoonBase">
       <inherit name="southdirection" />
     </exit>
-    <exit alias="east" to="CarGraveyard">
+    <exit alias="east to Car Graveyard" to="CarGraveyard">
       <inherit name="eastdirection" />
     </exit>
     <exit to="DogShore">
@@ -851,6 +859,13 @@
                 <value>Take</value>
               </displayverbs>
             </object>
+          </object>
+          <object name="player">
+            <inherit name="editor_object" />
+            <inherit name="editor_player" />
+            <turns type="int">0</turns>
+            <day type="int">0</day>
+            <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
           </object>
         </object>
         <object name="bush2">
@@ -1023,10 +1038,7 @@
     <enter type="script">
       picture ("recycling plant.png")
     </enter>
-    <exit alias="south" to="GuardDogBase">
-      <inherit name="southdirection" />
-    </exit>
-    <exit alias="west" to="CarGraveyard">
+    <exit alias="west to Car Graveyard" to="CarGraveyard">
       <inherit name="westdirection" />
     </exit>
     <object name="radioactivewaste">
@@ -1102,7 +1114,7 @@
     <description>Stacks of battered cars rise high into the sky like a gian'ts sloppy game of jenga. Shards of glass and metal make exploring this place rather dangerous, but the value of these car parts make the risk worth it for raccoons like Casey. A pile of car tyres are stacked in the middle of the graveyard like one big tombstone. </description>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix>the</prefix>
-    <exit alias="south" to="BrokenPlane">
+    <exit alias="south to Broken Plane" to="BrokenPlane">
       <inherit name="southdirection" />
     </exit>
     <exit name="recycle entrance" alias="east" to="RecyclingPlant">
@@ -1110,7 +1122,7 @@
       <locked />
       <lockmessage>Rocco attempts to move east. By the shape of the junkyard, he know something should be there, yet the mountains of trash block any point of entry.</lockmessage>
     </exit>
-    <exit alias="west" to="GuardDogOutpost">
+    <exit alias="west to Outpost" to="GuardDogOutpost">
       <inherit name="westdirection" />
     </exit>
     <object name="Jerrycan">
@@ -1245,6 +1257,7 @@
         <eatmsg>crunchy</eatmsg>
         <eathealth type="int">15</eathealth>
         <look>A wilted head of lettuce. Looks edible enough.</look>
+        <take />
       </object>
       <object name="tomato">
         <inherit name="editor_object" />
@@ -1253,6 +1266,7 @@
         <feature_edible />
         <eatmsg>Rocco nearly gags, but he eat the whole thing</eatmsg>
         <eathealth type="int">3</eathealth>
+        <take />
       </object>
     </object>
     <object name="pickuptruck">
@@ -1324,10 +1338,10 @@
       <locked />
       <lockmessage>There should be a pathway north, but it has been sealed and barricaded by the dogs. </lockmessage>
     </exit>
-    <exit alias="south" to="GarbageAlcove">
+    <exit alias="south to Garbage Alcove" to="GarbageAlcove">
       <inherit name="southdirection" />
     </exit>
-    <exit alias="west" to="BrokenPlane">
+    <exit alias="west to Plane" to="BrokenPlane">
       <inherit name="westdirection" />
     </exit>
     <object name="DogBase">
@@ -1555,11 +1569,6 @@
     <defaultexpression>"You can't enter bunker " + object.article + "."</defaultexpression>
   </verb>
   <verb>
-    <property>fillcan</property>
-    <pattern>fill can</pattern>
-    <defaultexpression>"You can't fill can " + object.article + "."</defaultexpression>
-  </verb>
-  <verb>
     <property>takecondensedmilk</property>
     <pattern>take condensed milk</pattern>
     <defaultexpression>"You can't take condensed milk " + object.article + "."</defaultexpression>
@@ -1578,13 +1587,6 @@
         MoveObject (player, Road)
       }
     </beforefirstenter>
-    <object name="player">
-      <inherit name="editor_object" />
-      <inherit name="editor_player" />
-      <turns type="int">0</turns>
-      <day type="int">0</day>
-      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
-    </object>
   </object>
   <verb>
     <property>attack</property>
