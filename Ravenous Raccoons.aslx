@@ -849,13 +849,6 @@
               </displayverbs>
             </object>
           </object>
-          <object name="player">
-            <inherit name="editor_object" />
-            <inherit name="editor_player" />
-            <turns type="int">0</turns>
-            <day type="int">0</day>
-            <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
-          </object>
         </object>
         <object name="bush2">
           <inherit name="editor_object" />
@@ -1576,6 +1569,13 @@
         MoveObject (player, Road)
       }
     </beforefirstenter>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+      <turns type="int">0</turns>
+      <day type="int">0</day>
+      <attr name="pov_look"><![CDATA[Upon reflection, you wonder about your obsession with ice cream. Where did it begin, your mother, your father? Did you have either of those? The only memories you have are of this junkyard and your love for ice cream? Could there be some deeper, darker secret lying in Rocco's past? Doesn't matter, this is a game about <b>ICE CREAM AND ICE CREAM ONLY!<\b>]]></attr>
+    </object>
   </object>
   <verb>
     <property>attack</property>
